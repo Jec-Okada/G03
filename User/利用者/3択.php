@@ -20,10 +20,10 @@
                   </div>
                   <div class="answer-container">
                     <a href="2択【仮】.php" class="answer-link" id="1-link">
-                      <p>１人</p>
+                        <p>１人</p>
                     </a>
                     <a href="2択【仮】.php" class="answer-link" id="2-link">
-                      <p>２人</p>
+                        <p>２人</p>
                     </a>
                     <a href="2択【仮】.php" class="answer-link" id="3-link">
                         <p>３人以上</p>
