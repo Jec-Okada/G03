@@ -1,13 +1,7 @@
 <header>
     <link href="css/header.css" rel="stylesheet" >
-    <link rel="stylesheet" href="bootstrap-5.0.0-dist/css/bootstrap.min.css">
-    <script src="bootstrap-5.0.0-dist/js/bootstrap.min.js"></script>
-    <div id="logo">
-        <a href="" >
-            <img src="img/オススメイカー画像なし.jpg" alt="a"><img src="img/アラビア語ロゴ.jpg" alt="a">
-        </a>
-    </div>
-    <div id="link">
+    <link rel="stylesheet" href="../bootstrap-5.0.0-dist/css/bootstrap.min.css">
+    <script src="../bootstrap-5.0.0-dist/js/bootstrap.min.js"></script>
     
     </header>
     <body>
