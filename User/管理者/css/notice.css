@@ -1,0 +1,38 @@
+#text{
+    
+    resize:none;
+    height:50px;
+    width: 50%;
+    font-family: "MS Pゴシック";
+}
+#b{
+    text-align: right;
+  
+}
+.a{
+    
+   margin-left: 5px;
+}
+.addbtn{
+    text-align: right;
+    background-color: rgb(37, 98, 230);
+    color: aliceblue;
+    position:relative;
+    bottom: 20px;
+    left: 5px;
+    border-radius:30px;
+   
+}
+.new{
+    padding-top: 5px;
+   text-align: center;
+}
+.backbtn{
+    text-align: right;
+    background-color: rgb(37, 98, 230);
+    color: aliceblue;
+    position:relative;
+    top: 10px;
+    right: 4px;
+    border-radius:30px;
+ }

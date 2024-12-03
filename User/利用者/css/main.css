@@ -1,0 +1,86 @@
+.start1{
+    background-color:rgb(143, 0, 148);
+    color:white;
+    padding:1em 1em;
+    font-size:1.5em;
+}
+#start1{
+    text-align: center;
+}
+#login1{
+    text-align: right;
+}
+.container{
+    align-items: center;
+    display:flex;
+    justify-content: center;
+}
+.main{
+    position: relative;
+}
+.main a{
+    position: absolute;
+  top: 50%;/*ボタン位置をずらす高さ*/
+  left: 60%;/*ボタン位置をずらす横*/
+  -ms-transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  /*以下装飾*/
+  margin:0;/*余計な隙間を除く*/
+  font-size: 70px;/*文字サイズ*/
+  border: solid white 2px; /*線で囲う*/
+  padding: 7px;/*文字と線の間の余白*/
+  color: #000;/*文字色*/
+  text-decoration: none;/*下線を表示させない*/
+  background-color: rgb(170, 135, 235);
+  
+}
+
+.main a:hover{
+    background: rgba(247, 150, 5, 0.863);/*背景を半透明に*/
+}
+.main a.main2:hover{
+  background: rgba(247, 5, 5, 0.863);/*背景を半透明に*/
+}
+
+.main p{
+  position: absolute;
+  top: 30%;/*画像の左上に配置*/
+  left: 60%;
+  -ms-transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  margin: 0; /*余計な隙間を除く*/
+  color: black;/*文字を白に*/
+  background: white;/*背景色*/
+  font-size: 15px;
+  line-height: 1;/*行高は1に*/
+  padding: 5px 10px;/*文字周りの余白*/
+  font-size: 50px;
+  white-space: nowrap;
+}
+
+.main img {
+width: 100%;
+}
+body{
+  font-family: "游明朝";
+  
+}
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 30px 20px;
+}
+.notice-box {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  flex: 3;
+}
+.login-box {
+  flex: 1;
+  text-align: right;
+}

@@ -1,0 +1,15 @@
+<iframe id="gform" src="https://docs.google.com/forms/d/e/1FAIpQLSf0Lxv8mOIbbp5dwQVSk1Qw3o3fXSlJJhpaRDSzDceBLb5PRA/viewform?embedded=true" width="640" height="5348" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe>
+
+  <script>
+  var load = 0;
+  
+  document.getElementById('gform').onload = function(){
+      /*Execute on every reload on iFrame*/
+      load++;
+      if(load > 1){
+          /*Second reload is a submit*/
+          document.location = "mainmenu.html";
+      }
+  }
+  </script>
+ 

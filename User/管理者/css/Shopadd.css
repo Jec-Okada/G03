@@ -1,0 +1,29 @@
+#text{
+    
+    resize:none;
+    font-family: "MS Pゴシック";
+}
+
+#all{
+    margin-top: 5em;  
+    width:fit-content;
+    
+}
+
+.Categorylist{ 
+    border: solid thin gray;
+    background-color: rgba(226, 225, 225, 0.671);
+    height: 10em;
+    width: 10em;
+    overflow: auto; 
+   
+  
+}
+
+
+#pack{
+   display: flex;
+}
+
+
+

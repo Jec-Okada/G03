@@ -1,0 +1,13 @@
+#logo{
+    float: left;
+}
+#kensaku{
+    float: right;
+}
+#link{
+    float: right;
+    
+}
+#clear{
+    clear: both;
+}

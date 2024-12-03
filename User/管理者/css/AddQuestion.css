@@ -1,0 +1,45 @@
+#text{
+    border: 3px solid #cccccc;
+    resize:none;
+    height: 60px;
+    width: 55%;
+    font-family: "MS Pゴシック";  
+    margin: auto;
+   
+}
+h3{
+    text-align: center;
+}
+th{
+    text-align: center
+}
+.container{
+   margin-top: 5em;
+   margin-left: 16%;
+
+}
+
+label {
+    display:inline-block;
+    border-bottom:2px groove #cccccc;
+    margin-right:20px;
+    }
+
+#addbtn{
+   width:80px;
+   height:30px;
+}
+.btn{
+    position:absolute;
+   
+}
+.rbtn{
+   margin-left:30px;
+}
+.listbox {
+    border: solid thin gray;
+    background-color: white;
+    height: 10em;
+    overflow: auto;
+    
+  }

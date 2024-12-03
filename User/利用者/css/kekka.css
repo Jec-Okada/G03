@@ -1,0 +1,36 @@
+
+.title1{
+    text-align: center;
+    font-size: 36px;
+    color: white;             /*文字を透明にする*/
+    
+    background-image: linear-gradient(45deg,
+        red,
+        orange,
+        rgb(94, 255, 0),
+        green,
+        rgb(0, 204, 255),
+        rgb(55, 0, 255),
+        rgb(128, 0, 85));
+    background-size: 1000%; 
+    animation: 2.5s linear 0s infinite alternate slide;    /* slideアニメーションを4秒で往復の線形移動を無限回行う */
+}
+@keyframes slide { 
+    from { background-position: 0% 0%; } 
+    to { background-position: 100% 0%; }    /* 右から左へ移動するアニメーション */
+}
+#form{
+    text-align: right;
+   
+  
+}
+.form{
+    width: 14em;
+    height: 5em;
+}
+#taste{
+    text-align: left;
+}
+#coen{
+    text-align: center;
+}
