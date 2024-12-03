@@ -20,23 +20,23 @@
     </div>
     <div class="button-group">
         <button id="sainin" class="btn btn-success">サインイン</button>
-        <a href="passchange.html" class="url">パスワードをお忘れですか？</a>
+        <a href="passchange.php" class="url">パスワードをお忘れですか？</a>
     </div>
     <div class="divider"></div>
     
     <p>新規会員の方はこちら</p>
     <div>
-        <button onclick="location.href='usertouroku.html'" class="btn btn-primary">会員登録</button>
+        <button onclick="location.href='usertouroku.php'" class="btn btn-primary">会員登録</button>
     </div>
     
     <script>
         function buttonClick() {
             alert('サインインに成功しました！！！！！！');
-            window.location.href = 'mainmenu.html';
+            window.location.href = 'mainmenu.php';
         }
 
         let button = document.getElementById('sainin');
         button.addEventListener('click', buttonClick);
     </script>
 </body>
-</html>
+</php>

@@ -13,7 +13,7 @@
     <!-- メインコンテンツ -->
     <div class="main text-center">
         <img src="img/冒険.jpeg" width="500" height="750" alt="メインイメージ">
-        <a href="3択.html" class="btn btn-warning btn-lg mt-3">飯を探す冒険へ！！！！！</a>
+        <a href="3択.php" class="btn btn-warning btn-lg mt-3">飯を探す冒険へ！！！！！</a>
     </div>
 
     <!-- フッター部分（お知らせ + ログイン） -->
