@@ -12,7 +12,7 @@ public string $ShopChar;
 public string $StartTime1;
 public string $StartTime2;
 public string $CloseTime1;
-public string $closeTime2;
+public string $CloseTime2;
 public int $TOSeats;
 }
 
@@ -34,67 +34,33 @@ class ShopDAO
         }
         return $data;
     }
-    ///ここから下はできていないfunction
-    public function get_Shop_by_groupID(int $groupID)
+    
+    public function insert(string $ShopName,string $MapPoint,string $ShopAddress,string $ShopURL,int $TOSeats,string $StartTime1,string $StartTime2,string $CloseTime1,string $CloseTime2,string $ShopChar)
     {
         $dbh = DAO::get_db_connect();
 
-        $sql = "SELECT * FROM Shop WHERE groupID=:groupID ORDER BY recommend DESC";
-
-
-        $stmt = $dbh->prepare($sql);
-
-        $stmt->bindValue(':groupID',$groupID,PDO::PARAM_INT);
-
-        $stmt->execute();
-
-        $data = [];
-        while($row = $stmt->fetchObject('Shop')){
-            $data[] = $row;
-        }
-        return $data;
-    }
-
-    public function get_Shop_by_ShopID(String $ShopID)
-    {
-        $dbh = DAO::get_db_connect();
-
-        $sql = "SELECT * FROM Shop WHERE ShopID=:ShopID";
-
-
-        $stmt = $dbh->prepare($sql);
-
-        $stmt->bindValue(':ShopID',$ShopID,PDO::PARAM_STR);
-
-        $stmt->execute();
-
-        $Shop = $stmt->fetchObject('Shop');
-            return $Shop;
-        
        
-    }
 
-    public function get_Shop_by_keyword(string $keyword){
-        $dbh = DAO::get_db_connect();
+            $sql = "INSERT INTO Shop values(:ShopName,:MapPoint,:ShopAddress,:ShopURL,:TOSeats,:StartTime1,:StartTime2,:CloseTime1,:CloseTime2,:ShopChar)";
 
-        $sql = "SELECT * from Shop where Shopname like :Shopname or detail like :detail order by recommend desc";
+            $stmt =$dbh->prepare($sql);
 
+            $stmt->bindValue(':ShopName',$ShopName,PDO::PARAM_STR);
+            $stmt->bindValue(':MapPoint',$MapPoint,PDO::PARAM_STR);
+            $stmt->bindValue(':ShopAddress',$ShopAddress,PDO::PARAM_STR);
+            $stmt->bindValue(':ShopURL',$ShopURL,PDO::PARAM_STR);
+            $stmt->bindValue(':TOSeats',$TOSeats,PDO::PARAM_INT);
+            $stmt->bindValue(':StartTime1',$StartTime1,PDO::PARAM_STR);
+            $stmt->bindValue(':StartTime2',$StartTime2,PDO::PARAM_STR);
+            $stmt->bindValue(':CloseTime1',$CloseTime1,PDO::PARAM_STR);
+            $stmt->bindValue(':CloseTime2',$CloseTime2,PDO::PARAM_STR);
+            $stmt->bindValue(':ShopChar',$ShopChar,PDO::PARAM_STR);
+            
+            $stmt->execute();
 
-        $stmt = $dbh->prepare($sql);
-
-        $stmt->bindValue(':Shopname','%'.$keyword.'%',PDO::PARAM_STR);
-        $stmt->bindValue(':detail','%'.$keyword.'%',PDO::PARAM_STR);
-
-
-        $stmt->execute();
-
-        $ShopData = [];
-        while($row = $stmt->fetchObject('Shop')){
-            $ShopData[] = $row;
-        }
-        return $ShopData;
+           
         
+}///ここから下はできていないfunction
 
-    }
 }
 ?>
