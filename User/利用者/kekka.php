@@ -3,6 +3,8 @@
 <head>
     <title>今日の飯</title>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="../bootstrap-5.0.0-dist/css/bootstrap.min.css">
+<script src="../bootstrap-5.0.0-dist/js/bootstrap.min.js"></script>
 </head>
 <body>
     <?php include "header.php"; ?>
@@ -14,6 +16,6 @@
       <img src="img/味八.png" alt="a">
     </div>
     <a id="taste" href="googleForm.php">美味かったか？</a> 
-  <p id="form"><input type="button" name="form" onclick="location.href='houkoku.php'" class="form" value="報告フォーム" /></p>
+  <p id="form"><input type="button" name="form" onclick="location.href='houkoku.php'" class="form" value="報告フォーム" class="btn btn-primary/></p>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
     <title>報告フォーム</title>
     <meta charset="utf-8">
+    
 </head>
 <body>
     <?php include "header.php"; ?>
