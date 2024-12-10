@@ -1,0 +1,126 @@
+<?php
+session_start();
+
+// DB接続設定の読み込み
+require_once './help/config.php';
+
+class DAO {
+    private static $dbh;
+
+    // DBに接続するメソッド
+    public static function get_db_connect() {
+        try {
+            if(self::$dbh === null){
+                self::$dbh = new PDO(DSN, DB_USER, DB_PASSWORD);
+            }
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die();
+        }
+        return self::$dbh;
+    }
+
+    // ベーシック質問を取得
+    public static function get_basic_question($question_id) {
+        $dbh = self::get_db_connect();
+        $sql = "SELECT * FROM BesicQuestion WHERE BQID = :question_id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindParam(':question_id', $question_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // カテゴリ直下質問を取得
+    public static function get_category_question($category_id) {
+        $dbh = self::get_db_connect();
+        $sql = "SELECT * FROM CategoryQuestion WHERE CQID = :category_id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+}
+
+// 最初の質問IDをセッションに保存
+if (!isset($_SESSION['current_question_id'])) {
+    $_SESSION['current_question_id'] = 1;  // 最初の質問ID
+}
+
+$current_question_id = $_SESSION['current_question_id'];
+$answer = isset($_POST['answer']) ? $_POST['answer'] : null;
+
+if ($answer) {
+    // 回答をもとに次の質問IDを取得
+    $current_question = DAO::get_basic_question($current_question_id);
+    if ($answer == 'yes') {
+        $_SESSION['current_question_id'] = $current_question['YQID'];  // 「はい」の選択肢
+    } else {
+        $_SESSION['current_question_id'] = $current_question['NQID'];  // 「いいえ」の選択肢
+    }
+}
+
+// 現在の質問を取得
+$current_question = DAO::get_basic_question($_SESSION['current_question_id']);
+$next_question_text = $current_question['BQuestion']; // ここで質問文を取得
+
+// カテゴリー直下質問への遷移を確認
+$is_category_question = false;
+if ($current_question['BQID'] == 5) {  // 仮の条件：質問IDが5の場合
+    // カテゴリ直下質問に進む
+    $category_question = DAO::get_category_question($current_question['YCID']);
+    $next_question_text = $category_question['CQuestion']; // これが表示される質問
+    $is_category_question = true;
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>質問ページ</title>
+    <link href="css/2choice.css" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <!-- 背景画像 -->
+        <img src="img/冒険.jpeg" alt="背景画像" class="background-image">
+        
+        <!-- ドラクエ風のメッセージボックス -->
+        <div class="message-box">
+            <div class="question-container">
+                <p id="question-text" class="question"><?php echo $next_question_text; ?></p> <!-- ここで質問文を表示 -->
+            </div>
+
+            <div class="answer-container">
+                <form method="POST" action="index.php">
+                    <a href="#" class="answer-link" id="yes-link" onclick="this.closest('form').submit(); document.getElementById('answer').value = 'yes';">
+                        <p>はい</p>
+                    </a>
+                    <a href="" class="answer-link" id="no-link" onclick="this.closest('form').submit(); document.getElementById('answer').value = 'no';">
+                        <p>いいえ</p>
+                    </a>
+                    <input type="hidden" name="answer" id="answer">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 文字を一文字ずつ出すアニメーション
+        window.addEventListener("load", function() {
+            const questionText = document.getElementById("question-text");
+            let fullText = questionText.innerHTML;
+            questionText.innerHTML = ''; // 初期状態でテキストを空にする
+
+            let i = 0;
+            const interval = setInterval(function() {
+                questionText.innerHTML += fullText.charAt(i);
+                i++;
+                if (i >= fullText.length) {
+                    clearInterval(interval);
+                }
+            }, 100); // 100msごとに1文字ずつ表示
+        });
+    </script>
+</body>
+</html>
