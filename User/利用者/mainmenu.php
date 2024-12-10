@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,8 +22,34 @@
         <!-- お知らせ -->
         <div class="notice-box">
             <h4 style="margin-bottom: 10px;">お知らせ</h4>
-            <p>ここに最新情報を表示します。<br>
-            例: イベント情報やシステムメンテナンスのお知らせなど。</p>
+    <?php
+        require_once '../DAO/DAO.php';
+
+        class Notice{
+            public $NContent;
+        }
+        
+        try {
+            $dbh = DAO::get_db_connect();
+       
+            $sql = 'SELECT NContent FROM Notice'; // `users` はデータベース内のテーブル名
+            $stmt = $dbh->prepare($sql);
+        
+            // クエリを実行
+            $stmt->execute();
+            // $users[] = $stmt->fetchObject('Notice');
+            while($user = $stmt->fetchObject('Notice')){
+                $users[] = $user;
+            }
+            if(!empty($users)){
+                foreach($users as $user){
+                    echo htmlspecialchars($user->NContent) . "<br>";
+                }
+                }
+        } catch (PDOException $e) {
+            echo 'データ取得エラー: ' . $e->getMessage();
+        }
+?>
         </div>
 
         

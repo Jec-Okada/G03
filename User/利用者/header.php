@@ -3,9 +3,7 @@
     <link rel="stylesheet" href="bootstrap-5.0.0-dist/css/bootstrap.min.css">
     <script src="bootstrap-5.0.0-dist/js/bootstrap.min.js"></script>
     <div id="logo">
-        <a href="" >
-            <img src="img/オススメイカー画像なし.jpg" alt="a" style="max-height: 60px;">
-        </a>
+        <img src="img/オススメイカー画像なし.jpg" alt="a" style="max-height: 60px;">
     </div>
     <div id="link">
 

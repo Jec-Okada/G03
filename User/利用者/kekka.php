@@ -15,7 +15,7 @@
     <div id="coen" >
       <img src="img/味八.png" alt="a">
     </div>
-    <a id="taste" href="googleForm.php">美味かったか？</a> 
+    <a id="taste" href="googleForm.html">美味かったか？</a> 
   <p id="form"><input type="button" name="form" onclick="location.href='houkoku.php'" class="form btn btn-primary" value="報告フォーム" /></p>
 </body>
 </html>
