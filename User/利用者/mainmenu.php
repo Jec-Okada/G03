@@ -1,38 +1,4 @@
-<?php
-// データベース接続設定
-$host = 'JNSV01\SOTSU'; // サーバー名
-$dbname = 'example_db'; // データベース名
-$user = 'username'; // ユーザー名
-$password = 'password'; // パスワード
 
-try {
-    // PDOインスタンスを作成
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
-
-    // エラーモードを例外に設定
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // クエリを準備
-    $stmt = $pdo->prepare("SELECT * FROM example_table");
-
-    // クエリを実行
-    $stmt->execute();
-
-    // 結果を取得 (連想配列形式で取得)
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // 結果を出力
-    foreach ($results as $row) {
-        echo "ID: " . htmlspecialchars($row['id']) . "<br>";
-        echo "Name: " . htmlspecialchars($row['name']) . "<br>";
-        echo "Email: " . htmlspecialchars($row['email']) . "<br><hr>";
-    }
-
-} catch (PDOException $e) {
-    // エラーメッセージを表示
-    echo "データベースエラー: " . $e->getMessage();
-}
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,8 +22,34 @@ try {
         <!-- お知らせ -->
         <div class="notice-box">
             <h4 style="margin-bottom: 10px;">お知らせ</h4>
-            <p>ここに最新情報を表示します。<br>
-            例: イベント情報やシステムメンテナンスのお知らせなど。</p>
+    <?php
+        require_once '../DAO/DAO.php';
+
+        class Notice{
+            public $NContent;
+        }
+        
+        try {
+            $dbh = DAO::get_db_connect();
+       
+            $sql = 'SELECT NContent FROM Notice'; // `users` はデータベース内のテーブル名
+            $stmt = $dbh->prepare($sql);
+        
+            // クエリを実行
+            $stmt->execute();
+            // $users[] = $stmt->fetchObject('Notice');
+            while($user = $stmt->fetchObject('Notice')){
+                $users[] = $user;
+            }
+            if(!empty($users)){
+                foreach($users as $user){
+                    echo htmlspecialchars($user->NContent) . "<br>";
+                }
+                }
+        } catch (PDOException $e) {
+            echo 'データ取得エラー: ' . $e->getMessage();
+        }
+?>
         </div>
 
         
