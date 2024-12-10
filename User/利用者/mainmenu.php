@@ -1,3 +1,38 @@
+<?php
+// データベース接続設定
+$host = 'JNSV01\SOTSU'; // サーバー名
+$dbname = 'example_db'; // データベース名
+$user = 'username'; // ユーザー名
+$password = 'password'; // パスワード
+
+try {
+    // PDOインスタンスを作成
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
+
+    // エラーモードを例外に設定
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // クエリを準備
+    $stmt = $pdo->prepare("SELECT * FROM example_table");
+
+    // クエリを実行
+    $stmt->execute();
+
+    // 結果を取得 (連想配列形式で取得)
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // 結果を出力
+    foreach ($results as $row) {
+        echo "ID: " . htmlspecialchars($row['id']) . "<br>";
+        echo "Name: " . htmlspecialchars($row['name']) . "<br>";
+        echo "Email: " . htmlspecialchars($row['email']) . "<br><hr>";
+    }
+
+} catch (PDOException $e) {
+    // エラーメッセージを表示
+    echo "データベースエラー: " . $e->getMessage();
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
