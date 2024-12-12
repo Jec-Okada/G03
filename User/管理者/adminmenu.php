@@ -8,7 +8,7 @@
     <link href="css/adminmenu.css" rel="stylesheet" >
 </head>
 <body>
-    <!--管理者の画面遷移メニューです、遷移先のhtmlがまだほとんど未完成-->
+    <!--管理者の画面遷移メニューです、遷移先のphpがまだほとんど未完成-->
     
 
     <h1>管理メニュー</h1>
@@ -16,18 +16,18 @@
 
     <div class="form-horizontal" >
         <div id="a">
-            <input type="button" name="management" class="btn btn-primary" onclick="location.href='Useradmin.html'" value="会員管理" />
-            <input type="button" name="login" class="btn btn-primary"  onclick="location.href='adminmanage.html'"value="管理者管理" />
-            <input type="button" name="login" class="btn btn-primary" onclick="location.href='Shop.html'"value="店舗一覧" />
+            <input type="button" name="management" class="btn btn-primary" onclick="location.href='Useradmin.php'" value="会員管理" />
+            <input type="button" name="login" class="btn btn-primary"  onclick="location.href='adminmanage.php'"value="管理者管理" />
+            <input type="button" name="login" class="btn btn-primary" onclick="location.href='Shop.php'"value="店舗一覧" />
         </div>
         <div id="b">
-            <input type="button" name="login" class="btn btn-primary" onclick="location.href='notice.html'"value="お知らせ一覧" />
-            <input type="button" name="login" class="btn btn-primary" onclick="location.href='Categorybag.html'"value="カテゴリ袋一覧" />
-            <input type="button" name="login" class="btn btn-primary" onclick="location.href='reportadmin.html'"value="報告一覧" />
+            <input type="button" name="login" class="btn btn-primary" onclick="location.href='notice.php'"value="お知らせ一覧" />
+            <input type="button" name="login" class="btn btn-primary" onclick="location.href='Categorybag.php'"value="カテゴリ袋一覧" />
+            <input type="button" name="login" class="btn btn-primary" onclick="location.href='reportadmin.php'"value="報告一覧" />
         </div>
         <div id="c">
-            <input type="button" name="login" class="btn btn-primary" onclick="location.href='BasicQuestion.html' "value="ベーシック質問一覧" />
-            <input type="button" name="login" class="btn btn-primary" onclick="location.href='CategoryQuestion.html' "value="カテゴリ直下質問一覧 " />
+            <input type="button" name="login" class="btn btn-primary" onclick="location.href='BasicQuestion.php' "value="ベーシック質問一覧" />
+            <input type="button" name="login" class="btn btn-primary" onclick="location.href='CategoryQuestion.php' "value="カテゴリ直下質問一覧 " />
         </div> 
         
     </div>
