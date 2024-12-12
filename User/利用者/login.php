@@ -1,12 +1,12 @@
 <?php
-    require_once '../DAO/MemberDAO.php';
+    require_once '../UserDAO/MemberDAO.php';
 
     $username = '';
     $errs = [];
 
     session_start();
 // emptyに!をつけるか否かで自動遷移がオンオフされる
-if(empty($_SESSION['member'])){
+if(!empty($_SESSION['member'])){
     header('Location: mainmenu.php');
             exit;
 }
@@ -48,7 +48,7 @@ if(empty($_SESSION['member'])){
     }
 }
 ?>
-<!-- 試していない、途中 -->
+
 <!DOCTYPE html>
 <html>
 <head>

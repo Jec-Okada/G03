@@ -1,5 +1,5 @@
 <?php
-require_once '../DAO/MemberDAO.php';
+require_once '../UserDAO/MemberDAO.php';
 
 if($_SERVER['REQUEST_METHOD']==='POST'){
     $UserID = $_POST['username']; 
@@ -84,10 +84,11 @@ if($email!==''){
     <div>
         <input type="password" id="password" name="password" />
     </div>
-    <?php foreach($errs as $e) : ?>
+    <?php if(!empty($errs)){?>
+    <?php foreach($errs as $e) : ?> 
     <span style="color:red"><?= $e ?></span>
     <br>
-    <?php endforeach; ?>
+    <?php endforeach; }?>
     <div class="button-group"></div>
     <button action="passchange.php" method="POST" id="sainin" class="btn btn-success" name="touroku">登録</button>
         
