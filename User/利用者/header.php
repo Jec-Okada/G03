@@ -1,4 +1,10 @@
+
+<?php
+require_once './UserDAO/MemberDAO.php';
+
+?>
 <header>
+
     <link href="css/header.css" rel="stylesheet" >
     <link rel="stylesheet" href="bootstrap-5.0.0-dist/css/bootstrap.min.css">
     <script src="bootstrap-5.0.0-dist/js/bootstrap.min.js"></script>
@@ -7,16 +13,24 @@
     </div>
     <div id="link">
 
+    <?php if(session_status() === PHP_SESSION_NONE){
+        session_start();
+    }?>
+     
+     <?php if(!empty($_SESSION['member'])) { 
+         $member = $_SESSION['member']; 
+     }?>
+
+
         <?php if(isset($member)) : ?>
-            <?=$member->membername ?>さん
+            <?=$member->UserID ?>さん
             
             <a href="logout.php">ログアウト</a>
-
-        <?php else: ?>
+           <?php else: ?>
             <form action="login.php" method="GET" style="display: inline;">
                 <input type="submit" class="btn btn-primary " value="ログイン">
             </form>
 
-        <?php endif; ?>
+        <?php  endif;?>
     </div> 
 </header>
