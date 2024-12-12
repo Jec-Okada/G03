@@ -23,7 +23,7 @@
         <div class="notice-box">
             <h4 style="margin-bottom: 10px;">お知らせ</h4>
     <?php
-        require_once '../DAO/DAO.php';
+        require_once './UserDAO/DAO.php';
 
         class Notice{
             public $NContent;
