@@ -1,5 +1,5 @@
 <?php
-require_once '../UserDAO/MemberDAO.php';
+require_once './UserDAO/MemberDAO.php';
 
 if($_SERVER['REQUEST_METHOD']==='POST'){
     $UserID = $_POST['username']; 

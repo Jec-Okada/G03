@@ -11,11 +11,11 @@ public int $CQID;
 
 class CBagDAO
 {
-    public function get_CBag_detail(int $CBagID)
+    public function get_CBag_detail(int $CBagID)// 袋内の店舗表示用
     {
         $dbh = DAO::get_db_connect();
 
-        $sql = "SELECT * FROM CBag where CBagID=:CBagID";
+        $sql = "SELECT Shop FROM ShopInCB where CBagID=:CBagID";
 
         $stmt = $dbh->prepare($sql);
 
@@ -31,7 +31,7 @@ class CBagDAO
     }
     
 
-    public function get_CBag_NameId(int $CBagID)
+    public function get_CBag_NameId(int $CBagID)// 一覧用
     {
         $dbh = DAO::get_db_connect();
 
@@ -48,19 +48,18 @@ class CBagDAO
         return $data;
     }
 
-    public function insert(string $CBagName,string $CBagID,string $CQID)
+    public function insert(string $CBagName)// 袋のみ追加
     {
         $dbh = DAO::get_db_connect();
 
        
 
-            $sql = "INSERT INTO CBag(CBagName,CBagID,CQID) values(:CBagName,:CBagID,:CQID)";
+            $sql = "INSERT INTO CBag(CBagName) values(:CBagName)";
 
             $stmt =$dbh->prepare($sql);
 
             $stmt->bindValue(':CBagName',$CBagName,PDO::PARAM_STR);
-            $stmt->bindValue(':CBagID',$CBagID,PDO::PARAM_INT);
-            $stmt->bindValue(':CQID',$CQID,PDO::PARAM_STR);
+           
             
             $stmt->execute();
 

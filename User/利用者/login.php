@@ -1,5 +1,5 @@
 <?php
-    require_once '../UserDAO/MemberDAO.php';
+    require_once './UserDAO/MemberDAO.php';
 
     $username = '';
     $errs = [];
