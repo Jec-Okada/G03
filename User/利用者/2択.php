@@ -5,7 +5,7 @@ session_start();
 require_once './help/DAO.php';
 
 if (!isset($_SESSION['current_question_id'])) {
-  $_SESSION['current_question_id'] = DAO::getFirstQuestionId();
+    $_SESSION['current_question_id'] = intval(DAO::getFirstQuestionId());
 }
 
 $current_question_id = $_SESSION['current_question_id'];
@@ -44,20 +44,20 @@ if ($answer) {
 if ($next_question_text == null) {
     session_unset();
     session_destroy();
-    header("Location: 2択【仮】.php");
+    header("Location: 2択.php");
     exit();
 }
 ?>
 <!DOCTYPE html>
 <html lang="ja">
-<head>
+<header>
     <?php include "header.php"; ?>
     <meta charset="UTF-8">
     <title>質問ページ</title>
     <link href="css/2choice.css" rel="stylesheet">
     <link rel="stylesheet" href="../bootstrap-5.0.0-dist/css/bootstrap.min.css">
     <script src="../bootstrap-5.0.0-dist/js/bootstrap.min.js"></script>
-</head>
+</header>
 <body>
     <div class="game-container">
         <!-- 背景画像 -->
