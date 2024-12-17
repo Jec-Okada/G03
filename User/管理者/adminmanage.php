@@ -77,29 +77,28 @@
     <div class="table-responsive text-nowrap">
     <table border="1" class="table table-bordered table-hover">
         <button class="search" type="button">検索</button>
-        <tr class="table-info">
-            <th>会員ID</th>
-            <th>ユーザーID</th>
-            <th>メールアドレス</th>
-           
-        </tr>
-        <tr>
-            <td class="">1</td>
-            <td>اوكادا هاياتو</td>
-            <td>23jn03xx@jec.ac.jp</td>
-        </tr>
-        <tr >
-            <td class="">2</td>
-            <td>もとなり侍</td>  
-            <td>23jn03xx@jec.ac.jp</td>
-        </tr>
+        <?php
+        require_once './AdminDAO/DAO.php';
 
-        <tr>
-            <td class="">3</td>
-            <td>イシイモ・トナリ</td>
-            <td>23jn03xx@jec.ac.jp</td>
-        </tr>
-  
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT AID,AName,email FROM AdminUser";
+        $stmt = $dbh->query($sql);
+        
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        if (count($results) > 0) {
+            foreach ($results as $row) {
+                echo "<tr>\n";
+                echo "<td>" . htmlspecialchars($row['AID'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "<td>" . htmlspecialchars($row['AName'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "<td>" . htmlspecialchars($row['email'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "</tr>\n";
+            }
+        } else {
+            echo "<td>データが見つかりませんでした。</td>\n";
+        }
+        echo "</td>\n";
+        ?>
     </table>    
     <button onclick="location.href='AdminRegi.php'"id="touroku"type="button">管理者登録</button>
     <button onclick="location.href='adminmenu.php'" type="button">戻る</button>

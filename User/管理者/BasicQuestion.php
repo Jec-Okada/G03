@@ -78,44 +78,34 @@
 <table border="1" class="table table-bordered">
     <input type=”text” id="search" placeholder="検索" >
     <button class="search" type="button">検索</button>
-    <tr class="table-info">
-        <th>質問ID</th>
-        <th>質問内容</th>
-        <th>Yes時の質問ID</th>
-        <th>No時の質問ID</th>
-        <th>前の質問ID</th>
-       
-    </tr>
-    <tr>
-        <td><a id="detail" href="BasicQuestionChange.php">5(リンクになる予定)</a></td>
-        <td>麺食べたいの？</td>
-        <td>1</td>
-        <td>10</td>
-        <td>1</td>
-    </tr>
-    <tr >
-        <td>2</td>
-        <td>もちろん濃い味が好きだよね？</td>  
-        <td>2</td>
-        <td>11</td>
-        <td>7</td>
-    </tr>
+    <?php
+        require_once './AdminDAO/DAO.php';
 
-    <tr>
-        <td>3</td>
-        <td>コース料理なんて言わないよね？</td>
-        <td>3</td>
-        <td>12</td>
-        <td>22</td>
-    </tr>
-    <tr>
-        <td>4</td>
-        <td>アジアの気分？</td>
-        <td>4</td>
-        <td>13</td>
-        <td>21</td>
-    </tr>
-
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT * FROM BesicQuestion";
+        $stmt = $dbh->query($sql);
+        
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        if (count($results) > 0) {
+            foreach ($results as $row) {
+                echo "<tr>\n";
+                echo "<td>" . (is_null($row['BQID']) ? "" : htmlspecialchars($row['BQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                echo "<td>" . (is_null($row['BQuestion']) ? "" : htmlspecialchars($row['BQuestion'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                echo "<td>" . (is_null($row['YQID']) ? "" : htmlspecialchars($row['YQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                echo "<td>" . (is_null($row['NQID']) ? "" : htmlspecialchars($row['NQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                echo "<td>" . (is_null($row['RQID']) ? "" : htmlspecialchars($row['RQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                echo "<td>" . (is_null($row['YCID']) ? "" : htmlspecialchars($row['YCID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                echo "<td>" . (is_null($row['NCID']) ? "" : htmlspecialchars($row['NCID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                echo "</tr>\n";
+            }
+        } else {
+            echo "<tr><td colspan='7'>データが見つかりませんでした。</td></tr>\n";
+        }
+            echo "</td>\n";
+            echo "</tbody>\n";
+            echo "</table>\n"; // テーブル終了
+        ?>
 </table>    
 
 <button onclick="location.href='BasicQuestionAdd.php'" type="button">追加画面へ</button>
