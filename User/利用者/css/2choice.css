@@ -1,52 +1,92 @@
-/* ゲーム全体のレイアウト */
-.game-container {
-  position: relative;
-  width: 100%;
-  height: 100vh; /* ビューポート全体を使用 */
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
+/* 背景画像 */
 .background-image {
-  width: 90%;
-  height: 100%;
-  object-fit: cover; /* 画像がコンテナ全体を覆うように */
   position: absolute;
-  z-index: 1; /* 背景に配置 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;  /* 画像がボタンの下に来るようにする */
 }
 
+/* ドラクエ風のメッセージボックス */
 .message-box {
-  background-color: rgba(0, 0, 0, 0.815); /* 半透明な黒背景 */
-  color: white;
-  font-size: 24px;
-  font-family: 'Courier New', monospace; /* ドラクエ風のフォント */
-  border: 5px solid white; /* 金色の枠線 */
-  padding: 30px;
-  width: 50%;
-  text-align: center;
-  position: relative;
-  z-index: 2; /* メッセージボックスが画像の上に表示される */
+  position:absolute;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.7); /* 半透明の背景 */
+  padding: 20px;
   border-radius: 10px;
+  width: 100%;
+  margin: 0 auto;
+  top: 50%;
+  transform: translateY(-50%);
+
 }
 
-/* 質問表示のアニメーション */
+/* 質問文 */
 .question-container {
-  margin-bottom: 20px;
+  color: white;
+  font-size: 2.5rem;/*質問の文字大きさ変更*/
+  text-align: center;
 }
 
 .question {
-  margin: 0;
-  padding: 0;
-  font-weight: bold;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 0;
-  animation: typewriter 3s steps(30) forwards;
+  white-space: nowrap; /* テキストが改行されないようにする */
+  overflow: hidden; /* はみ出した部分を隠す */
+  width: 0; /* 初期状態で幅を0にする */
+  display: inline-block;
+  animation: typewriter 3s steps(30) forwards; /* タイプライターアニメーション */
+}
+/* 回答ボタン */
+.answer-container {
+  text-align: center;
 }
 
-/* 質問が一文字ずつ表示されるアニメーション */
+/* ボタンの基本スタイル */
+.answer-button {
+  background-color: #4CAF50; /* ボタンの背景色 */
+  color: white; /* ボタンの文字色 */
+  border: none; /* ボーダーをなしに */
+  padding: 15px 25px; /* パディング */
+  text-align: center; /* テキストを中央に */
+  text-decoration: none; /* テキストの下線をなしに */
+  display: inline-block; /* インラインブロック表示 */
+  font-size: 35px; /* フォントサイズ */
+  margin: 10px; /* マージン */
+  cursor: pointer; /* カーソルをポインタに */
+  position: relative; /* 三角形を表示するための位置設定 */
+  border-radius: 5px; /* ボタンの角を丸く */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* ホバー時のトランジション */
+}
+
+/* ホバー時に色を変更 */
+.answer-button:hover {
+  background-color: #45a049; /* ホバー時の色 */
+  transform: translateX(5px); /* 少し右に動かす */
+}
+
+/* ボタンの左側に三角形を追加 */
+.answer-button::before {
+  content: ""; /* 三角形を生成 */
+  position: absolute;
+  left: 10px; /* ボタンの左端からの距離 */
+  top: 50%; /* ボタンの中央に配置 */
+  transform: translateY(-50%); /* 垂直方向に中央に配置 */
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent transparent white; /* 右向きの三角形 */
+}
+div#allpage{width:1024px;}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%); /* 初期位置を左外に設定 */
+    opacity: 0; /* 初期の透明度を0 */
+  }
+  to {
+    transform: translateX(0); /* 最終位置を元の位置に設定 */
+    opacity: 1; /* 透明度を完全に表示 */
+  }
+}
 @keyframes typewriter {
   from {
     width: 0;
@@ -54,52 +94,4 @@
   to {
     width: 100%;
   }
-}
-
-/* 答えのリンクスタイル */
-.answer-container {
-  text-align: center; /* ボタンを中央に配置 */
-  margin-top: 20px;
-}
-
-.answer-link, .answern-link {
-  color: white; /* 金色 */
-  text-decoration: none;
-  font-size: 30px; /* 数字を大きく */
-  font-weight: bold;
-  position: relative;
-  padding: 12px 24px; /* ボタンの内側の余白を調整 */
-  border: 3px solid white; /* 金色の枠線 */
-  border-radius: 5px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  display: inline-block; /* 横並び */
-  margin: 0 20px; /* ボタン間のスペースを確保 */
-  min-width: 100px; /* 最小幅を設定してボタンがつぶれないようにする */
-}
-
-/* ホバー時のスタイル */
-.answer-link:hover, .answern-link:hover {
-  background-color: rgba(8, 84, 226, 0.829);
-  color: white; /* ホバー時の文字色 */
-}
-
-/* 三角形カーソルを作成 */
-.answer-link::before, .answern-link::before {
-  content: '▶'; /* ドラクエ風の選択三角形 */
-  font-size: 30px; /* 三角形のサイズを調整 */
-  position: absolute;
-  left: -40px;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-/* ホバー時に三角形が表示される */
-.answer-link:hover::before, .answern-link:hover::before {
-  opacity: 1;
-}
-
-body {
-  overflow: hidden;
 }
