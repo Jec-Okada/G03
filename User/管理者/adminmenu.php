@@ -1,3 +1,12 @@
+<?php
+require_once './AdminDAO/AdminDAO.php';
+if(session_status() === PHP_SESSION_NONE){
+        session_start();
+    }
+if(!empty($_SESSION['admin'])) { 
+         $admin = $_SESSION['admin']; 
+       } ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,9 +18,16 @@
 </head>
 <body>
     <!--管理者の画面遷移メニューです、遷移先のphpがまだほとんど未完成-->
-    
+    <!-- 終わったけどコミット&プッシュしてない -->
 
     <h1>管理メニュー</h1>
+     <?php if(isset($admin)) : ?>
+            <?=$admin->AName ?>さん
+            
+            <a href="logout.php">ログアウト</a>
+            <?php else: ?>
+
+                <?php  endif;?>
     <div style="border:solid 1px; "></div>
 
     <div class="form-horizontal" >
@@ -32,7 +48,7 @@
         
     </div>
     
+
+       
 </body>
 </html>
-<!-- Mok完成 -->
- <!--やったね！-->>

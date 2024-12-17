@@ -8,13 +8,13 @@ public string $AName;
 public string $Pass;
 public string $email;
 }
-
+//終わったけどコミット&プッシュしてない
 class AdminDAO{
-    public function get_member(string $AName, string $Pass){
+    public function get_admin(string $AName, string $Pass){
 
         $dbh = DAO::get_db_connect();
 
-        $sql = "SELECT AName,Pass FROM admin WHERE AName = :AName";
+        $sql = "SELECT AName,Pass FROM AdminUser WHERE AName = :AName";
 
         $stmt = $dbh->prepare($sql);
        
@@ -23,31 +23,31 @@ class AdminDAO{
 
         $stmt->execute();
 
-        $member = $stmt->fetchObject('Admin');
+        $admin = $stmt->fetchObject('Admin');
         
 
-        if($member !== false){
-            if(password_verify($Pass, $member->Pass)){
-                return $member;
+        if($admin !== false){
+            if(password_verify($Pass, $admin->Pass)){
+                return $admin;
             }
         }
         return false;
     }
-    ///<!-- 試していない、途中 -->
-    public function insert(Admin $member){
+   
+    public function insert(Admin $admin){
         
         $dbh = DAO::get_db_connect();
 
-        $sql = "INSERT INTO admin(AName,Pass,Email)VALUES(:AName,:Pass,:email)";
+        $sql = "INSERT INTO AdminUser(AName,Pass,Email)VALUES(:AName,:Pass,:email)";
 
         $stmt = $dbh->prepare($sql);
 
-        $Pass = password_hash($member->Pass, PASSWORD_DEFAULT);
+        $Pass = password_hash($admin->Pass, PASSWORD_DEFAULT);
         
         
-        $stmt->bindValue(':AName',$member->AName,PDO::PARAM_STR);
+        $stmt->bindValue(':AName',$admin->AName,PDO::PARAM_STR);
         $stmt->bindValue(':Pass',$Pass,PDO::PARAM_STR);
-        $stmt->bindValue(':email',$member->email,PDO::PARAM_STR);
+        $stmt->bindValue(':email',$admin->email,PDO::PARAM_STR);
 
         $stmt->execute();
 
@@ -57,7 +57,7 @@ class AdminDAO{
     public function email_exists(string $email){
         $dbh = DAO::get_db_connect();
 
-        $sql = "SELECT * FROM admin WHERE Email = :email";
+        $sql = "SELECT * FROM AdminUser WHERE email = :email";
 
         $stmt = $dbh->prepare($sql);
 
@@ -73,7 +73,7 @@ class AdminDAO{
     }
     public function password_change(string $email,string $Pass){
         $dbh = DAO::get_db_connect();
-        $sql = 'UPDATE admin set Pass = :Pass WHERE Email = :email';
+        $sql = 'UPDATE AdminUser set Pass = :Pass WHERE Email = :email';
         $stmt = $dbh->prepare($sql); 
         $Pass = password_hash($Pass, PASSWORD_DEFAULT);
         $stmt->bindValue(':email',$email,PDO::PARAM_STR);

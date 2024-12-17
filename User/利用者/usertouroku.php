@@ -90,7 +90,7 @@ if($email!==''){
     <br>
     <?php endforeach; }?>
     <div class="button-group"></div>
-    <button action="passchange.php" method="POST" id="sainin" class="btn btn-success" name="touroku">登録</button>
+    <button action="usertouroku.php" method="POST" id="sainin" class="btn btn-success" name="touroku">登録</button>
         
     </div>
     
