@@ -1,7 +1,8 @@
 <?php
     require_once './AdminDAO/NoticeDAO.php';
-
+    $errs=[];
     $NContent='';
+    
     if($_SERVER['REQUEST_METHOD']==='POST'){
         $NContent = $_POST['NContent'];
 
@@ -10,8 +11,8 @@
     }
 
     if(empty($errs)){
-    $Notice= new NoticeDAO();
-    $notice = $NoticeDAO->notice_add($NContent);
+    $Notice = new NoticeDAO();
+    $notice = $Notice->notice_add($NContent);
 
     if($notice !== false){
     echo '<script type="text/javascript">';
@@ -44,7 +45,8 @@ else{
      <link href="css/notice.css" rel="stylesheet">
 </head>
 <body>
-<form action="notice.php" method="POST">
+
+
     <div class="navbar navbar-expand-xxl navbar-dark bg-success">
         <div class="container-fluid ">
             <a class="navbar-brand" href="#">メニュー</a>
@@ -107,21 +109,26 @@ else{
     
 
     <!--お知らせ内容の出力とcssが未完成-->
-   
+    <form action="" method="POST">
+
     <link rel="stylesheet" href="../bootstrap-5.0.0-dist/css/bootstrap.min.css">
     <h1>お知らせ管理画面</h1>
    
     <div style="border:solid 1px; "></div>
-    <div class="new">
-        <textarea id="text" name="addnotice" rows="10" cols="50"></textarea>
- 
-   
+   <div class="new">
     
-   <button action="notice.php" method="POST" class="addbtn" type="button" >追加</button>
+     
+    <?php foreach($errs as $e) : ?>
+    <span style="color:red"><?= $e ?></span>
+    <br>
+    <?php endforeach; ?><textarea id="text" name="NContent" rows="10" cols="50"></textarea>
+    
+   <button action="notice.php" method="POST" class="addbtn">追加</button>
+
 </div>
-  
+ 
  <div class="a">
-    <div class="container"  >
+    <div class="container">
         <div  class="table-responsive text-nowrap ">
             <table  border="1" class="table table-bordered" style="padding-left: 5px">
             <tr class="table-info" >
