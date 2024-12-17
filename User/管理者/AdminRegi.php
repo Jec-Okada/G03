@@ -2,7 +2,7 @@
 require_once './AdminDAO/AdminDAO.php';
 
 if($_SERVER['REQUEST_METHOD']==='POST'){
-    $UserID = $_POST['username']; 
+    $AName = $_POST['Aname']; 
     $password = $_POST['password']; 
     $email = $_POST['email'];
     
@@ -10,12 +10,12 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
 
     $adminDAO = new AdminDAO();
 
-if($UserID == ''){
-        $errs['UserID']='ユーザー名を入力してください。';
+if($AName == ''){
+        $errs['AName']='管理者名を入力してください。';
     }
 
  
-    
+    //終わったけどコミット&プッシュしてない
 if($email!==''){
     if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
         $errs['email'] = 'メールアドレスの形式が正しくありません。';
@@ -35,18 +35,18 @@ if($email!==''){
 
    
     if(empty($errs)){
-    $admin = new admins();
+    $admin = new Admin();
 
-    $admin->UserID = $UserID;
+    $admin->AName = $AName;
     $admin->Pass = $password; 
     $admin->email = $email;
     
     $adminDAO-> insert($admin);
 
     echo '<script type="text/javascript">';
-    echo 'var userResponse = confirm("登録に成功しました！！！！！！");';
-   echo 'if (userResponse == true) {';
-   echo 'window.location.href = "Adminologin.php";';
+    echo 'var AResponse = confirm("登録に成功しました！！！！！！");';
+   echo 'if (AResponse == true) {';
+   echo 'window.location.href = "Adminlogin.php";';
    echo '}';
    echo '</script>';
    
@@ -133,14 +133,14 @@ if($email!==''){
     </div>
 
     
-
+    <form action="AdminRegi.php" method="POST">
     <h1>新規管理者登録</h1>
     <div class="divider"></div>
-    <label for="username">管理者名:</label>
+    <label for="Aname">管理者名:</label>
     <div>
-        <input type="text" id="username" name="username" />
+        <input type="text" id="Aname" name="Aname" />
     </div>
-    <label for="username">メールアドレス:</label>
+    <label for="Aname">メールアドレス:</label>
     <div>
         <input type="text" id="email" name="email" />
     </div>
@@ -149,15 +149,14 @@ if($email!==''){
         <input type="password" id="password" name="password" />
     </div>
     <div class="button-group"></div>
-        <button id="touroku" class="btn btn-success">登録</button>
+        <button action="AdminRegi.php" method="POST"  id="touroku" class="btn btn-success">登録</button>
     </div>
-    <script>
-        function butotnClick(){
-            alert('登録完了しました!!!');
-
-        }
-        
-        let button = document.getElementById('touroku');
-        button.addEventListener('click', butotnClick);
-    </script>
+    
+    <div class="err">
+    <?php if(!empty($errs)){?>
+    <?php foreach($errs as $e) : ?> <br>
+    <span style="color:red"><?= $e ?></span>
+    <br>
+    <?php endforeach; }?>
+    </div>
     <!-- Mok完成 -->

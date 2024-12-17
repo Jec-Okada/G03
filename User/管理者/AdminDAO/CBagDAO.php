@@ -6,7 +6,7 @@ class CBag
 public int $CBagID;
 public string $CBagName;
 public int $CQID;
-
+public String $Shop;
 }
 
 class CBagDAO

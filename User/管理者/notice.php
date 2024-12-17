@@ -1,3 +1,37 @@
+<?php
+    require_once './AdminDAO/NoticeDAO.php';
+
+    $NContent='';
+    if($_SERVER['REQUEST_METHOD']==='POST'){
+        $NContent = $_POST['NContent'];
+
+    if($NContent === ''){
+        $errs[] = 'お知らせ内容を入力してください。';
+    }
+
+    if(empty($errs)){
+    $Notice= new NoticeDAO();
+    $notice = $NoticeDAO->notice_add($NContent);
+
+    if($notice !== false){
+    echo '<script type="text/javascript">';
+    echo 'var userResponse = confirm("追加に成功しました！！！！！！");';
+    echo 'if (userResponse == true) {';
+    echo 'window.location.href = "notice.php";';
+    echo '}';
+    echo '</script>';
+   
+//    追加がまだできていない
+   
+}
+else{
+    $errs[] = '追加に失敗しました。';
+}
+}
+    }
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +44,7 @@
      <link href="css/notice.css" rel="stylesheet">
 </head>
 <body>
+<form action="notice.php" method="POST">
     <div class="navbar navbar-expand-xxl navbar-dark bg-success">
         <div class="container-fluid ">
             <a class="navbar-brand" href="#">メニュー</a>
@@ -75,13 +110,14 @@
    
     <link rel="stylesheet" href="../bootstrap-5.0.0-dist/css/bootstrap.min.css">
     <h1>お知らせ管理画面</h1>
+   
     <div style="border:solid 1px; "></div>
     <div class="new">
         <textarea id="text" name="addnotice" rows="10" cols="50"></textarea>
  
    
     
-   <button class="addbtn" type="button" >追加</button>
+   <button action="notice.php" method="POST" class="addbtn" type="button" >追加</button>
 </div>
   
  <div class="a">

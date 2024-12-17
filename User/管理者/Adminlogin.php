@@ -1,22 +1,23 @@
 <?php
-    require_once '../AdminDAO/AdminDAO.php';
+    require_once './AdminDAO/AdminDAO.php';
 
-    $username = '';
+    $AName = '';
     $errs = [];
 
     session_start();
 // emptyに!をつけるか否かで自動遷移がオンオフされる
-if(!empty($_SESSION[''])){
+//終わったけどコミット&プッシュしてない
+if(!empty($_SESSION['admin'])){
     header('Location: adminmenu.php');
             exit;
 }
 
     if($_SERVER['REQUEST_METHOD']==='POST'){
-        $username = $_POST['username'];
+        $AName = $_POST['AName'];
         $password = $_POST['password'];
 
-        if($username === ''){
-            $errs[] = 'ユーザー名を入力してください。';
+        if($AName === ''){
+            $errs[] = '管理者名を入力してください。';
         }
         if($password === ''){
             $errs[] = 'パスワードを入力してください。';
@@ -24,15 +25,15 @@ if(!empty($_SESSION[''])){
 
         if(empty($errs)){
 
-        $adminDAO = new adminDAO();
-        $admin = $adminDAO->get_admin($username,$password);
+        $adminDAO = new AdminDAO();
+        $admin = $adminDAO->get_admin($AName,$password);
 
         if($admin !== false){
             session_regenerate_id(true);
 
             $_SESSION['admin'] = $admin;
             echo '<script type="text/javascript">';
-            echo 'var userResponse = confirm("サインインに成功しました！！！！！！");';
+            echo 'var userResponse = confirm("ログインに成功しました！！！！！！");';
             echo 'if (userResponse == true) {';
             echo 'window.location.href = "adminmenu.php";';
             echo '}';
@@ -56,30 +57,27 @@ if(!empty($_SESSION[''])){
     <link rel="stylesheet" type="text/css" href="css/Bootstrap.css">
 </head>
 <body>
+<form action="Adminlogin.php" method="POST">
     <h1>管理者ログイン</h1>
     
     <div class="divider"></div>
-    <label for="username">管理者名:</label>
+    <label for="AName">管理者名:</label>
     <div>
-        <input type="text" id="username" name="username" />
+        <input type="text" id="AName" name="AName" />
     </div>
     <label for="password">パスワード:</label>
     <div>
         <input type="password" id="password" name="password" />
     </div>
+    <?php foreach($errs as $e) : ?>
+    <span style="color:red"><?= $e ?></span>
+    <br>
+    <?php endforeach; ?>
     <div class="button-group"></div>
-        <button id="login" class="btn btn-success">ログイン</button>
+        <button action="Adminlogin.php" method="POST" id="login" class="btn btn-success">ログイン</button>
     </div>
     <div class="divider"></div>
-    <script>
-        function butotnClick(){
-            alert('ログイン完了しました！');
-            window.location.href = 'adminmenu.php';
-        }
-        
-        let button = document.getElementById('login');
-        button.addEventListener('click', butotnClick);
-    </script>
+    
 </body>
 </html>
    
