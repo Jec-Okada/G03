@@ -75,7 +75,8 @@
     <div style="border:solid 1px; "></div>
     <div class="container">
     <div class="table-responsive text-nowrap">
-    <table border="1" class="table table-bordered table-hover">
+    <table border="1" class="table table-bordered">
+    <input type=”text” id="search" placeholder="検索" >
         <button class="search" type="button">検索</button>
         <?php
         require_once './AdminDAO/DAO.php';
@@ -86,6 +87,12 @@
         
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
+        echo "<tr>\n";
+        echo "<td>管理者ID</td>\n";
+        echo "<td>管理者名</td>\n";
+        echo "<td>メールアドレス</td>\n";
+        echo "<tr>\n";
+
         if (count($results) > 0) {
             foreach ($results as $row) {
                 echo "<tr>\n";

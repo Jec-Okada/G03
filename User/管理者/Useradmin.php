@@ -89,7 +89,12 @@
         $stmt = $dbh->query($sql);
         
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
+        echo "<tr>\n";
+        echo "<td>会員ID</td>\n";
+        echo "<td>ユーザー名</td>\n";
+        echo "<td>メールアドレス</td>\n";
+        echo "<tr>\n";
         if (count($results) > 0) {
             foreach ($results as $row) {
                 echo "<tr>\n";

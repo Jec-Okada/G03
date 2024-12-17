@@ -131,20 +131,25 @@ else{
     <div class="container">
         <div  class="table-responsive text-nowrap ">
             <table  border="1" class="table table-bordered" style="padding-left: 5px">
-            <tr class="table-info" >
-            <th style="text-align: center;">お知らせ一覧</th>
-                </tr>
-                <tr>
-                    <td>
-                        お知らせ内容
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        新規お知らせ！
-                    </td>
-                </tr>
-                
+                <?php
+                 $Notice = new NoticeDAO();
+                $results=$Notice->notice_detail();
+        echo "<tr>\n";
+        echo "<td>お知らせ内容</td>\n";
+        echo "<td>追加日時</td>\n";
+        echo "<tr>\n";
+        if (count($results) > 0) {
+            foreach ($results as $row) {
+                echo "<tr>\n";
+                echo "<td>" . (is_null($row['NContent']) ? "" : htmlspecialchars($row['NContent'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                echo "<td>" . (is_null($row['AddDate']) ? "" : htmlspecialchars($row['AddDate'], ENT_QUOTES, 'UTF-8')). "</td>\n";
+                echo "</tr>\n";
+            }
+        } else {
+            echo "<td>データが見つかりませんでした。</td>\n";
+        }
+        echo "</td>\n";
+        ?>
                 </table>
         </div>
     </div>
