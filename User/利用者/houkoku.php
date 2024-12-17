@@ -58,6 +58,13 @@
 
             break; 
         case 'request': 
+          $sql = "INSERT INTO Report (Rnaiyou, MemberID, judge) VALUES (:Rnaiyou, :MemberID,:judge )";
+ 
+          $stmt = $dbh->prepare($sql);
+ 
+          $params = array(':Rnaiyou' => $Rnaiyou, ':MemberID' => '1' , ':judge' => 'リクエスト') ;
+ 
+          $stmt->execute($params);
             
             break; 
         }
