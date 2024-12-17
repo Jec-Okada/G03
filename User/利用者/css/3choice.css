@@ -10,23 +10,32 @@
 
 /* ドラクエ風のメッセージボックス */
 .message-box {
-  position: relative;
+  position:absolute;
   z-index: 1;
   background: rgba(0, 0, 0, 0.7); /* 半透明の背景 */
   padding: 20px;
   border-radius: 10px;
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
-  top: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+
 }
 
 /* 質問文 */
 .question-container {
   color: white;
-  font-size: 1.5em;
-  margin-bottom: 20px;
+  font-size: 2.5rem;
+  text-align: center;
 }
 
+.question {
+  white-space: nowrap; /* テキストが改行されないようにする */
+  overflow: hidden; /* はみ出した部分を隠す */
+  width: 0; /* 初期状態で幅を0にする */
+  display: inline-block;
+  animation: typewriter 3s steps(30) forwards; /* タイプライターアニメーション */
+}
 /* 回答ボタン */
 .answer-container {
   text-align: center;
@@ -37,11 +46,11 @@
   background-color: #4CAF50; /* ボタンの背景色 */
   color: white; /* ボタンの文字色 */
   border: none; /* ボーダーをなしに */
-  padding: 10px 20px; /* パディング */
+  padding: 15px 25px; /* パディング */
   text-align: center; /* テキストを中央に */
   text-decoration: none; /* テキストの下線をなしに */
   display: inline-block; /* インラインブロック表示 */
-  font-size: 16px; /* フォントサイズ */
+  font-size: 35px; /* フォントサイズ */
   margin: 10px; /* マージン */
   cursor: pointer; /* カーソルをポインタに */
   position: relative; /* 三角形を表示するための位置設定 */
@@ -65,4 +74,24 @@
   border-width: 6px;
   border-style: solid;
   border-color: transparent transparent transparent white; /* 右向きの三角形 */
+}
+div#allpage{width:1024px;}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%); /* 初期位置を左外に設定 */
+    opacity: 0; /* 初期の透明度を0 */
+  }
+  to {
+    transform: translateX(0); /* 最終位置を元の位置に設定 */
+    opacity: 1; /* 透明度を完全に表示 */
+  }
+}
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
 }

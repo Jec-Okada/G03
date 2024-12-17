@@ -4,19 +4,23 @@ if (isset($_GET['reset'])) {
   session_unset();
   session_destroy();
   session_start();
+  $_SESSION['current_question_id'] = 11; 
+  $_SESSION['reset'] = true;
+  header("Location: 3択.php"); 
+  exit();
+}
+if (isset($_SESSION['reset']) && $_SESSION['reset'] === true) {
+  unset($_SESSION['reset']); // リセットフラグを削除
+  // 初期化された状態でページを表示
 }
 ob_start();
 // DAOを読み込む
-require_once './help/DAO3.php';
+require_once './UserDAO/DAO3.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-if (!isset($_SESSION['current_question_id'])) {
-  $_SESSION['current_question_id'] = DAO::getFirstQuestionId();
-  if (!$_SESSION['current_question_id']) {
-      $_SESSION['current_question_id'] = 11; // デフォルト値として11を設定
-  }
+if(!$_SESSION['current_question_id']=11){
+  $_SESSION['current_question_id'] = 11; 
 }
 
 // デバッグ用: 初期化時の質問IDを確認
@@ -62,6 +66,7 @@ if ($answer !== null) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </header>
 <body>
+<div id="allpage">
   <div class="game-container">
     <!-- 背景画像 -->
     <img src="img/冒険.jpeg" alt="背景画像" class="background-image" width="200" height="600">
@@ -69,7 +74,7 @@ if ($answer !== null) {
     <!-- ドラクエ風のメッセージボックス -->
     <div class="message-box">
       <div class="question-container">
-        <p id="question-text" class="question"><?php echo htmlspecialchars($question_text, ENT_QUOTES, 'UTF-8'); ?></p>
+        <p id="question-text" class="question"></p>
       </div>
       <div class="answer-container">
         <!-- フォームタグでボタンを囲む -->
@@ -80,5 +85,30 @@ if ($answer !== null) {
         </form>
       </div>
     </div>
-  </div>       
+  </div>   
+  <script>
+
+document.addEventListener("DOMContentLoaded", function() {
+    const questionText = "<?php echo addslashes($question_text); ?>"; // PHPで取得した質問
+    const questionElement = document.getElementById("question-text");
+    displayQuestion(questionText, questionElement);
+});
+  function displayQuestion(text, element, delay = 270) {
+  let index = 0;
+
+  function typeCharacter() {
+    if (index < text.length) {
+      element.textContent += text.charAt(index); // 文字を追加
+      index++;
+      setTimeout(typeCharacter, delay); // 次の文字を遅延させて表示
+    }
+  }
+
+  typeCharacter(); // タイピング開始
+  }  
+  window.addEventListener("popstate", function (event) {
+    // 戻る操作を検知した場合、リセットURLにリダイレクト
+    window.location.href = "3択.php?reset=true";
+});
+</script>
 </body>

@@ -21,4 +21,5 @@ header {
 }
 #link button, #link a {
     margin-left: 10px;
+    float:right;
 }
