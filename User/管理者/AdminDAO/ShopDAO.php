@@ -39,22 +39,20 @@ class ShopDAO
     }
     
 
-    public function get_Shop_NameId(int $ShopID)// 店舗一覧用
-    
+    public function get_Shop_NameId()// 店舗一覧用
     {
         $dbh = DAO::get_db_connect();
 
         $sql = "SELECT ShopID,ShopName FROM Shop";
 
-        $stmt = $dbh->prepare($sql);
+        $stmt = $dbh->query($sql);
+
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $stmt->execute();
 
-        $data = [];
-        while($row = $stmt->fetchObject('Shop')){
-            $data[] = $row;
-        }
-        return $data;
+        return $results;
+
     }
 
     public function insert(string $ShopName,string $MapPoint,string $ShopAddress,

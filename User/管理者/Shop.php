@@ -80,20 +80,18 @@
     <table border="1" class="table table-bordered table-hover">
    
     <?php
-        require_once './AdminDAO/DAO.php';
+        require_once './AdminDAO/ShopDAO.php';
 
-        $dbh = DAO::get_db_connect();
-        $sql = "SELECT ShopID,ShopName,ShopAddress FROM Shop";
-        $stmt = $dbh->query($sql);
+        $Shop = new ShopDAO();
+        $results=$Shop->get_Shop_NameId();
         
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         if (count($results) > 0) {
             foreach ($results as $row) {
                 echo "<tr>\n";
                 echo "<td>" . htmlspecialchars($row['ShopID'], ENT_QUOTES, 'UTF-8') . "</td>\n";
                 echo "<td>" . htmlspecialchars($row['ShopName'], ENT_QUOTES, 'UTF-8') . "</td>\n";
-                echo "<td>" . htmlspecialchars($row['ShopAddress'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "<td>袋名</td>\n";
                 echo "</tr>\n";
             }
         } else {
