@@ -11,14 +11,13 @@ class Notice{
 
         public function notice_detail()//お知らせ一覧
         {
-            $dbh = DAO::get_db_connect();
-           
-            $sql = 'SELECT NContent FROM Notice'; 
-            
-            $stmt = $dbh->prepare($sql);
-        
-            // クエリを実行
-            $stmt->execute();
+          
+          $dbh = DAO::get_db_connect();
+          $sql = "SELECT NContent,AddDate FROM Notice";
+          $stmt = $dbh->query($sql);
+          
+          $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          return $results;
             
               
              }
