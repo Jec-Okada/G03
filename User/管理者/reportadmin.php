@@ -82,23 +82,28 @@
             <th>メールアドレス</th>
            
         </tr>
-        <tr>
-            <td>日電太郎</td>
-            <td>ああああああああ</td>
-            <td>23jn03xx@jec.ac.jp</td>
-        </tr>
-        <tr >
-            <td>日電太郎</td>
-            <td>いいいいいいいい</td>  
-            <td>23jn03xx@jec.ac.jp</td>
-        </tr>
+        <?php
+        require_once './AdminDAO/DAO.php';
 
-        <tr>
-            <td>日電太郎</td>
-            <td>うううううううううう</td>
-            <td>23jn03xx@jec.ac.jp</td>
-        </tr>
-  
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT MemberID,Rnaiyou,Rnaiyou FROM Members,";
+        $stmt = $dbh->query($sql);
+        
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        if (count($results) > 0) {
+            foreach ($results as $row) {
+                echo "<tr>\n";
+                echo "<td>" . htmlspecialchars($row['MemberID'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "<td>" . htmlspecialchars($row['Rnaiyou'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "<td>" . htmlspecialchars($row['email'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "</tr>\n";
+            }
+        } else {
+            echo "<td>データが見つかりませんでした。</td>\n";
+        }
+        echo "</td>\n";
+        ?>
     </table> 
     <button onclick="location.href='adminmenu.php'" type="button">戻る</button></a>
 </div>

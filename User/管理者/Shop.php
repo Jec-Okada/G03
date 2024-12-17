@@ -77,36 +77,36 @@
     <div style="border:solid 1px; "></div>
     <div class="container">
     <div class="table-responsive text-nowrap">
-        <table border="1" class="table table-bordered">
-            <tr class="table-info">
-                <th>店舗ID</th>
-                <th>店舗名</th>
-                <th>袋名</th>
-               
-            </tr>
-            <tr>
-                <td><a id="detail" href="ShopDetail.php">1(リンクになる予定)</a></td>
-                <td>一蘭</td>
-                <td>ラーメン</td>
-            </tr>
-            <tr >
-                <td></td>
-                <td></td>  
-                <td></td>
-            </tr>
-    
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-      </div>
-        </table> 
+    <table border="1" class="table table-bordered table-hover">
+   
+    <?php
+        require_once './AdminDAO/DAO.php';
+
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT ShopID,ShopName,ShopAddress FROM Shop";
+        $stmt = $dbh->query($sql);
+        
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        if (count($results) > 0) {
+            foreach ($results as $row) {
+                echo "<tr>\n";
+                echo "<td>" . htmlspecialchars($row['ShopID'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "<td>" . htmlspecialchars($row['ShopName'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "<td>" . htmlspecialchars($row['ShopAddress'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "</tr>\n";
+            }
+        } else {
+            echo "<td>データが見つかりませんでした。</td>\n";
+        }
+        echo "</td>\n";
+        ?>
+
         <p><button onclick="location.href='ShopAdd.php'" type="button">店舗追加へ</button>
         
         <p><button onclick="location.href='adminmenu.php'" type="button">戻る</button></p>
     
-       
+        </div>      
 </body>
 </html>
  
