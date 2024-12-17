@@ -24,7 +24,7 @@ class DAO {
         var_dump($row); // 実際に取得した全ての行を出力
     die();
         if ($row) {
-            return $row['BQID'];
+            return intval($row['BQID']);
         }
         return null;
     }
@@ -32,7 +32,7 @@ class DAO {
     public static function getQuestionById($questionId) {
         $sql = "SELECT BQuestion FROM BesicQuestion WHERE BQID = :questionId";
         $stmt = self::get_db_connect()->prepare($sql);
-        $stmt->bindParam(':questionId', $questionId, PDO::PARAM_INT);
+        $stmt->bindValue(':questionId', intval($questionId), PDO::PARAM_INT); // 整数型に変換
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
@@ -41,7 +41,6 @@ class DAO {
         }
         return null;
     }
-
     // 次のベーシック質問IDを取得
     public static function getNextQuestionId($currentQuestionId, $isYesAnswer) {
         $column = $isYesAnswer ? 'YQID' : 'NQID';
