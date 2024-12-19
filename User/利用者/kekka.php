@@ -44,13 +44,14 @@ if ($next_question_text == null) {
 <script src="../bootstrap-5.0.0-dist/js/bootstrap.min.js"></script>
 </head>
 <body>
+
     <?php include "header.php"; ?>
     <link href="css/kekka.css" rel="stylesheet">
     <h1 class="title1">今日の飯はここ！！！！！！</h1>
-    <div style="border:solid 1px; "></div>
-
+    <div style="border:solid 1px; "></div>,
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.5178044727472!2d139.69851694091662!3d35.68887337269901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188dc30b607bb3%3A0x44abefc2e7d993f7!2z5ZKW5Zax5bGL44Oc44Oz44Kw44O8IE5FV29NYW7mlrDlrr_lupc!5e0!3m2!1sja!2sjp!4v1734589629258!5m2!1sja!2sjp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     <div id="coen" >
-      <img src="img/味八.png" alt="a">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.5178044727472!2d139.70121299094617!3d35.6889170555129!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188d2f3b97bfd3%3A0x987f62f270da14df!2z44Oe44Kv44OJ44OK44Or44OJIOaWsOWkp-S5heS_neW6lw!5e0!3m2!1sja!2sjp!4v1734588849324!5m2!1sja!2sjp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
     <a id="taste" href="googleForm.html">美味かったか？</a> 
   <p id="form"><input type="button" name="form" onclick="location.href='houkoku.php'" class="form btn btn-primary" value="報告フォーム" /></p>

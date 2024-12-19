@@ -5,48 +5,55 @@ session_start();
 require_once './UserDAO/DAO.php';
 
 
-$current_question_id = isset($_SESSION['current_question_id']) ? $_SESSION['current_question_id'] : DAO2::getFirstQuestionId();
-$answer = isset($_POST['answer']) ? $_POST['answer'] : null;
+$current_question_id = $_SESSION['current_question_id'] ?? DAO2::getFirstQuestionId();
+$answer = $_POST['answer'] ?? null; // POSTデータから回答を取得
 
-// 回答に基づいて次の質問を決める
+// 次の質問を決定する
 if ($answer === 'yes') {
-    // カテゴリー直下質問（YESの場合）を確認
     $next_category_id = DAO2::getCategoryQuestionId($current_question_id, true);
     if ($next_category_id) {
+        // カテゴリー直下質問がある場合は、その質問のIDを取得
+        $_SESSION['yes_cid'] = $next_category_id;
+        $isCategoryQuestion = true;
         $next_question_text = DAO2::getCategoryQuestionById($next_category_id);
-        $_SESSION['current_question_id'] = $next_category_id;
     } else {
-        // カテゴリー直下質問がない場合、通常の質問に遷移
+        // 通常の次の質問に遷移
+        $_SESSION['yes_cid'] = null;
+        $isCategoryQuestion = false;
         $next_question_id = DAO2::getNextQuestionId($current_question_id, true);
         $next_question_text = DAO2::getQuestionById($next_question_id);
         $_SESSION['current_question_id'] = $next_question_id;
     }
 } elseif ($answer === 'no') {
-    // カテゴリー直下質問（NOの場合）を確認
     $next_category_id = DAO2::getCategoryQuestionId($current_question_id, false);
     if ($next_category_id) {
+        // カテゴリー直下質問がある場合
+        $_SESSION['no_cid'] = $next_category_id;
+        $isCategoryQuestion = true;
         $next_question_text = DAO2::getCategoryQuestionById($next_category_id);
-        $_SESSION['current_question_id'] = $next_category_id;
     } else {
-        // カテゴリー直下質問がない場合、通常の質問に遷移
+        // 通常の次の質問に遷移
+        $_SESSION['no_cid'] = null;
+        $isCategoryQuestion = false;
         $next_question_id = DAO2::getNextQuestionId($current_question_id, false);
         $next_question_text = DAO2::getQuestionById($next_question_id);
         $_SESSION['current_question_id'] = $next_question_id;
     }
 } else {
     // 最初の質問またはエラー処理
+    $isCategoryQuestion = false;
     $next_question_text = DAO2::getQuestionById($current_question_id);
 }
 
-
 // 質問がない場合はセッションをリセット
-if ($next_question_text == null) {
+if (!$next_question_text) {
     session_unset();
     session_destroy();
     header("Location: 2択.php");
     exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <header>
@@ -76,25 +83,10 @@ if ($next_question_text == null) {
             }, 100); // 100msごとに1文字ずつ表示
         });
 
-        function submitAnswer(answer, event) {
-        event.preventDefault(); // ページ遷移を防ぐ
-
-        // フォームの hidden 値を設定
-        document.getElementById('answer').value = answer;
-
-        // YesCID または NoCID をフォームに設定
-        <?php if (isset($_SESSION['yes_cid']) && $_SESSION['yes_cid'] !== null): ?>
-            if (answer === 'yes') {
-                document.getElementById('cid').value = <?php echo $_SESSION['yes_cid']; ?>;
-            }
-        <?php endif; ?>
-
-        <?php if (isset($_SESSION['no_cid']) && $_SESSION['no_cid'] !== null): ?>
-            if (answer === 'no') {
-                document.getElementById('cid').value = <?php echo $_SESSION['no_cid']; ?>;
-            }
-        <?php endif; ?>
-            document.getElementById('answer-form').submit();
+        function submitAnswer(answer) {
+            const form = document.getElementById('answer-form');
+            form.answer.value = answer;
+            form.submit();
         }
     </script>
 </header>
@@ -110,19 +102,14 @@ if ($next_question_text == null) {
             </div>
 
             <div class="answer-container">
-                <form method="POST" action="kekka.php" id="answer-form">
-                    <!-- 「はい」と「いいえ」の選択肢をドラクエ風のボックス内に配置 -->
-                    <div class="answer-box">
-                    <button type="button" class="answer-button" id="yes-button" onclick="submitAnswer('yes', event);">
-                            はい
-                        </button>
-                        <button type="button" class="answer-button" id="no-button" onclick="submitAnswer('no', event);">
-                            いいえ
-                        </button>
-                    </div>
-                    <input type="hidden" name="answer" id="answer">
-                    <input type="hidden" name="cid" id="cid">
-                </form>
+            <form id="answer-form" method="POST" action="<?php echo $isCategoryQuestion ? 'kekka.php' : ''; ?>">
+                <input type="hidden" name="answer" value="">
+                <?php if ($isCategoryQuestion): ?>
+                    <input type="hidden" name="cid" value="<?php echo $answer === 'yes' ? $_SESSION['yes_cid'] : $_SESSION['no_cid']; ?>">
+                <?php endif; ?>
+                <button type="button" class="answer-button" onclick="submitAnswer('yes')">はい</button>
+                <button type="button" class="answer-button" onclick="submitAnswer('no')">いいえ</button>
+            </form>
             </div>
         </div>
     </div>

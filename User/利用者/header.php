@@ -13,9 +13,9 @@ require_once './UserDAO/MemberDAO.php';
     </div>
     <div id="link">
 
-    <?php if(session_status() === PHP_SESSION_NONE){
+    <!-- <?php if(session_status() === PHP_SESSION_NONE){
         session_start();
-    }?>
+    }?> -->
      
      <?php if(!empty($_SESSION['member'])) { 
          $member = $_SESSION['member']; 

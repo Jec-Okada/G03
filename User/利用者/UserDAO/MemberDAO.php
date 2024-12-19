@@ -12,9 +12,9 @@ public string $email;
 class MemberDAO{
     public function get_member(string $UserID, string $Pass){
 
-        $dbh = DAO::get_db_connect();
+        $dbh = DAO2::get_db_connect();
 
-        $sql = "SELECT UserID,Pass FROM Members WHERE UserID = :UserID";
+        $sql = "SELECT * FROM Members WHERE UserID = :UserID";
 
         $stmt = $dbh->prepare($sql);
        
@@ -36,7 +36,7 @@ class MemberDAO{
     ///<!-- 試していない、途中 -->
     public function insert(Members $member){
         
-        $dbh = DAO::get_db_connect();
+        $dbh = DAO2::get_db_connect();
 
         $sql = "INSERT INTO Members(UserID,Pass,Email)VALUES(:UserID,:Pass,:email)";
 
@@ -55,7 +55,7 @@ class MemberDAO{
 
     }
     public function email_exists(string $email){
-        $dbh = DAO::get_db_connect();
+        $dbh = DAO2::get_db_connect();
 
         $sql = "SELECT * FROM Members WHERE Email = :email";
 
@@ -72,7 +72,7 @@ class MemberDAO{
         }
     }
     public function password_change(string $email,string $Pass){
-        $dbh = DAO::get_db_connect();
+        $dbh = DAO2::get_db_connect();
         $sql = 'UPDATE Members set Pass = :Pass WHERE Email = :email';
         $stmt = $dbh->prepare($sql); 
         $Pass = password_hash($Pass, PASSWORD_DEFAULT);
