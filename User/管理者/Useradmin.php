@@ -1,3 +1,6 @@
+<?php
+    
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,8 +75,9 @@
     </div>
     
         
-            
-   
+ <?php
+        require_once './AdminDAO/DAO.php';           
+?>
     <h1 class="title">会員管理画面</h1>
     <div style="border:solid 1px; "></div>
     <div class="container">
@@ -82,7 +86,6 @@
         <input type=”text” id="search" placeholder="検索" >
         <button class="search" type="button">検索</button>
 <?php
-        require_once './AdminDAO/DAO.php';
 
         $dbh = DAO::get_db_connect();
         $sql = "SELECT MemberID,UserID,email FROM Members";

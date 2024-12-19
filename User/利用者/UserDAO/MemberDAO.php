@@ -1,5 +1,5 @@
 <?php
-require_once 'DAO3.php';
+require_once 'DAO.php';
 
 class Members
 {
