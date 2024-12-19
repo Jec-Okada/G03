@@ -1,15 +1,4 @@
-<?php
-  $Rnaiyou = '';
 
-  if($_SERVER['REQUEST_METHOD'] === 'POST'){
-
-    $Rnaiyou = $_POST['requestform'];
-    $judge = false;
-    if($Rnaiyou != ''){
-      $judge = true;
-    }
-  }
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,9 +28,19 @@
     </div>
     </form>
     <?php
-    require_once './UserDAO/DAO.php';
+     $Rnaiyou = '';
+     $judge = false;
+     if($_SERVER['REQUEST_METHOD'] === 'POST'){
+   
+       $Rnaiyou = $_POST['requestform'];
+       if($Rnaiyou != ''){
+         $judge = true;
+       }
+     }
+    require_once './UserDAO/DAO3.php';
     require_once './UserDAO/MemberDAO.php';
     $dbh = DAO::get_db_connect();
+
 
     if ($judge) {
       switch ($_REQUEST['form']) {  
