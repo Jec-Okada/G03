@@ -14,7 +14,7 @@ class MemberDAO{
 
         $dbh = DAO::get_db_connect();
 
-        $sql = "SELECT UserID,Pass FROM Members WHERE UserID = :UserID";
+        $sql = "SELECT * FROM Members WHERE UserID = :UserID";
 
         $stmt = $dbh->prepare($sql);
        

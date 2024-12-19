@@ -12,10 +12,10 @@ require_once './UserDAO/MemberDAO.php';
         <img src="img/オススメイカー画像なし.jpg" alt="a" style="max-height: 60px;">
     </div>
     <div id="link">
-
-    <?php if(session_status() === PHP_SESSION_NONE){
+    <!--ここいらなくね？-->
+    <!-- <?php if(session_status() === PHP_SESSION_NONE){
         session_start();
-    }?>
+    }?> -->
      
      <?php if(!empty($_SESSION['member'])) { 
          $member = $_SESSION['member']; 

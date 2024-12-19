@@ -29,29 +29,35 @@
     </form>
     <?php
      $Rnaiyou = '';
-     $judge = false;
+     $judge1 = false;
      if($_SERVER['REQUEST_METHOD'] === 'POST'){
    
        $Rnaiyou = $_POST['requestform'];
        if($Rnaiyou != ''){
-         $judge = true;
+         $judge1 = true;
        }
      }
+     $judge2=false;
+     if(!empty($_SESSION['member'])) { 
+      $judge2=true;
+      $member = $_SESSION['member']; 
+  }
+      
     require_once './UserDAO/DAO3.php';
     require_once './UserDAO/MemberDAO.php';
-    $dbh = DAO2::get_db_connect();
+    $dbh = DAO::get_db_connect();
 
 
-    if ($judge) {
+    if ($judge1==true && $judge2==true) {
       switch ($_REQUEST['form']) {  
         case 'bug': 
           
           $sql = "INSERT INTO Report (Rnaiyou, MemberID, judge) VALUES (:Rnaiyou, :MemberID,:judge )";
  
           $stmt = $dbh->prepare($sql);
- 
-          $params = array(':Rnaiyou' => $Rnaiyou, ':MemberID' => '1' , ':judge' => 'バグ') ;
- 
+
+          $params = array(':Rnaiyou' => $Rnaiyou, ':MemberID' => $member->MemberID , ':judge' => 'バグ') ;
+          
           $stmt->execute($params);
            
 
@@ -61,16 +67,19 @@
  
           $stmt = $dbh->prepare($sql);
  
-          $params = array(':Rnaiyou' => $Rnaiyou, ':MemberID' => '1' , ':judge' => 'リクエスト') ;
+          $params = array(':Rnaiyou' => $Rnaiyou, ':MemberID' => $member->MemberID , ':judge' => 'リクエスト') ;
  
           $stmt->execute($params);
             
             break; 
         }
      echo "送信完了しました";
-    } else{
+    } else if($judge2){
      echo "内容を入力してください"; 
+    } else{
+      echo "ログインしてください";
     }
+    
  
     
 
