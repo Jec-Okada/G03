@@ -39,7 +39,7 @@
      }
     require_once './UserDAO/DAO3.php';
     require_once './UserDAO/MemberDAO.php';
-    $dbh = DAO::get_db_connect();
+    $dbh = DAO2::get_db_connect();
 
 
     if ($judge) {
