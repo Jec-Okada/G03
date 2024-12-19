@@ -12,11 +12,7 @@ require_once './UserDAO/MemberDAO.php';
         <img src="img/オススメイカー画像なし.jpg" alt="a" style="max-height: 60px;">
     </div>
     <div id="link">
-<<<<<<< HEAD
     <!--ここいらなくね？-->
-=======
-
->>>>>>> c9f200f97d2a21bc4a68fb14dc3a9862c41eba5d
     <!-- <?php if(session_status() === PHP_SESSION_NONE){
         session_start();
     }?> -->
