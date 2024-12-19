@@ -1,3 +1,7 @@
+<?php
+require_once './UserDAO/DAO.php';
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,14 +26,14 @@
         <div class="notice-box">
             <h4 style="margin-bottom: 10px;">お知らせ</h4>
     <?php
-        require_once './UserDAO/DAO.php';
+        
 
         class Notice{
             public $NContent;
         }
         
         try {
-            $dbh = DAO::get_db_connect();
+            $dbh = DAO2::get_db_connect();
        
             $sql = 'SELECT NContent FROM Notice'; // `users` はデータベース内のテーブル名
             $stmt = $dbh->prepare($sql);

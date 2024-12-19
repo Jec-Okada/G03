@@ -41,7 +41,7 @@
     <?php
     require_once './UserDAO/DAO.php';
     require_once './UserDAO/MemberDAO.php';
-    $dbh = DAO::get_db_connect();
+    $dbh = DAO2::get_db_connect();
 
     if ($judge) {
       switch ($_REQUEST['form']) {  

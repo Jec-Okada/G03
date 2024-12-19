@@ -8,35 +8,35 @@ require_once './UserDAO/DAO.php';
 $current_question_id = isset($_SESSION['current_question_id']) ? $_SESSION['current_question_id'] : DAO2::getFirstQuestionId();
 $answer = isset($_POST['answer']) ? $_POST['answer'] : null;
 
-// 回答をもとに次の質問を取得
-
-    if ($answer === 'yes') {
-        $next_category_question_id = DAO2::getCategoryQuestionId($current_question_id, true);
-
-        if ($next_category_question_id) {
-            $_SESSION['current_question_id'] = $next_category_question_id;
-            $next_question_text = DAO2::getCategoryQuestionById($next_category_question_id);
-            $_SESSION['yes_cid'] = DAO2::getYesCID($next_category_question_id);
-        } else {
-            $next_question_id = DAO2::getNextQuestionId($current_question_id, true);
-            $_SESSION['current_question_id'] = $next_question_id;
-            $next_question_text = DAO2::getQuestionById($next_question_id);
-        }
-    } else if($answer==='no') {
-        $next_category_question_id = DAO2::getCategoryQuestionId($current_question_id, false);
-
-        if ($next_category_question_id) {
-            $_SESSION['current_question_id'] = $next_category_question_id;
-            $next_question_text = DAO2::getCategoryQuestionById($next_category_question_id);
-            $_SESSION['no_cid'] = DAO2::getNoCID($next_category_question_id);
-        } else {
-            $next_question_id = DAO2::getNextQuestionId($current_question_id, false);
-            $_SESSION['current_question_id'] = $next_question_id;
-            $next_question_text = DAO2::getQuestionById($next_question_id);
-        }
-    }else{
-        $next_question_text = DAO2::getQuestionById($current_question_id);
+// 回答に基づいて次の質問を決める
+if ($answer === 'yes') {
+    // カテゴリー直下質問（YESの場合）を確認
+    $next_category_id = DAO2::getCategoryQuestionId($current_question_id, true);
+    if ($next_category_id) {
+        $next_question_text = DAO2::getCategoryQuestionById($next_category_id);
+        $_SESSION['current_question_id'] = $next_category_id;
+    } else {
+        // カテゴリー直下質問がない場合、通常の質問に遷移
+        $next_question_id = DAO2::getNextQuestionId($current_question_id, true);
+        $next_question_text = DAO2::getQuestionById($next_question_id);
+        $_SESSION['current_question_id'] = $next_question_id;
     }
+} elseif ($answer === 'no') {
+    // カテゴリー直下質問（NOの場合）を確認
+    $next_category_id = DAO2::getCategoryQuestionId($current_question_id, false);
+    if ($next_category_id) {
+        $next_question_text = DAO2::getCategoryQuestionById($next_category_id);
+        $_SESSION['current_question_id'] = $next_category_id;
+    } else {
+        // カテゴリー直下質問がない場合、通常の質問に遷移
+        $next_question_id = DAO2::getNextQuestionId($current_question_id, false);
+        $next_question_text = DAO2::getQuestionById($next_question_id);
+        $_SESSION['current_question_id'] = $next_question_id;
+    }
+} else {
+    // 最初の質問またはエラー処理
+    $next_question_text = DAO2::getQuestionById($current_question_id);
+}
 
 
 // 質問がない場合はセッションをリセット
