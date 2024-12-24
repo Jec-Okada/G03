@@ -57,13 +57,14 @@ if ($answer !== null) {
 }
 ?>
 <header>
-  <?php include "header.php"; ?>
+  
 
     <link href="css/3choice.css" rel="stylesheet">
     
     <link rel="stylesheet" href="../bootstrap-5.0.0-dist/css/bootstrap.min.css">
     <script src="../bootstrap-5.0.0-dist/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include "header.php"; ?>
 </header>
 <body>
 <div id="allpage">
