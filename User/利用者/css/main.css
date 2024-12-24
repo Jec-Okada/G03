@@ -21,7 +21,7 @@
 .main a{
     position: absolute;
   top: 50%;/*ボタン位置をずらす高さ*/
-  left: 60%;/*ボタン位置をずらす横*/
+  left: 50%;/*ボタン位置をずらす横*/
   -ms-transform: translate(-50%,-50%);
   -webkit-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
