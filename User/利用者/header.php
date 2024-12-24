@@ -1,7 +1,9 @@
 
 <?php
 require_once './UserDAO/MemberDAO.php';
-
+if(session_status() === PHP_SESSION_NONE){
+        session_start();
+    }
 ?>
 <header>
 
@@ -12,29 +14,21 @@ require_once './UserDAO/MemberDAO.php';
         <img src="img/オススメイカー画像なし.jpg" alt="a" style="max-height: 60px;">
     </div>
     <div id="link">
-<<<<<<< HEAD
     <!--ここいらなくね？-->
-=======
-
->>>>>>> c9f200f97d2a21bc4a68fb14dc3a9862c41eba5d
-    <!-- <?php if(session_status() === PHP_SESSION_NONE){
-        session_start();
-    }?> -->
+    
      
-     <?php if(!empty($_SESSION['member'])) { 
+     <!-- <?php if(!empty($_SESSION['member'])) { 
          $member = $_SESSION['member']; 
-     }?>
+     }?> -->
 
 
-        <?php if(isset($member)) : ?>
+        <?php if(isset($member)){?>
             <?=$member->UserID ?>さん
-            
             <a href="logout.php">ログアウト</a>
-           <?php else: ?>
+           <?php }else{ ?>
             <form action="login.php" method="GET" style="display: inline;">
                 <input type="submit" class="btn btn-primary " value="ログイン">
             </form>
-
-        <?php  endif;?>
+        <?php }?>
     </div> 
 </header>
