@@ -23,8 +23,10 @@ require_once './UserDAO/DAO.php';
     <!-- フッター部分（お知らせ + ログイン） -->
     <div class="footer-container">
         <!-- お知らせ -->
+        <div class="notice-container">
+         <h4 style="margin-bottom: 10px;">お知らせ</h4>
         <div class="notice-box">
-            <h4 style="margin-bottom: 10px;">お知らせ</h4>
+            
     <?php
         
 
@@ -35,7 +37,7 @@ require_once './UserDAO/DAO.php';
         try {
             $dbh = DAO2::get_db_connect();
        
-            $sql = 'SELECT NContent FROM Notice'; // `users` はデータベース内のテーブル名
+            $sql = 'SELECT NContent FROM Notice ORDER BY NID DESC'; // `users` はデータベース内のテーブル名
             $stmt = $dbh->prepare($sql);
         
             // クエリを実行
@@ -55,7 +57,7 @@ require_once './UserDAO/DAO.php';
 ?>
         </div>
 
-        
+    </div>
     </div>
 </body>
 </html>

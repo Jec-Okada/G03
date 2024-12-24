@@ -79,6 +79,20 @@ body{
   border-radius: 5px;
   background-color: #f9f9f9;
   flex: 3;
+  
+    max-height: 150px; /* スクロールを有効にする高さ */
+    overflow-y: auto; /* 縦スクロールを有効にする */
+    border: 1px solid #ccc; /* 枠線の追加（任意） */
+  
+}
+.notice-container {
+  width: 100%;
+  text-align: left; /* 左揃え */
+}
+.notice-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px; /* タイトルとボックスの間の余白 */
 }
 .login-box {
   flex: 1;
