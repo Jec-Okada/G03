@@ -1,10 +1,10 @@
 
-<?php
+<!-- <?php
 require_once './UserDAO/MemberDAO.php';
 if(session_status() === PHP_SESSION_NONE){
         session_start();
     }
-?>
+?> -->
 <header>
 
     <link href="css/header.css" rel="stylesheet" >
@@ -23,7 +23,8 @@ if(session_status() === PHP_SESSION_NONE){
 
 
         <?php if(isset($member)){?>
-            <?=$member->UserID ?>さん
+            <!--ここがバグの温床らしいぞ
+             <?=$member->UserID ?>さん -->
             <a href="logout.php">ログアウト</a>
            <?php }else{ ?>
             <form action="login.php" method="GET" style="display: inline;">
