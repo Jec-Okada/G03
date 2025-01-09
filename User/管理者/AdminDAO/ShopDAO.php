@@ -14,6 +14,7 @@ public string $StartTime2;
 public string $CloseTime1;
 public string $CloseTime2;
 public int $TOSeats;
+public int $CbagID;
 }
 
 class ShopDAO
@@ -127,6 +128,21 @@ class ShopDAO
             $stmt->bindValue(':CloseTime2',$CloseTime2,PDO::PARAM_STR);
             $stmt->bindValue(':TOSeats',$TOSeats,PDO::PARAM_INT);
             $stmt->execute();
+    }
+    public function Bag_by_ShopID()// 袋名取り出し
+    {
+        $dbh = DAO::get_db_connect();
+
+        $sql = "SELECT Shop FROM Categorybag c FULL JOIN ShopInCB s ON c.CBagID = s.CBagID WHERE c.CBagID = s.CBagID";
+
+        $stmt = $dbh->query($sql);
+
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $stmt->execute();
+
+        return $results;
+
     }
 
 }
