@@ -114,26 +114,77 @@
     <div>
         <h4>一つ目の営業時間</h4>
     <select name="STtime1" size="1">
-        <option>6:30</option>
-        <option>7:00</option>
-        <option>7:30</option>
         <option>8:00</option>
         <option>8:30</option>
         <option>9:00</option>
+        <option>9:30</option>
+        <option>10:00</option>
+        <option>10:30</option>
+        <option>11:00</option>
+        <option>11:30</option>
+        <option>12:00</option>
+        <option>12:30</option>
+        <option>13:00</option>
+        <option>13:30</option>
+        <option>14:00</option>
+        <option>14:30</option>
+        <option>15:00</option>
+        <option>15:30</option>
+        <option>16:00</option>
+        <option>16:30</option>
+        <option>17:00</option>
+        <option>17:30</option>
+        <option>18:00</option>
+        <option>18:30</option>
+        <option>19:00</option>
     </select>~
     <select name="CLtime1" size="1">
+        <option>14:00</option>
+        <option>14:30</option>
+        <option>15:00</option>
+        <option>15:30</option>
+        <option>16:00</option>
+        <option>16:30</option>
+        <option>17:00</option>
+        <option>17:30</option>
         <option>18:00</option>
         <option>18:30</option>
         <option>19:00</option>
         <option>19:30</option>
         <option>20:00</option>
         <option>20:30</option>
+        <option>21:00</option>
+        <option>21:30</option>
+        <option>22:00</option>
+        <option>22:30</option>
+        <option>23:00</option>
+        <option>0:00</option>
+        <option>0:30</option>
+        <option>1:00</option>
+        <option>1:30</option>
+        <option>2:00</option>
+        <option>2:30</option>
+        <option>3:00</option>
+        <option>3:30</option>
+        <option>4:00</option>
+        <option>4:30</option>
     </select>
     </div>
 
     <div>
     <h4>二つ目の営業時間</h4>
     <select name="STtime2" size="1">
+        <option>14:00</option>
+        <option>14:30</option>
+        <option>15:00</option>
+        <option>15:30</option>
+        <option>16:00</option>
+        <option>16:30</option>
+        <option>17:00</option>
+        <option>17:30</option>
+        <option>18:00</option>
+        <option>18:30</option>
+        <option>19:00</option>
         <option>20:30</option>
         <option>21:00</option>
         <option>21:30</option>
@@ -142,6 +193,9 @@
         <option>23:00</option>
     </select>~
     <select name="CLtime2" size="1">
+        <option>22:00</option>
+        <option>22:30</option>
+        <option>23:00</option>
         <option>0:00</option>
         <option>0:30</option>
         <option>1:00</option>
@@ -173,6 +227,51 @@
         <button onclick="location.href='Shop.php'" type="button">戻る</button>
     
 </div>
+<?php
+require_once './AdminDAO/ShopDAO.php';
+$Shopname = '';
+$coordinate = '';
+$address = '';
+$ShopURL='';
+$Seats='';
+$addnotice = '';
+$judge1 = false;
+$judge2 = false;
+$judge3 = false;
+$judge4 = false;
+$judge5 = false;
+$judge6 = false;
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+  $Shopname = $_POST['Shopname'];
+  $coordinate = $_POST['coordinate'];
+  $address = $_POST['address'];
+  $ShopURL = $_POST['ShopURL'];
+  $Seats = $_POST['Seats'];
+  $addnotice = $_POST['addnotice'];
+  if($Shopname != ''){
+    $judge1 = true;
+  }
+  if($coordinate != ''){
+    $judge2 = true;
+  }
+  if($address != ''){
+    $judge3 = true;
+  }
+  if($ShopURL != ''){
+    $judge4 = true;
+  }
+  if($Seats != ''){
+    $judge5 = true;
+  }
+  if($addnotice != ''){
+    $judge6 = true;
+  }
+}
+
+
+
+?>
 </body>
 </html>
  
