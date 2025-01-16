@@ -75,30 +75,33 @@
     <div style="border:solid 1px; "></div>
     <div class="container">
     <div class="table-responsive text-nowrap">
-    <table border="1" class="table table-bordered table-hover">
+    <table border="1" class="table table-bordered">
         <tr class="table-info">
             <th>ユーザー名</th>
-            <th>報告内容</th>
             <th>メールアドレス</th>
+            <th>報告内容</th>
            
         </tr>
         <?php
         require_once './AdminDAO/DAO.php';
 
         $dbh = DAO::get_db_connect();
-        $sql = "SELECT MemberID,Rnaiyou,Rnaiyou FROM Members,";
+        $sql="SELECT m.UserID,m.Email,r.Rnaiyou FROM Report as r Full join Members as m on m.MemberID = r.MemberID where m.MemberID=r.MemberID";
+
         $stmt = $dbh->query($sql);
-        
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+        $results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // 
         if (count($results) > 0) {
             foreach ($results as $row) {
                 echo "<tr>\n";
-                echo "<td>" . htmlspecialchars($row['MemberID'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "<td>" . htmlspecialchars($row['UserID'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "<td>" . htmlspecialchars($row['Email'], ENT_QUOTES, 'UTF-8') . "</td>\n";
                 echo "<td>" . htmlspecialchars($row['Rnaiyou'], ENT_QUOTES, 'UTF-8') . "</td>\n";
-                echo "<td>" . htmlspecialchars($row['email'], ENT_QUOTES, 'UTF-8') . "</td>\n";
                 echo "</tr>\n";
+                
             }
+       
         } else {
             echo "<td>データが見つかりませんでした。</td>\n";
         }

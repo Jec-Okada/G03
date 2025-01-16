@@ -77,7 +77,7 @@
     <div style="border:solid 1px; "></div>
     <div class="container">
     <div class="table-responsive text-nowrap">
-    <table border="1" class="table table-bordered table-hover">
+    <table border="1" class="table table-bordered">
    
     <?php
         require_once './AdminDAO/ShopDAO.php';
@@ -91,7 +91,7 @@
                 echo "<tr>\n";
                 echo "<td>" . htmlspecialchars($row['ShopID'], ENT_QUOTES, 'UTF-8') . "</td>\n";
                 echo "<td>" . htmlspecialchars($row['ShopName'], ENT_QUOTES, 'UTF-8') . "</td>\n";
-                echo "<td>袋名</td>\n";
+                echo "<td>袋名(予定)</td>\n";
                 echo "</tr>\n";
             }
         } else {
@@ -102,9 +102,10 @@
 
         <p><button onclick="location.href='ShopAdd.php'" type="button">店舗追加へ</button>
         
-        <p><button onclick="location.href='adminmenu.php'" type="button">戻る</button></p>
+        <button onclick="location.href='adminmenu.php'" type="button">戻る</button></p>
     
-        </div>      
+        </div>    
+     
 </body>
 </html>
  
