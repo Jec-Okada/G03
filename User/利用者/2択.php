@@ -7,7 +7,7 @@ require_once './UserDAO/DAO.php';
 
 $current_question_id = $_SESSION['current_question_id'] ?? DAO2::getFirstQuestionId();
 $answer = $_POST['answer'] ?? null; // POSTデータから回答を取得
-
+$next_category_id = null; 
 // 次の質問を決定する
 if ($answer === 'yes') {
     $next_category_id = DAO2::getCategoryQuestionId($current_question_id, true);
@@ -46,7 +46,17 @@ if ($answer === 'yes') {
 }
 
 // 質問がない場合はセッションをリセット
-if (!$next_question_text) {
+if ($next_category_id) {
+    // カテゴリー直下質問がある場合
+    $_SESSION['yes_cid'] = $next_category_id;
+    $isCategoryQuestion = true;
+    $next_question_text = DAO2::getCategoryQuestionById($next_category_id);
+
+    // リダイレクト処理を追加
+    header("Location: kekka.php?cid=$next_category_id");
+    exit();
+} elseif (!$next_question_text) {
+    // 質問がない場合はセッションをリセットしてリダイレクト
     session_unset();
     session_destroy();
     header("Location: 2択.php");

@@ -7,7 +7,8 @@ $cid = isset($_GET['cid']) ? intval($_GET['cid']) : 0;
 $iframeSrc = "";
 
 if ($cid > 0) {
-    $urls = getCoordinateShopURL($cid);
+    $dao = new kekkaDAO();
+    $urls = $dao->getCoordinateShopURL($cid);
 
     if (isset($urls['error'])) {
         $iframeSrc = ""; // エラー時はデフォルトの空値
@@ -17,6 +18,7 @@ if ($cid > 0) {
         $iframeSrc = htmlspecialchars($urls[0]); // 最初のURLを選択
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -31,13 +33,13 @@ if ($cid > 0) {
     <?php include "header.php"; ?>
     <link href="css/kekka.css" rel="stylesheet">
     
-    <div style="border:solid 1px; "></div>,
+    <div style="border:solid 1px; "></div>
     <h1 class="title1">今日の飯はここ！！！！！！</h1>
     <div id="coen">
         <?php if (isset($error)): ?>
             <p><?php echo $error; ?></p>
         <?php else: ?>
-            <iframe src="<?php echo $iframeSrc; ?>" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe src="<?php echo $iframeSrc; ?>" width="800" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         <?php endif; ?>
     </div>
     <a id="taste" href="googleForm.html">美味かったか？</a> 
