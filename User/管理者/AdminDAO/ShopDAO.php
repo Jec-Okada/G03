@@ -133,7 +133,7 @@ class ShopDAO
     {
         $dbh = DAO::get_db_connect();
 
-        $sql = "SELECT Shop FROM Categorybag c FULL JOIN ShopInCB s ON c.CBagID = s.CBagID WHERE c.CBagID = s.CBagID";
+        $sql = "SELECT CBagName FROM Categorybag c FULL JOIN ShopInCB s ON c.CBagID = s.CBagID WHERE c.CBagID = s.CBagID";
 
         $stmt = $dbh->query($sql);
 

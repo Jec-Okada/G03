@@ -78,6 +78,16 @@
 <table border="1" class="table table-bordered">
     <input type=”text” id="search" placeholder="検索" >
     <button class="search" type="button">検索</button>
+    <tr class="table-info">
+        <th>質問ID</th>
+        <th>質問内容</th>
+        <th>Yes時の質問内容</th>
+        <th>No時の質問内容</th>
+        <th>前の質問内容</th>
+        <th>Yes時のカテゴリ質問内容</th>
+        <th>No時のカテゴリ質問内容</th>
+       
+    </tr>
     <?php
         require_once './AdminDAO/DAO.php';
 
