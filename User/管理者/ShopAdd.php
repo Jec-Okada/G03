@@ -79,198 +79,168 @@
     <h1>店舗追加</h1>
     <div style="border:solid 1px; "></div>
 
-<div class="container" id="all">
+    <div class="container">
+        <h1>店舗追加</h1>
+        <form method="POST" action="">
+            <!-- 店舗情報 -->
+            <div class="mb-3">
+                <label for="Shopname">店舗名</label>
+                <input type="text" name="Shopname" id="Shopname" class="form-control" placeholder="店舗名" required>
+            </div>
+            <div class="mb-3">
+                <label for="coordinate">座標</label>
+                <input type="text" name="coordinate" id="coordinate" class="form-control" placeholder="例: 35.6895, 139.6917" required>
+            </div>
+            <div class="mb-3">
+                <label for="address">住所</label>
+                <input type="text" name="address" id="address" class="form-control" placeholder="住所を入力" required>
+            </div>
+            <div class="mb-3">
+                <label for="ShopURL">店舗URL</label>
+                <input type="url" name="ShopURL" id="ShopURL" class="form-control" placeholder="例: https://example.com" required>
+            </div>
+            <div class="mb-3">
+                <label for="Seats">座席数</label>
+                <input type="number" name="Seats" id="Seats" class="form-control" placeholder="座席数を入力" required>
+            </div>
 
-    <div class="container" id="pack">
-        <div class="container" id="info1">
-        <p><input type=”text” id="Shopname" placeholder="店舗名" ></p>
-        <p><input type=”text” id="coordinate" placeholder="座標" ></p>
-        <p><input type=”text” id="address" placeholder="住所" ></p>
-        <p><input type=”text” id="ShopURL" placeholder="店舗URL" ></p>
-        <p><input type=”text” id="Seats" placeholder="席数" ></p>
-        </div>
+            <!-- 営業時間 -->
+            <div class="mb-3">
+                <h4>一つ目の営業時間</h4>
+                <label for="STtime1">開始時間</label>
+                <select name="STtime1" id="STtime1" class="form-select" required>
+                    <option value="" selected>選択してください</option>
+                    <option value="08:00">8:00</option>
+                    <option value="09:00">9:00</option>
+                    <option value="10:00">10:00</option>
+                </select>
+                ~
+                <label for="CLtime1">終了時間</label>
+                <select name="CLtime1" id="CLtime1" class="form-select" required>
+                    <option value="" selected>選択してください</option>
+                    <option value="12:00">12:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="14:00">14:00</option>
+                </select>
+            </div>
 
-        <div id="Categorylist"> 
-        <h3>カテゴリ袋</h3>
-        <div class="Categorylist"> 
-        
-        <input type="checkbox" id="checkbox1"><label for="checkbox1">aaaaaaa</label><br>
-        <input type="checkbox" id="checkbox2"><label for="checkbox2">bbbbbbb</label><br>
-        <input type="checkbox" id="checkbox3"><label for="checkbox3">ccccccc</label><br>
-        <input type="checkbox" id="checkbox4"><label for="checkbox4">ddddddd</label><br>
-        <input type="checkbox" id="checkbox5"><label for="checkbox5">eeeeeee</label><br>
-        <input type="checkbox" id="checkbox6"><label for="checkbox6">fffffff</label><br>
-        <input type="checkbox" id="checkbox7"><label for="checkbox8">ggggggg</label><br>
-        <input type="checkbox" id="checkbox9"><label for="checkbox9">hhhhhhh</label><br>
-        <input type="checkbox" id="checkbox10"><label for="checkbox10">iiiiiii</label><br>
-        <input type="checkbox" id="checkbox11"><label for="checkbox11">jjjjjjj</label><br>
-        <input type="checkbox" id="checkbox12"><label for="checkbox12">kkkkkkk</label><br>
-        <input type="checkbox" id="checkbox13"><label for="checkbox13">lllllll</label><br>
-   
-        </div>
-        </div>
+            <div class="mb-3">
+                <h4>二つ目の営業時間</h4>
+                <label for="STtime2">開始時間</label>
+                <select name="STtime2" id="STtime2" class="form-select">
+                    <option value="" selected>選択してください</option>
+                    <option value="14:00">14:00</option>
+                    <option value="15:00">15:00</option>
+                    <option value="16:00">16:00</option>
+                </select>
+                ~
+                <label for="CLtime2">終了時間</label>
+                <select name="CLtime2" id="CLtime2" class="form-select">
+                    <option value="" selected>選択してください</option>
+                    <option value="18:00">18:00</option>
+                    <option value="19:00">19:00</option>
+                    <option value="20:00">20:00</option>
+                </select>
+            </div>
+
+            <!-- カテゴリー -->
+            <div class="mb-3">
+                <h4>カテゴリ袋</h4>
+                <div>
+                    <input type="checkbox" name="categories[]" value="aaaaaaa" id="checkbox1">
+                    <label for="checkbox1">aaaaaaa</label><br>
+
+                    <input type="checkbox" name="categories[]" value="bbbbbbb" id="checkbox2">
+                    <label for="checkbox2">bbbbbbb</label><br>
+
+                    <input type="checkbox" name="categories[]" value="ccccccc" id="checkbox3">
+                    <label for="checkbox3">ccccccc</label><br>
+                </div>
+            </div>
+
+            <!-- コメント -->
+            <div class="mb-3">
+                <h5>コメント(店舗の特徴)</h5>
+                <textarea name="addnotice" rows="3" cols="50" class="form-control" placeholder="店舗の特徴を入力"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">送信</button>
+        </form>
     </div>
-    
-    <div>
-        <h4>一つ目の営業時間</h4>
-    <select name="STtime1" size="1">
-        <option>8:00</option>
-        <option>8:30</option>
-        <option>9:00</option>
-        <option>9:30</option>
-        <option>10:00</option>
-        <option>10:30</option>
-        <option>11:00</option>
-        <option>11:30</option>
-        <option>12:00</option>
-        <option>12:30</option>
-        <option>13:00</option>
-        <option>13:30</option>
-        <option>14:00</option>
-        <option>14:30</option>
-        <option>15:00</option>
-        <option>15:30</option>
-        <option>16:00</option>
-        <option>16:30</option>
-        <option>17:00</option>
-        <option>17:30</option>
-        <option>18:00</option>
-        <option>18:30</option>
-        <option>19:00</option>
-    </select>~
-    <select name="CLtime1" size="1">
-        <option>14:00</option>
-        <option>14:30</option>
-        <option>15:00</option>
-        <option>15:30</option>
-        <option>16:00</option>
-        <option>16:30</option>
-        <option>17:00</option>
-        <option>17:30</option>
-        <option>18:00</option>
-        <option>18:30</option>
-        <option>19:00</option>
-        <option>19:30</option>
-        <option>20:00</option>
-        <option>20:30</option>
-        <option>21:00</option>
-        <option>21:30</option>
-        <option>22:00</option>
-        <option>22:30</option>
-        <option>23:00</option>
-        <option>0:00</option>
-        <option>0:30</option>
-        <option>1:00</option>
-        <option>1:30</option>
-        <option>2:00</option>
-        <option>2:30</option>
-        <option>3:00</option>
-        <option>3:30</option>
-        <option>4:00</option>
-        <option>4:30</option>
-    </select>
-    </div>
-
-    <div>
-    <h4>二つ目の営業時間</h4>
-    <select name="STtime2" size="1">
-        <option>14:00</option>
-        <option>14:30</option>
-        <option>15:00</option>
-        <option>15:30</option>
-        <option>16:00</option>
-        <option>16:30</option>
-        <option>17:00</option>
-        <option>17:30</option>
-        <option>18:00</option>
-        <option>18:30</option>
-        <option>19:00</option>
-        <option>20:30</option>
-        <option>21:00</option>
-        <option>21:30</option>
-        <option>22:00</option>
-        <option>22:30</option>
-        <option>23:00</option>
-    </select>~
-    <select name="CLtime2" size="1">
-        <option>22:00</option>
-        <option>22:30</option>
-        <option>23:00</option>
-        <option>0:00</option>
-        <option>0:30</option>
-        <option>1:00</option>
-        <option>1:30</option>
-        <option>2:00</option>
-        <option>2:30</option>
-        <option>3:00</option>
-        <option>3:30</option>
-        <option>4:00</option>
-        <option>4:30</option>
-    </select>
-    </div>
-   <p></p>
-   
-    <h5>コメント(店舗の特徴)</h5>
-
-        <textarea id="text" name="addnotice" rows="3" cols="50"></textarea>
-    
-        <button  type="button" id="Add">追加</button>
-            <script>
-                function butotnClick(){
-                    alert('店舗を追加しました');
-                }
-               
-                let button = document.getElementById('Add');
-                button.addEventListener('click', butotnClick);
-            </script>
-    
-        <button onclick="location.href='Shop.php'" type="button">戻る</button>
-    
-</div>
 <?php
 require_once './AdminDAO/ShopDAO.php';
-$Shopname = '';
-$coordinate = '';
-$address = '';
-$ShopURL='';
-$Seats='';
-$addnotice = '';
-$judge1 = false;
-$judge2 = false;
-$judge3 = false;
-$judge4 = false;
-$judge5 = false;
-$judge6 = false;
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-  $Shopname = $_POST['Shopname'];
-  $coordinate = $_POST['coordinate'];
-  $address = $_POST['address'];
-  $ShopURL = $_POST['ShopURL'];
-  $Seats = $_POST['Seats'];
-  $addnotice = $_POST['addnotice'];
-  if($Shopname != ''){
-    $judge1 = true;
-  }
-  if($coordinate != ''){
-    $judge2 = true;
-  }
-  if($address != ''){
-    $judge3 = true;
-  }
-  if($ShopURL != ''){
-    $judge4 = true;
-  }
-  if($Seats != ''){
-    $judge5 = true;
-  }
-  if($addnotice != ''){
-    $judge6 = true;
-  }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // 1. フォームデータの取得
+    $Shopname = $_POST['Shopname'] ?? ''; // 店舗名
+    $coordinate = $_POST['coordinate'] ?? ''; // 座標
+    $address = $_POST['address'] ?? ''; // 住所
+    $ShopURL = $_POST['ShopURL'] ?? ''; // 店舗URL
+    $Seats = $_POST['Seats'] ?? ''; // 座席数
+    $STtime1 = $_POST['STtime1'] ?? ''; // 一つ目の開始時間
+    $CLtime1 = $_POST['CLtime1'] ?? ''; // 一つ目の終了時間
+    $STtime2 = $_POST['STtime2'] ?? ''; // 二つ目の開始時間
+    $CLtime2 = $_POST['CLtime2'] ?? ''; // 二つ目の終了時間
+    $categories = $_POST['categories'] ?? []; // カテゴリ（複数）
+    $addnotice = $_POST['addnotice'] ?? ''; // コメント
+
+    // 2. バリデーション
+    $errors = [];
+    if (empty($Shopname)) $errors[] = "店舗名を入力してください。";
+    if (empty($coordinate)) $errors[] = "座標を入力してください。";
+    if (empty($address)) $errors[] = "住所を入力してください。";
+    if (empty($ShopURL)) $errors[] = "店舗URLを入力してください。";
+    if (empty($Seats)) $errors[] = "座席数を入力してください。";
+    if (empty($STtime1) || empty($CLtime1)) $errors[] = "一つ目の営業時間を正しく選択してください。";
+    if ($STtime1 >= $CLtime1) $errors[] = "一つ目の開始時間は終了時間より前に設定してください。";
+
+    // 二つ目の営業時間は任意
+    if (!empty($STtime2) && !empty($CLtime2) && $STtime2 >= $CLtime2) {
+        $errors[] = "二つ目の開始時間は終了時間より前に設定してください。";
+    }
+
+    // エラーがある場合は出力して終了
+    if (!empty($errors)) {
+        foreach ($errors as $error) {
+            echo "<p style='color: red;'>$error</p>";
+        }
+        exit;
+    }
+
+    // 3. 入力データの表示（デバッグ用）
+    echo "<h3>入力されたデータ:</h3>";
+    echo "<p>店舗名: $Shopname</p>";
+    echo "<p>座標: $coordinate</p>";
+    echo "<p>住所: $address</p>";
+    echo "<p>店舗URL: $ShopURL</p>";
+    echo "<p>座席数: $Seats</p>";
+    echo "<p>一つ目の営業時間: $STtime1 ~ $CLtime1</p>";
+    if (!empty($STtime2) && !empty($CLtime2)) {
+        echo "<p>二つ目の営業時間: $STtime2 ~ $CLtime2</p>";
+    }
+    echo "<p>カテゴリ: " . implode(', ', $categories) . "</p>";
+    echo "<p>コメント: $addnotice</p>";
+
+    // 4. データベースに保存する例
+    /*
+    $pdo = new PDO('mysql:host=localhost;dbname=testdb;charset=utf8', 'username', 'password');
+    $stmt = $pdo->prepare("INSERT INTO shops (Shopname, coordinate, address, ShopURL, Seats, STtime1, CLtime1, STtime2, CLtime2, categories, addnotice) VALUES (:Shopname, :coordinate, :address, :ShopURL, :Seats, :STtime1, :CLtime1, :STtime2, :CLtime2, :categories, :addnotice)");
+    $stmt->bindValue(':Shopname', $Shopname);
+    $stmt->bindValue(':coordinate', $coordinate);
+    $stmt->bindValue(':address', $address);
+    $stmt->bindValue(':ShopURL', $ShopURL);
+    $stmt->bindValue(':Seats', $Seats);
+    $stmt->bindValue(':STtime1', $STtime1);
+    $stmt->bindValue(':CLtime1', $CLtime1);
+    $stmt->bindValue(':STtime2', $STtime2);
+    $stmt->bindValue(':CLtime2', $CLtime2);
+    $stmt->bindValue(':categories', implode(', ', $categories)); // カテゴリを文字列化
+    $stmt->bindValue(':addnotice', $addnotice);
+    $stmt->execute();
+    echo "<p>データが正常に保存されました。</p>";
+    */
 }
-
-
-
 ?>
 </body>
 </html>
