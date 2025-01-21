@@ -1,6 +1,27 @@
 <?php
-    
+require_once './AdminDAO/UseradminDAO.php';
+
+// DAOクラスのインスタンスを初期化
+$goodsDAO = new UseradminDAO();
+
+// 検索結果リストを初期化
+$search_results = [""];
+if ($_SERVER['REQUEST_METHOD']==='POST') {
+    $a = $_POST['search'];
+    // var_dump($goodsDAO->get_goods_by_keyword($a));
+    $search_results=$goodsDAO->get_goods_by_keyword($a);
+    // echo $a;
+} elseif (isset($_GET['keyword']) && !empty($_GET['keyword'])) {
+    // キーワードで検索
+    $keyword = htmlspecialchars($_GET['keyword'], ENT_QUOTES, 'UTF-8');
+    $search_results = $goodsDAO->get_goods_by_keyword($keyword);
+} else {
+    // 検索条件がない場合、全ての会員を表示
+    $search_results = $goodsDAO->get_all_members();
+}
+
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -83,35 +104,39 @@
     <div class="container">
     <div class="table-responsive text-nowrap">
     <table border="1" class="table table-bordered table-hover">
-        <input type=”text” id="search" placeholder="検索" >
-        <button class="search" type="button">検索</button>
-<?php
-
+        <form action="Useradmin.php" method="POST">
+        <input type=”text” id="search" name="search" placeholder="検索" >
+        <button class="search" type="submit" action="location.href='Useradmin.php'" method="POST">検索</button>
+        <!-- <?php  echo $search_results[0]->UserID; ?>
+        <?php  echo $search_results[1]->UserID; ?> -->
+</form>
+    <?php
         $dbh = DAO::get_db_connect();
         $sql = "SELECT MemberID,UserID,email FROM Members";
         $stmt = $dbh->query($sql);
         
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        //$search_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         echo "<tr>\n";
         echo "<td>会員ID</td>\n";
         echo "<td>ユーザー名</td>\n";
         echo "<td>メールアドレス</td>\n";
         echo "<tr>\n";
-        if (count($results) > 0) {
-            foreach ($results as $row) {
+    ?>
+    <?php
+        if (count($search_results) > 0) {
+            foreach ($search_results as $row) {
                 echo "<tr>\n";
-                echo "<td>" . htmlspecialchars($row['MemberID'], ENT_QUOTES, 'UTF-8') . "</td>\n";
-                echo "<td>" . htmlspecialchars($row['UserID'], ENT_QUOTES, 'UTF-8') . "</td>\n";
-                echo "<td>" . htmlspecialchars($row['email'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "<td>" . htmlspecialchars($row->MemberID, ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "<td>" . htmlspecialchars($row->UserID, ENT_QUOTES, 'UTF-8') . "</td>\n";
+                echo "<td>" . htmlspecialchars($row->email, ENT_QUOTES, 'UTF-8') . "</td>\n";
                 echo "</tr>\n";
             }
         } else {
             echo "<td>データが見つかりませんでした。</td>\n";
         }
         echo "</td>\n";
-        ?>
-    <button onclick="location.href='adminmenu.php'" type="button">戻る</button>
+    ?>
 </div>
 </div>
 </body>
