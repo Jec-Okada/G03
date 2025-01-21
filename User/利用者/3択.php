@@ -24,11 +24,11 @@ if(!$_SESSION['current_question_id']=11){
 }
 
 // デバッグ用: 初期化時の質問IDを確認
-echo "初期質問ID: " . $_SESSION['current_question_id'];
+
 
 $current_question_id = intval($_SESSION['current_question_id']);
 $answer = isset($_POST['answer']) ? $_POST['answer'] : null;
-echo "現在の質問ID: " . $_SESSION['current_question_id']; // デバッグ用
+
 // 質問を取得
 $question_text = DAO::getQuestionById($current_question_id);
 
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const questionElement = document.getElementById("question-text");
     displayQuestion(questionText, questionElement);
 });
-  function displayQuestion(text, element, delay = 270) {
+  function displayQuestion(text, element, delay = 170) {
   let index = 0;
 
   function typeCharacter() {
