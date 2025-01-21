@@ -141,22 +141,40 @@
                     <option value="19:00">19:00</option>
                     <option value="20:00">20:00</option>
                 </select>
-            </div>
-
-            <!-- カテゴリー -->
-            <div class="mb-3">
+                <div class="mb-3">
+              
                 <h4>カテゴリ袋</h4>
-                <div>
-                    <input type="checkbox" name="categories[]" value="aaaaaaa" id="checkbox1">
-                    <label for="checkbox1">aaaaaaa</label><br>
+<div>
+    <?php
+    require_once './AdminDAO/DAO.php';
 
-                    <input type="checkbox" name="categories[]" value="bbbbbbb" id="checkbox2">
-                    <label for="checkbox2">bbbbbbb</label><br>
+    try {
+        // データベース接続
+        $dbh = DAO::get_db_connect();
 
-                    <input type="checkbox" name="categories[]" value="ccccccc" id="checkbox3">
-                    <label for="checkbox3">ccccccc</label><br>
-                </div>
-            </div>
+        // クエリの準備
+        $sql = "SELECT CBagID, CBagName FROM CategoryBag";
+        $stmt = $dbh->prepare($sql);
+
+        // クエリを実行
+        $stmt->execute();
+
+        // データを取得して表示
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // キーが存在するか確認
+            $category_id = isset($row['CBagID']) ? htmlspecialchars($row['CBagID'], ENT_QUOTES, 'UTF-8') : '';
+            $category_name = isset($row['CBagName']) ? htmlspecialchars($row['CBagName'], ENT_QUOTES, 'UTF-8') : '';
+
+            // 結果を表示
+            echo "<input type='checkbox' name='categories[]' value='{$category_id}' id='checkbox{$category_id}'>";
+            echo "<label for='checkbox{$category_id}'>{$category_name}</label><br>";
+        }
+    } catch (PDOException $e) {
+        echo "<p style='color:red;'>データ取得エラー: {$e->getMessage()}</p>";
+    }
+    ?>
+</div>
+
 
             <!-- コメント -->
             <div class="mb-3">
@@ -184,6 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $CLtime2 = $_POST['CLtime2'] ?? ''; // 二つ目の終了時間
     $categories = $_POST['categories'] ?? []; // カテゴリ（複数）
     $addnotice = $_POST['addnotice'] ?? ''; // コメント
+
 
     // 2. バリデーション
     $errors = [];
@@ -222,26 +241,83 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "<p>カテゴリ: " . implode(', ', $categories) . "</p>";
     echo "<p>コメント: $addnotice</p>";
 
-    // 4. データベースに保存する例
-    /*
-    $pdo = new PDO('mysql:host=localhost;dbname=testdb;charset=utf8', 'username', 'password');
-    $stmt = $pdo->prepare("INSERT INTO shops (Shopname, coordinate, address, ShopURL, Seats, STtime1, CLtime1, STtime2, CLtime2, categories, addnotice) VALUES (:Shopname, :coordinate, :address, :ShopURL, :Seats, :STtime1, :CLtime1, :STtime2, :CLtime2, :categories, :addnotice)");
-    $stmt->bindValue(':Shopname', $Shopname);
-    $stmt->bindValue(':coordinate', $coordinate);
-    $stmt->bindValue(':address', $address);
-    $stmt->bindValue(':ShopURL', $ShopURL);
-    $stmt->bindValue(':Seats', $Seats);
-    $stmt->bindValue(':STtime1', $STtime1);
-    $stmt->bindValue(':CLtime1', $CLtime1);
-    $stmt->bindValue(':STtime2', $STtime2);
-    $stmt->bindValue(':CLtime2', $CLtime2);
-    $stmt->bindValue(':categories', implode(', ', $categories)); // カテゴリを文字列化
-    $stmt->bindValue(':addnotice', $addnotice);
-    $stmt->execute();
-    echo "<p>データが正常に保存されました。</p>";
-    */
+    try {
+        $dbh = DAO::get_db_connect();  // データベース接続
+    
+        // 1. Shopテーブルにデータを挿入
+        $sql = "INSERT INTO Shop (
+                    ShopName, 
+                    MapPoint, 
+                    ShopAddress, 
+                    ShopURL, 
+                    ShopChar, 
+                    StartTime1, 
+                    StartTime2, 
+                    CloseTime1, 
+                    CloseTime2, 
+                    TOSeats, 
+                    CoordinateShop
+                ) VALUES (
+                    :ShopName, 
+                    :MapPoint, 
+                    :ShopAddress, 
+                    :ShopURL, 
+                    :ShopChar, 
+                    :StartTime1, 
+                    :StartTime2, 
+                    :CloseTime1, 
+                    :CloseTime2, 
+                    :TOSeats, 
+                    :CoordinateShop
+                )";
+    
+        // プリペアドステートメントを準備
+        $stmt = $dbh->prepare($sql);
+    
+        // 値のバインド
+        $stmt->bindValue(':ShopName', $Shopname);
+        $stmt->bindValue(':MapPoint', $coordinate); // 座標 (MapPoint)
+        $stmt->bindValue(':ShopAddress', $address);
+        $stmt->bindValue(':ShopURL', $ShopURL);
+        $stmt->bindValue(':ShopChar', $addnotice);  // コメント
+        $stmt->bindValue(':StartTime1', $STtime1);
+        $stmt->bindValue(':StartTime2', $STtime2);
+        $stmt->bindValue(':CloseTime1', $CLtime1);
+        $stmt->bindValue(':CloseTime2', $CLtime2);
+        $stmt->bindValue(':TOSeats', $Seats);
+        $stmt->bindValue(':CoordinateShop', $coordinate); // 同じ座標をCoordinateShopにバインド
+    
+        // 実行
+        $stmt->execute();
+    
+        // ShopIDを取得
+        $ShopID = $dbh->lastInsertId();
+    
+        // 2. カテゴリ情報をShopInCBテーブルに格納
+        if (!empty($categories)) {
+            $sql = "INSERT INTO ShopInCB (Shop, CBagID) VALUES (:ShopID, :CBagID)";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(':ShopID', $ShopID);
+            $stmt->bindValue(':CBagID', $category_id);
+            $stmt->execute();
+    
+            // チェックされたカテゴリを繰り返し格納
+            foreach ($categories as $category_id) {
+                $stmt->bindValue(':ShopID', $ShopID);  // 新規に挿入されたShopIDを使用
+                $stmt->bindValue(':CBagID', $category_id);  // 選択されたカテゴリID
+                $stmt->execute();
+            }
+        }
+    
+        // 成功メッセージ
+        echo "<p>店舗情報と関連カテゴリが正常に登録されました。</p>";
+    
+    } catch (PDOException $e) {
+        echo "<p style='color: red;'>データベースエラー: {$e->getMessage()}</p>";
+    }
 }
 ?>
+
 </body>
 </html>
  
