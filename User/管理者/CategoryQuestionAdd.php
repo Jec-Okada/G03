@@ -1,3 +1,113 @@
+<?php
+///選択の後半２つがまだ。
+// 追加機能もまだ。
+require_once './AdminDAO/CategoryQDAO.php';
+require_once './AdminDAO/BasicQDAO.php';
+$BasicAdd = new BasicQDAO();
+$CategoryAdd = new CategoryQDAO();
+$errs=[];
+$CQuestion = '';
+$BeforeQuestion = '';
+$YesBag ='';
+$NoBag = '';
+$YorN = '';
+$YCID = 0;
+$NCID = 0;
+
+if($_SERVER['REQUEST_METHOD']==='POST'){
+    $CQuestion = $_POST['CategoryQuestion'];
+    $BeforeQuestion = $_POST['Beforequestion_tx'];
+    $YesBag = $_POST['Yesbag_tx'];
+    $NoBag = $_POST['Nobag_tx'];
+    $YorN = $_POST['YorN'];
+if($BeforeQuestion === ''){
+    $errs[]='質問内容を入力してください';
+
+  }
+if(empty($errs)){
+    
+
+    if($BeforeQuestion !== ''){
+            $BeforeQuestionID = intval($BasicAdd->BasicQ_ID_search($BeforeQuestion));
+        }
+        else{
+            $BeforeQuestionID=0;
+        }
+    if($YesBag !== ''){
+            $YesBagID = intval($CategoryAdd->CBag_ID_search($YesBag));
+        }else{
+            $YesBagID=0;
+        }
+    if($NoBag !== ''){
+            $NoBagID = intval($CategoryAdd->CBag_ID_search($NoBag));
+        }else{
+            $NoBagID=0;
+        }
+    
+    $CategoryAdd->CategoryQ_BQtable_Insert($CQuestion,$BeforeQuestionID,$YesBagID,$NoBagID);
+    $CategoryAdd->CategoryQ_InsertCQ($CQuestion,$BeforeQuestionID,$YesBagID,$NoBagID);
+    
+    $result1 = true;
+    
+    $BCQuestionID = intval($BasicAdd->BasicQ_ID_search($CQuestion));//ベーシック質問テーブルに追加したカテゴリ質問のID取得
+    // $CQuestionID = $CategoryAdd->CategoryQ_ID_search($CQuestion);
+    
+    if($BCQuestionID !== 0){
+    
+        if($YorN ==='yes'){
+            $YCID = $BCQuestionID;
+            $result2 = $CategoryAdd->BasicQ_Update_Yes($BeforeQuestion,$YCID);
+
+        }else{
+            $NCID = $BCQuestionID;
+            $result2 = $CategoryAdd->BasicQ_Update_No($BeforeQuestion,$NCID);
+
+        }
+
+    }else{
+        $result2=true;
+    }
+
+    
+
+    // if($CQuestionID !== 0){
+    
+    //     $res1=$CategoryAdd->YesCBag_in_CQID($CQuestionID,$ÝesBagID);
+    //     $res2=$CategoryAdd->NoCBag_in_CQID($CQuestionID,$NoBagID);
+
+    //    if($res1 !== false && $res2 !== false){
+    //     $result3=true;
+    //    }else{
+    //     $result3=false;
+    //    }
+       
+    // }else{
+    //     $result3=true;
+    // }
+
+
+    if($result1 !== false && $result2 !== false){
+    echo '<script type="text/javascript">';
+    echo 'var userResponse = confirm("追加に成功しました！！！！！！");';
+    echo 'if (userResponse == true) {';
+    echo 'window.location.href = "CategoryQuestionAdd.php";';
+    echo '}';
+    echo '</script>';
+   
+
+   
+
+}else{
+    $errs[] = '追加に失敗しました。';
+}
+}
+}
+    
+
+
+
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -71,14 +181,50 @@
             </div>
         </div>
     </div>
-
+    <form action="" method = "POST">
     <link href="css/AddQuestion.css" rel="stylesheet">
 <h1 class="title">カテゴリ直下質問追加</h1>
 <div style="border:solid 1px; "></div>
 
 <div class="container">
 <label for="text">追加する質問を入力してください</label> 
-<input type=”text” id="text" class="AddBasicQuestion" >
+<input type=”text” id="text" class="AddCategoryQuestion" name="CategoryQuestion" >
+
+<script>
+function Beforequestion(obj){
+    var air="";
+    var f=obj.form;
+    var c=f.elements["Beforequestion_tx"];
+    c.value=air;
+    var v=obj.options[obj.selectedIndex].value;
+    c=f.elements["Beforequestion_tx"];
+    c.value+=v;
+}
+</script>
+<script>
+function Yesbag(obj){
+var air="";
+var f=obj.form;
+var c=f.elements["Yesbag_tx"];
+c.value=air;
+var v=obj.options[obj.selectedIndex].value;
+c=f.elements["Yesbag_tx"];
+c.value+=v;
+}
+</script>
+<script>
+function Nobag(obj){
+var air="";
+var f=obj.form;
+var c=f.elements["Nobag_tx"];
+c.value=air;
+var v=obj.options[obj.selectedIndex].value;
+c=f.elements["Nobag_tx"];
+c.value+=v;
+}
+
+
+</script>
 
 
 <table> <div class="container"></div>
@@ -93,88 +239,114 @@
     
     </tr>
    
-                <tr>
-                    <th>前の質問</th>
-                    <th>YES時の袋</th>
-                    <th>NO時の袋</th>
-                </tr>
-              
+                
                 <!-- ココカラファイン -->
-         
+                <div> 
             <tr>
-                    <td> 
-                            <div class="rbtn">
-                                <label><input type="radio" id="rbtn" name="Yes" value="yes" checked/>YES</label>
-                                <label><input type="radio" id="rbtn" name="No" value="no" />NO</label>
-                            </div>
-                      <select name="BeforeQuestion" size="10">
-                        <option>何人ですか？</option>
-                        <option>母国愛はありますか？</option>
-                        <option>アジアの気分？</option>
-                        <option>俺のこと好き？</option>
-                        <option>麺食べたいの？</option>
-                        <option>もしかしてお腹すいてない？</option>
-                        <option>もちろん濃い味が好きだよね？</option>
-                        <option>コース料理なんて言わないよね？</option>
+            <?php
+                    
+                
+                    $results=$BasicAdd->BasicQ_select();
+                
+                    echo "<td>";
+                    echo "<select onchange='Beforequestion(this)' name='BeforeQuestion' size='10'>";
+                        if (count($results) > 0) {
+                            foreach ($results as $row) {
+    
+                      
+                                echo "<option value=". htmlspecialchars($row['BQuestion'], ENT_QUOTES, 'UTF-8') . ">" . htmlspecialchars($row['BQuestion'], ENT_QUOTES, 'UTF-8') . "</option>\n";
                        
-                      </select>
-                    </td> 
-                  
-
-                   
-                    <td>                               
-                      <select name="YesBag" size="10">
-                        <option>ラーメン</option>
-                        <option>ファミレス</option>
-                        <option>中華</option>
-                        <option>カフェ</option>
-                        <option>和食</option>
-                        <option>イタリアン</option>
-                        <option>寿司</option>
-                        <option>焼肉</option>
-                        <option>バーガー</option>
+                       
+                            }
+                     } else {
+                        echo "<option>データが見つかりませんでした。</option>\n";
+                        }
+                    echo " </select>";
+                    echo "<br>";
+                    echo "<input type='text' name='Beforequestion_tx' value='' readonly>";
+    
+                    echo "
+                    <div class='rbtn'>
+                    <label><input type='radio' id='rbtn' name='YorN' value='yes' />YES</label>
+                    <label><input type='radio' id='rbtn' name='YorN' value='no' />NO</label>
+                    </div>";
+                    
+                    echo "</td>";
+            
+                ?> 
+                        
+            
+                      </div>
+    
+                      <div> 
+                       
+                      <?php
                         
                        
-                      </select>
-                    </td> 
-                  
-
-                  
-                    <td>
-                    <select name="NoBag" size="10">
-                        <option>ラーメン</option>
-                        <option>ファミレス</option>
-                        <option>中華</option>
-                        <option>カフェ</option>
-                        <option>和食</option>
-                        <option>イタリアン</option>
-                        <option>寿司</option>
-                        <option>焼肉</option>
-                        <option>バーガー</option>
+                        $results=$CategoryAdd->get_CBag_Name();
+                   
+                        echo "<td>";
+                        echo "<select onchange='Yesbag(this)' name='YesBag' size='10'>";
+                            if (count($results) > 0) {
+                                foreach ($results as $row) {
                        
-                      </select>
-                    </td> 
+                             echo "<option value=". htmlspecialchars($row['CBagName'], ENT_QUOTES, 'UTF-8') . ">" . htmlspecialchars($row['CBagName'], ENT_QUOTES, 'UTF-8') . "</option>\n";
+                        
+                                }
+                         } else {
+                            echo "<option>データが見つかりませんでした。</option>\n";
+                            }
+                        echo " </select>";
+                        echo "<br>";
+                        echo "<input type='text' name='Yesbag_tx' value='' readonly>";
+                       
+                    ?> 
+                      </div>
+    
+                    <div> 
+                    <?php
+                        
+                    
+                    $results=$CategoryAdd->get_CBag_Name();
+                    
+                    echo "<td>";
+                    echo "<select onchange='Nobag(this)' name='NoBag' size='10'>";
+                        if (count($results) > 0) {
+                            foreach ($results as $row) {
+                   
+                                echo "<option value=". htmlspecialchars($row['CBagName'], ENT_QUOTES, 'UTF-8') . ">" . htmlspecialchars($row['CBagName'], ENT_QUOTES, 'UTF-8') . "</option>\n";
+                    
+                            }
+                     } else {
+                        echo "<option>データが見つかりませんでした。</option>\n";
+                        }
+                    echo " </select>";
+                    echo "<br>";
+                    echo "<input type='text' name='Nobag_tx' value='' readonly>";
+    
+                    
+                    
+            
+                ?> 
              </tr>
             
             <!-- ここまで -->
             
-          
+                  
+                    
         </div>
+    
     </table>
-       
+    <?php foreach($errs as $e) : ?>
+            <span style="color:red"><?= $e ?></span>
+            <br>
+    <?php endforeach; ?>
           
 <div class="btn">
-<button type="button" id="addbtn">追加</button>
+<button action="CategoryQuestionAdd.php" method="POST" class="addbtn">追加</button>
 <button onclick="location.href='CategoryQuestion.php'" type="button" id="return">戻る</button>
 </div>
 </div>
  </table> 
-<script>
-    function butotnClick(){
-        alert('追加完了しました！');
-    }
-    
-    let button = document.getElementById('addbtn');
-    button.addEventListener('click', butotnClick); 
-</script> 
+
 </body>

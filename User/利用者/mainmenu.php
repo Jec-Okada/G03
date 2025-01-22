@@ -37,7 +37,7 @@ require_once './UserDAO/DAO.php';
         try {
             $dbh = DAO2::get_db_connect();
        
-            $sql = 'SELECT NContent FROM Notice ORDER BY NID DESC'; // `users` はデータベース内のテーブル名
+            $sql = 'SELECT top(5) NContent  FROM Notice ORDER BY NID DESC'; // `users` はデータベース内のテーブル名
             $stmt = $dbh->prepare($sql);
         
             // クエリを実行
