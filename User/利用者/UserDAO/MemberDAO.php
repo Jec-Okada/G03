@@ -23,11 +23,12 @@ class MemberDAO{
 
         $stmt->execute();
 
-        $member = $stmt->fetchObject('Members');
+        $member = $stmt->fetch(PDO::FETCH_ASSOC);
+
         
 
         if($member !== false){
-            if(password_verify($Pass, $member->Pass)){
+            if(password_verify($Pass, $member['Pass'])){
                 return $member;
             }
         }
