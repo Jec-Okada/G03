@@ -1,6 +1,19 @@
 <?php
 require_once './AdminDAO/BasicQDAO.php';
+$BasicDetail = new BasicQDAO();
 
+
+
+if (isset($_GET['BQID']) && is_numeric($_GET['BQID'])) {
+    $BQID = (int)$_GET['BQID'];
+}
+    
+    
+$detail = $BasicDetail->BasicQ_ID_BQuestion($BQID); // 配列として取得
+
+if (!$detail) {
+    die("指定された店舗が見つかりませんでした。");
+}
 
 
 
@@ -95,11 +108,15 @@ require_once './AdminDAO/BasicQDAO.php';
                                         <th>NO時の質問</th>
                                     </tr>
                                     <tr>
-                                        <td>5</td>
-                                        <td>麺食べたいの？</td>
-                                        <td>1</td>
-                                        <td>10</td>
-                                        <td>1</td>
+                                        <td><?php echo htmlspecialchars($detail['BQID'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                        <td><?php echo htmlspecialchars($detail['BQuestion'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                <?php   $BasicChangeUrl = 'BasicQuestionChange.php?BQID=' . urlencode($detail['RQID']);
+                                        echo "<td><a href='" . $BasicChangeUrl . "'>" . (is_null($detail['YQID']) ? "" : htmlspecialchars($detail['RQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";?>
+                                <?php   $BasicChangeUrl = 'BasicQuestionChange.php?BQID=' . (is_null($detail['YQID']) ? "0" :urlencode($detail['YQID']));
+                                        echo "<td><a href='" . $BasicChangeUrl . "'>" . (is_null($detail['YQID']) ? "" : htmlspecialchars($detail['YQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";?>
+                                <?php   $BasicChangeUrl = 'BasicQuestionChange.php?BQID=' . (is_null($detail['YQID']) ? "0" :urlencode($detail['NQID']));
+                                        echo "<td><a href='" . $BasicChangeUrl . "'>" . (is_null($detail['YQID']) ? "" : htmlspecialchars($detail['NQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";?>
+                                       
                                     </tr>
                             </div>
                         </table>
@@ -108,7 +125,7 @@ require_once './AdminDAO/BasicQDAO.php';
             </div>
            
         </tr>
-        <div class="container"> 
+        <!-- <div class="container"> 
             <div class="table-responsive text-nowrap">
                 <table border="1" class="table table-bordered">
                     <tr class="">
@@ -116,7 +133,7 @@ require_once './AdminDAO/BasicQDAO.php';
                             <div class="table-responsive text-nowrap">
                                 <table border="1" class="table table-bordered">
                                     <tr class="">
-                                        <td><h2>前の質問</h2></td><!--前の質問に変える-->
+                                        <td><h2>前の質問</h2></td> 前の質問に変える
                                         <td><h2>YES時の質問</h2></td>
                                         <td><h2>NO時の質問</h2></td></div>
                                     </tr>
@@ -176,7 +193,7 @@ require_once './AdminDAO/BasicQDAO.php';
                             </div>
                         </table>
                     </tr>
-                </table>
+                </table> -->
                 <div>
                     <input type="checkbox" id="horns" name="horns" />削除の場合は、こちらにチェックして削除ボタンをクリック
                     <button type="button"  name="delete" id="delete">削除</button>

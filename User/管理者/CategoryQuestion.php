@@ -87,14 +87,14 @@
        
     </tr>
     <tr>
-        <td><a id="detail" href="CategoryQuestionChange.php">1</a></td>
+        <td>1</td>
         <td>もちろん濃い味が好きだよね？</td>
         <td>10</td>
         <td>21</td>
         <td>5</td>
     </tr>
     <tr >
-        <td><a id="detail" href="CategoryQuestionChange.php">2</a></td>
+        <td>2</td>
         <td>コース料理なんて言わないよね？</td>  
         <td>12</td>
         <td>23</td>
@@ -102,14 +102,14 @@
     </tr>
 
     <tr>
-        <td><a id="detail" href="CategoryQuestionChange.php">3</a></td>
+        <td>3</a></td>
         <td>母国愛はありますか？</td>
         <td>9</td>
         <td>11</td>
         <td>7</td>
     </tr>
     <tr>
-        <td><a id="detail" href="CategoryQuestionChange.php">4</a></td>
+        <td>4</td>
         <td>もしかしてお腹すいてない？</td>
         <td>15</td>
         <td>13</td>
