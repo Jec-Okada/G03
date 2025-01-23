@@ -15,10 +15,10 @@ if (isset($_SESSION['selectedShopID'])) {
 
     if (isset($urls['error'])) {
         $iframeSrc = ""; // エラー時はデフォルトの空値
-        $error = htmlspecialchars($urls['error']);
+        $error = htmlspecialchars($urls['error'] ?? '', ENT_QUOTES, 'UTF-8');
     } else {
         // 1つ目のCoordinateShopを利用
-        $iframeSrc = htmlspecialchars($urls[0]); // 最初のURLを選択
+        $iframeSrc = htmlspecialchars($urls[0] ?? '', ENT_QUOTES, 'UTF-8'); // 最初のURLを選択
     }
 } else {
     // セッションがない場合はランダムな店舗を表示
