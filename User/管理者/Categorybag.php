@@ -1,3 +1,8 @@
+<?php
+        require_once './AdminDAO/CBagDAO.php';
+        $CBagID = new CBagDAO();
+        $results=$CBagID->get_CBag_NameId();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -74,57 +79,26 @@
     <div style="border:solid 1px; "></div>
     <div class="container">
     <div class="table-responsive text-nowrap">
-        <table>
-    <tr>
-      <td>
-        <table border ="left" class="table table-bordered">
-        <tr>
-            <th>カテゴリー(袋)ID</th>
-            <th>カテゴリー(袋)名</th>
-        </tr>
-        <tr>
-            <td class=""> <a id="detail" href="CategoryDetail.php">1(リンクになる予定)</a></td>
-            <td>さっぱり系</td>
-        </tr>
-        <tr >
-            <td class="">2</td>
-            <td>こってり系</td>  
-        </tr>
+    <table border="1" class="table table-bordered">
+    <?php
 
-        <tr>
-            <td class="">3</td>
-            <td>旨辛系</td>
-        </tr>
-    </table>
-    </td>
-    <td valign="top">
-        <table border class="table table-bordered">
-            
-        <tr>
-            <th>カテゴリー(袋)ID</th>
-            <th>カテゴリー(袋)名</th>
-        </tr>
-        <tr>
-            <td class="">4</td>
-            <td>ヘルシー系</td>
-        </tr>
-        <tr >
-            <td class="">5</td>
-            <td>がっつり系</td>  
-        </tr>
+        
+    if (count($results) > 0) {
+        foreach ($results as $row) {
+            echo "<tr>\n";
+            echo "<td>" . (is_null($row['CBagID']) ? "" : htmlspecialchars($row['CBagID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+            $shopDetailUrl = 'CategoryDetail.php?CBagID=' . urlencode($row['CBagID']); // 店舗詳細ページのURL
+            echo "<td><a href='" . $shopDetailUrl . "'>" . htmlspecialchars($row['CBagName'], ENT_QUOTES, 'UTF-8') . "</a></td>\n";
+            echo "</tr>\n";
+        }
+        } else {
+            echo "<td>データが見つかりませんでした。</td>\n";
+        }
+        echo "</td>\n";
+    ?>
 
-        <tr>
-            <td class="">6</td>
-            <td>次郎系</td>
-        </tr>
-      </table>
-  </td>
-</tr>
-</table>
-    <button onclick="location.href='CategoryBagAdd.php'" type="button">追加画面へ</button>
-    <button onclick="location.href='adminmenu.php'" type="button">戻る</button></a>
-</div>
-</div>   
-
+<p><button onclick="location.href='ShopAdd.php'" type="button">店舗追加へ</button>
+<button onclick="location.href='adminmenu.php'" type="button">戻る</button></p>
+</div>    
 </body>
 </html>

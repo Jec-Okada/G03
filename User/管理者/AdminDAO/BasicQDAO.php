@@ -26,46 +26,73 @@ class BasicQDAO{
         
           
     }
-
-    public function BasicQ_YQID()//ベーシック質問一覧 Yes時の質問内容
+    public function BasicQ_ID_BQuestion(int $BQID)//ベーシック質問一覧 IDで質問内容を検索
     {
       
       $dbh = DAO::get_db_connect();
-      $sql="SELECT BQuestion FROM BesicQuestion where YQID=BQID";
+      $sql="SELECT * FROM BesicQuestion where BQID=:BQID";
 
-      $stmt = $dbh->query($sql);
+      $stmt = $dbh->prepare($sql);
+
+      $stmt->bindValue(':BQID',$BQID,PDO::PARAM_INT);
       
-      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      return $results;
+      $stmt->execute();
+
+    $data = $stmt->fetch(PDO::FETCH_ASSOC); 
+    return $data;
         
           
     }
 
-    public function BasicQ_NQID()//ベーシック質問一覧 No時の質問内容
+    public function BasicQ_YQID(int $YQID)//ベーシック質問一覧 Yes時の質問内容
     {
       
       $dbh = DAO::get_db_connect();
-      $sql="SELECT BQuestion FROM BesicQuestion where NQID=BQID";
+      $sql="SELECT BQuestion FROM BesicQuestion where BQID=:YQID";
 
-      $stmt = $dbh->query($sql);
+      $stmt =$dbh->prepare($sql);
+
+      $stmt->bindValue(':YQID',$YQID,PDO::PARAM_INT);
       
+      $stmt->execute();
+      
+
+      
+
       $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      return $results;
+      
+      return $results[0]['BQuestion'];
+        
+      
+          
+    }
+
+    public function BasicQ_NQID(int $NQID)//ベーシック質問一覧 No時の質問内容
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql="SELECT BQuestion FROM BesicQuestion where BQID=:NQID";
+
+      $stmt =$dbh->prepare($sql);
+
+      $stmt->bindValue(':NQID',$NQID,PDO::PARAM_INT);
+      
+      $stmt->execute();
         
           
     }
 
-    public function BasicQ_RQID()//ベーシック質問一覧 前の質問内容
+    public function BasicQ_RQID(int $RQID)//ベーシック質問一覧 前の質問内容
     {
       
       $dbh = DAO::get_db_connect();
-      $sql="SELECT BQuestion FROM BesicQuestion where RQID=BQID";
+      $sql="SELECT BQuestion FROM BesicQuestion where BQID=:RQID";
 
-      $stmt = $dbh->query($sql);
+      $stmt =$dbh->prepare($sql);
+
+      $stmt->bindValue(':RQID',$RQID,PDO::PARAM_INT);
       
-      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      return $results;
-        
+      $stmt->execute();
           
     }
 
@@ -194,10 +221,94 @@ class BasicQDAO{
         
 
     }
+    //ここから下削除機能
 
-    
+    public function BasicQ_Update_YQID(int $BQID)//ベーシック質問  削除した質問が入っていた質問のYQIDを初期化 & 変更機能 Yesについていた質問のYQIDを初期化
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql = "update BesicQuestion set YQID=0 where YQID=:YQID";
 
+            $stmt =$dbh->prepare($sql);
+
+            $stmt->bindValue(':YQID',$BQID,PDO::PARAM_INT);
+            
+            $stmt->execute();
+
+        
+
+
+          }  
+    public function BasicQ_Update_NQID(int $BQID)//ベーシック質問  削除した質問が入っていた質問のNQIDを初期化 & 変更機能 Noについていた質問のNQIDを初期化
+    {
+            
+            $dbh = DAO::get_db_connect();
+            $sql = "update BesicQuestion set NQID=0 where YQID=:YQID";
+      
+                  $stmt =$dbh->prepare($sql);
+      
+                  $stmt->bindValue(':NQID',$BQID,PDO::PARAM_INT);
+                  
+                  $stmt->execute();
+      
+              
+      
+    }
+    public function BasicQ_Update_RQID(int $BQID)//ベーシック質問  削除した質問が入っていた質問のRQIDを初期化 & 前の質問についていた質問のRQIDを初期化
+    {
+            
+            $dbh = DAO::get_db_connect();
+            $sql = "update BesicQuestion set RQID=0 where YQID=:YQID";
+      
+                  $stmt =$dbh->prepare($sql);
+      
+                  $stmt->bindValue(':RQID',$BQID,PDO::PARAM_INT);
+                  
+                  $stmt->execute();
+      
+              
+      
+    }
+
+    public function BasicQ_Delete(int $BQID)//ベーシック質問 質問削除機能 
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql = "delete BesicQuestion where BQID=:BQID";
+
+            $stmt =$dbh->prepare($sql);
+
+            $stmt->bindValue(':BQID',$BQID,PDO::PARAM_STR);
+           
+            
+            $stmt->execute();
+
+        
+
+    }
+    //ここから下変更機能 YQIDとNQIDとRQIDが数珠つなぎ的に変わっていくから変更は無理！！！！！！！！！！！！！！
+    public function BasicQ_Update(string $BQuestion,int $YQID,int $NQID,int $RQID)//ベーシック質問  変更機能
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql = "Update BesicQuestion set YQID=:YQID,NQID=:NQID,RQID=:RQID where BQuestion=:BQuestion";
+
+            $stmt =$dbh->prepare($sql);
+
+            $stmt->bindValue(':BQuestion',$BQuestion,PDO::PARAM_STR);
+            $stmt->bindValue(':YQID',$YQID,PDO::PARAM_INT);
+            $stmt->bindValue(':NQID',$NQID,PDO::PARAM_INT);
+            $stmt->bindValue(':RQID',$RQID,PDO::PARAM_INT);
+            $stmt->execute();
+      
+      
+        
     
+          
+    }
+  
+  
+
 }
 
 

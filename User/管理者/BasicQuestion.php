@@ -101,7 +101,8 @@
             foreach ($results as $row) {
                 echo "<tr>\n";
                 echo "<td>" . (is_null($row['BQID']) ? "" : htmlspecialchars($row['BQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
-                echo "<td>" . (is_null($row['BQuestion']) ? "" : htmlspecialchars($row['BQuestion'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                $BasicChangeUrl = 'BasicQuestionChange.php?BQID=' . urlencode($row['BQID']);
+                echo "<td><a href='" . $BasicChangeUrl . "'>" . htmlspecialchars($row['BQuestion'], ENT_QUOTES, 'UTF-8') . "</td>\n";
                 echo "<td>" . (is_null($row['YQID']) ? "" : htmlspecialchars($row['YQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
                 echo "<td>" . (is_null($row['NQID']) ? "" : htmlspecialchars($row['NQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
                 echo "<td>" . (is_null($row['RQID']) ? "" : htmlspecialchars($row['RQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";

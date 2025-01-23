@@ -102,7 +102,7 @@
         echo "</td>\n";
         ?>
 
-        <p><button onclick="location.href='ShopAdd.php'" type="button">店舗追加へ</button>
+        <p><button onclick="location.href='ShopAdd.php'" type="button">追加画面へ</button>
         
         <button onclick="location.href='adminmenu.php'" type="button">戻る</button></p>
     

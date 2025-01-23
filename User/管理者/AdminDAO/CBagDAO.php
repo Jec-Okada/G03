@@ -31,21 +31,21 @@ class CBagDAO
     }
     
 
-    public function get_CBag_NameId(int $CBagID)// 一覧用
+    public function get_CBag_NameId()// 一覧用
     {
         $dbh = DAO::get_db_connect();
 
-        $sql = "SELECT CBagID,CBagName FROM CBag";
+        $sql = "SELECT CBagID,CBagName FROM CategoryBag";
 
         $stmt = $dbh->prepare($sql);
+        
 
-        $stmt->execute();
+        $stmt->execute(); 
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
 
-        $data = [];
-        while($row = $stmt->fetchObject('CBag')){
-            $data[] = $row;
-        }
-        return $data;
+        
+        
     }
 
     public function insert(string $CBagName)// 袋のみ追加
