@@ -66,6 +66,13 @@ class CBagDAO
            
         
 }///ここから下はできていないfunction
+public function get_CBagName_By_CBagID($cBagID) {
+    $query = "SELECT CBagName FROM CategoryBag WHERE CBagID = :cBagID";
+    $stmt = $this->pdo->prepare($query);
+    $stmt->bindValue(':cBagID', $cBagID, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn(); // CBagNameを返す
+}
 
 }
 ?>

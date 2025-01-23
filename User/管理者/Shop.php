@@ -1,3 +1,8 @@
+<?php
+    require_once './AdminDAO/ShopDAO.php';
+    $Shop = new ShopDAO();
+    $results=$Shop->get_Shop_NameId();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,18 +85,15 @@
     <table border="1" class="table table-bordered">
    
     <?php
-        require_once './AdminDAO/ShopDAO.php';
 
-        $Shop = new ShopDAO();
-        $results=$Shop->get_Shop_NameId();
-        
         
         if (count($results) > 0) {
             foreach ($results as $row) {
                 echo "<tr>\n";
-                echo "<td>" . htmlspecialchars($row['ShopID'], ENT_QUOTES, 'UTF-8') . "</td>\n";
-                echo "<td>" . htmlspecialchars($row['ShopName'], ENT_QUOTES, 'UTF-8') . "</td>\n";
-                echo "<td>袋名(予定)</td>\n";
+                echo "<td>" . (is_null($row['ShopID']) ? "" : htmlspecialchars($row['ShopID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                $shopDetailUrl = 'ShopDetail.php?ShopID=' . urlencode($row['ShopID']); // 店舗詳細ページのURL
+                echo "<td><a href='" . $shopDetailUrl . "'>" . htmlspecialchars($row['ShopName'], ENT_QUOTES, 'UTF-8') . "</a></td>\n";
+                echo "<td>" . (is_null($row['CBagName']) ? "" : htmlspecialchars($row['CBagName'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
                 echo "</tr>\n";
             }
         } else {

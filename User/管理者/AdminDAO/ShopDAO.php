@@ -19,42 +19,55 @@ public int $CbagID;
 
 class ShopDAO
 {
-    public function get_Shop_detail(int $ShopID)// 店舗詳細用
-    
-    {
-        $dbh = DAO::get_db_connect();
-
-        $sql = "SELECT * FROM Shop where ShopID=:ShopID";
-
-        $stmt = $dbh->prepare($sql);
-
-        $stmt->bindValue(':ShopID',$ShopID,PDO::PARAM_INT);
-
-        $stmt->execute();
-
-        $data = [];
-        while($row = $stmt->fetchObject('Shop')){
-            $data[] = $row;
-        }
-        return $data;
+    private $pdo;
+    public function __construct() {
+        // 静的メソッドで接続を取得
+        $this->pdo = DAO::get_db_connect();
     }
+    // public function get_Shop_detail(int $ShopID)// 店舗詳細用
+    
+    // {
+    //     $dbh = DAO::get_db_connect();
+
+    //     $sql = "SELECT * FROM Shop where ShopID=:ShopID";
+
+    //     $stmt = $dbh->prepare($sql);
+
+    //     $stmt->bindValue(':ShopID',$ShopID,PDO::PARAM_INT);
+
+    //     $stmt->execute();
+
+    //     $data = [];
+    //     while($row = $stmt->fetchObject('Shop')){
+    //         $data[] = $row;
+    //     }
+    //     return $data;
+    // }
+    public function get_Shop_detail(int $ShopID)
+{
+    $dbh = DAO::get_db_connect();
+    $sql = "SELECT * FROM Shop WHERE ShopID = :ShopID";
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':ShopID', $ShopID, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $data = $stmt->fetch(PDO::FETCH_ASSOC); // 配列で結果を取得
+    return $data; // そのまま配列を返す
+}
+
     
 
-    public function get_Shop_NameId()// 店舗一覧用
-    {
-        $dbh = DAO::get_db_connect();
+    // ShopDAO.php の get_Shop_NameId() を修正
+public function get_Shop_NameId() {
+    $sql = "SELECT s.ShopID, s.ShopName, cb.CBagName
+            FROM Shop s
+            LEFT JOIN ShopInCB sl ON s.ShopID = sl.Shop
+            LEFT JOIN Categorybag cb ON sl.CBagID = cb.CBagID";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
-        $sql = "SELECT ShopID,ShopName FROM Shop";
-
-        $stmt = $dbh->query($sql);
-
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $stmt->execute();
-
-        return $results;
-
-    }
 
     public function insert(string $ShopName,string $MapPoint,string $ShopAddress,
                            string $ShopURL,string $ShopChar,string $StartTime1,string $StartTime2,

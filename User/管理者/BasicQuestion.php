@@ -81,11 +81,11 @@
     <tr class="table-info">
         <th>質問ID</th>
         <th>質問内容</th>
-        <th>Yes時の質問内容</th>
-        <th>No時の質問内容</th>
-        <th>前の質問内容</th>
-        <th>Yes時のカテゴリ質問内容</th>
-        <th>No時のカテゴリ質問内容</th>
+        <th>Yes時の質問ID</th>
+        <th>No時の質問ID</th>
+        <th>前の質問ID</th>
+        <th>Yes時のカテゴリ質問ID</th>
+        <th>No時のカテゴリ質問ID</th>
        
     </tr>
     <?php
