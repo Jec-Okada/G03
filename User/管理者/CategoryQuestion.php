@@ -1,3 +1,8 @@
+<?php
+    require_once './AdminDAO/CategoryQDAO.php';
+    $CQ = new CategoryQDAO();
+    $results=$CQ->CategoryQ_BQuestion();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,8 +81,8 @@
 <div class="container">
 <div class="table-responsive text-nowrap">
 <table border="1" class="table table-bordered">
-    <input type=”text” id="search" placeholder="検索" >
-    <button class="search" type="button">検索</button>
+    <!-- <input type=”text” id="search" placeholder="検索" >
+    <button class="search" type="button">検索</button> -->
     <tr class="table-info">
         <th>質問ID</th>
         <th>質問内容</th>
@@ -86,35 +91,33 @@
         <th>前の質問ID</th>
        
     </tr>
-    <tr>
-        <td>1</td>
-        <td>もちろん濃い味が好きだよね？</td>
-        <td>10</td>
-        <td>21</td>
-        <td>5</td>
-    </tr>
-    <tr >
-        <td>2</td>
-        <td>コース料理なんて言わないよね？</td>  
-        <td>12</td>
-        <td>23</td>
-        <td>6</td>
-    </tr>
+    <?php
+        require_once './AdminDAO/DAO.php';
 
-    <tr>
-        <td>3</a></td>
-        <td>母国愛はありますか？</td>
-        <td>9</td>
-        <td>11</td>
-        <td>7</td>
-    </tr>
-    <tr>
-        <td>4</td>
-        <td>もしかしてお腹すいてない？</td>
-        <td>15</td>
-        <td>13</td>
-        <td>8</td>
-    </tr>
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT * FROM CategoryQuestion";
+        $stmt = $dbh->query($sql);
+        
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        if (count($results) > 0) {
+            foreach ($results as $row) {
+                echo "<tr>\n";
+                echo "<td>" . (is_null($row['CQID']) ? "" : htmlspecialchars($row['CQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                $shopDetailUrl = 'CategoryQuestionChange.php?CQID=' . urlencode($row['CQuestion']); // 削除画面へ
+                echo "<td><a href='" . $shopDetailUrl . "'>" . htmlspecialchars($row['CQuestion'], ENT_QUOTES, 'UTF-8') . "</a></td>\n";
+                echo "<td>" . (is_null($row['BQID']) ? "" : htmlspecialchars($row['BQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                echo "<td>" . (is_null($row['YesCBID']) ? "" : htmlspecialchars($row['YesCBID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                echo "<td>" . (is_null($row['NoCBID']) ? "" : htmlspecialchars($row['NoCBID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                echo "</tr>\n";
+            }
+        } else {
+            echo "<tr><td colspan='7'>データが見つかりませんでした。</td></tr>\n";
+        }
+            echo "</td>\n";
+            echo "</tbody>\n";
+            echo "</table>\n"; // テーブル終了
+        ?>
 
 </table>    
 
