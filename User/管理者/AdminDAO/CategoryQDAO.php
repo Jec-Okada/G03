@@ -89,88 +89,173 @@ class CategoryQDAO{
           
     }
 
+    public function get_CBag_Name()// カテゴリ質問追加 選択する袋名
+    {
+        $dbh = DAO::get_db_connect();
 
-    public function CategoryQ_Insert(string $CQuestion,int $BQID,int $YesCID,int $NoCID)//カテゴリ質問追加 追加機能
+        $sql = "SELECT CBagName FROM CategoryBag";
+
+        $stmt = $dbh->query($sql);
+
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      return $results;
+    }
+
+    public function CategoryQ_ID_search(string $CQuestion)//ベーシック質問追加 選択する質問内容のID検索
     {
       
       $dbh = DAO::get_db_connect();
-      $sql = "INSERT INTO CategoryQuestion(CQuestion,BQID)values(:CQuestion,:BQID)";
+      $sql="SELECT CQID FROM CategoryQuestion where CQuestion = :CQuestion";
+
+      $stmt =$dbh->prepare($sql);
+
+      $stmt->bindValue(':CQuestion',$CQuestion,PDO::PARAM_STR);
+      
+      $stmt->execute();
+      
+
+      
+
+      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      
+      return $results[0]['CQID'];
+        
+          
+    }
+
+    public function CBag_ID_search(string $CBagName)//ベーシック質問追加 選択する質問内容のID検索
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql="SELECT CBagID FROM CategoryBag where CBagName = :CBagName";
+
+      $stmt =$dbh->prepare($sql);
+
+      $stmt->bindValue(':CBagName',$CBagName,PDO::PARAM_STR);
+      
+      $stmt->execute();
+      
+
+      
+
+      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      
+      return $results[0]['CBagID'];
+        
+          
+    }
+
+    public function CategoryQ_BQtable_Insert(string $BQuestion,int $RQID,int $YCID,int $NCID)//ベーシック質問追加 追加機能
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql = "INSERT INTO BesicQuestion(BQuestion,RQID,YCID,NCID)values(:BQuestion,:RQID,:YCID,:NCID)";
+
+            $stmt =$dbh->prepare($sql);
+
+            $stmt->bindValue(':BQuestion',$BQuestion,PDO::PARAM_STR); 
+            $stmt->bindValue(':RQID',$RQID,PDO::PARAM_INT);
+            $stmt->bindValue(':YCID',$YCID,PDO::PARAM_INT);
+            $stmt->bindValue(':NCID',$NCID,PDO::PARAM_INT);
+           
+            $stmt->execute();
+      
+      
+        
+    
+          
+    }
+
+    public function CategoryQ_InsertCQ(string $CQuestion,int $BQID,int $YesCBID,int $NoCBID)//カテゴリ質問追加(CQ) 追加機能
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql = "INSERT INTO CategoryQuestion(CQuestion,BQID,YesCBID,NoCBID)values(:CQuestion,:BQID,:YesCBID,:NoCBID)";
 
             $stmt =$dbh->prepare($sql);
 
             $stmt->bindValue(':CQuestion',$CQuestion,PDO::PARAM_STR);
             $stmt->bindValue(':BQID',$BQID,PDO::PARAM_INT);
+            $stmt->bindValue(':YesCBID',$YesCBID,PDO::PARAM_INT);
+            $stmt->bindValue(':NoCBID',$NoCBID,PDO::PARAM_INT);
 
             $stmt->execute();
       
-      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      return $results;
-    
-        
-    
           
     }
 
 
-    public function BasicQ_Insert_YorN(string $BQuestion,int $YCID,int $NCID)//カテゴリ質問追加 追加機能 ベーシック質問の下 YesにつくかNoにつくか
+    public function BasicQ_Update_Yes(string $BQuestion,int $YQID)//カテゴリ質問追加 追加機能 ベーシック質問の下 Yesにつく
     {
       
       $dbh = DAO::get_db_connect();
-      $sql = "INSERT INTO BesicQuestion(YCID,NCID) values(:YCID,:NCID) where BQuestion=:BQuestion";
+      $sql = "update BesicQuestion set YQID=:YQID where BQuestion=:BQuestion";
 
             $stmt =$dbh->prepare($sql);
 
             $stmt->bindValue(':BQuestion',$BQuestion,PDO::PARAM_STR);
-            $stmt->bindValue(':YCID',$YCID,PDO::PARAM_INT);
-            $stmt->bindValue(':NCID',$NCID,PDO::PARAM_INT);
+            $stmt->bindValue(':YQID',$YQID,PDO::PARAM_INT);
+            
             
             $stmt->execute();
 
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $results;
-
+       
     }
-
-
-    public function CategoryQ_YCBID(string $CQuestion,int $YesCBID)//カテゴリ質問追加 Yes時の袋名
+    public function BasicQ_Update_No(string $BQuestion,int $NQID)//カテゴリ質問追加 追加機能 ベーシック質問の下 Noにつく
     {
       
       $dbh = DAO::get_db_connect();
-      $sql="INSERT INTO CategoryQuestion(YesCBID)values(:YesCBID) WHERE BQuestion=:BQuestion";
+      $sql = "update BesicQuestion set NQID=:NQID where BQuestion=:BQuestion";
 
-      $stmt = $dbh->query($sql);
+            $stmt =$dbh->prepare($sql);
+
+            $stmt->bindValue(':BQuestion',$BQuestion,PDO::PARAM_STR);
+            
+            $stmt->bindValue(':NQID',$NQID,PDO::PARAM_INT);
+            
+            $stmt->execute();
+
+        
+
+    }
+
+    public function YesCBag_in_CQID(string $CQID,int $YesCBID)//カテゴリ質問追加 Yes時の袋にカテゴリ質問IDを追加
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql="update CategoryBag set CQID=:CQID WHERE CBagID=:YesCBID";
+
+      $stmt =$dbh->prepare($sql);
       $stmt->bindValue(':YesCBID',$YCID,PDO::PARAM_INT);
-      $stmt->bindValue(':BQuestion',$CQuestion,PDO::PARAM_STR);
+      $stmt->bindValue(':CQID',$CQuestion,PDO::PARAM_STR);
      
       
       $stmt->execute();
 
       
-      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      return $results;
+      
         
           
     }
-    public function CategoryQ_NCBID(string $CQuestion,int $NoCBID)//カテゴリ質問追加 No時の袋名
+    public function NoCBag_in_CQID(string $CQID,int $NoCBID)//カテゴリ質問追加 No時の袋にカテゴリ質問IDを追加
     {
       
       $dbh = DAO::get_db_connect();
-      $sql="INSERT INTO CategoryQuestion(NoCBID)values(:NoCBID) WHERE BQuestion=:BQuestion";
+      $sql="update CategoryBag set CQID=:CQID WHERE CBagID=:NoCBID";
 
-      $stmt = $dbh->query($sql);
+      $stmt =$dbh->prepare($sql);
       $stmt->bindValue(':NoCBID',$YCID,PDO::PARAM_INT);
-      $stmt->bindValue(':BQuestion',$CQuestion,PDO::PARAM_STR);
+      $stmt->bindValue(':CQID',$CQuestion,PDO::PARAM_STR);
      
       
       $stmt->execute();
 
       
-      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      return $results;
+      
         
           
     }
-
+    
     
 }
 

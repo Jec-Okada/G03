@@ -103,7 +103,7 @@ class BasicQDAO{
 //ここから下追加機能
 
 
-    public function BasicQ_select()//ベーシック質問追加 選択する質問内容
+    public function BasicQ_select()//ベーシック質問追加 選択する質問内容IDで追加
     {
       
       $dbh = DAO::get_db_connect();
@@ -116,9 +116,31 @@ class BasicQDAO{
         
           
     }
+    public function BasicQ_ID_search(string $BQuestion)//ベーシック質問追加 選択する質問内容のID検索
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql="SELECT BQID FROM BesicQuestion where BQuestion = :BQuestion";
+
+      $stmt =$dbh->prepare($sql);
+
+      $stmt->bindValue(':BQuestion',$BQuestion,PDO::PARAM_STR);
+      
+      $stmt->execute();
+      
+
+      
+
+      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      
+      return $results[0]['BQID'];
+        
+          
+    }
 
 
-    public function BasicQ_Insert(string $BQuestion,int $YQID,int $NQID,int $RQID,int $YCID,int $NCID)//ベーシック質問追加 追加機能
+
+    public function BasicQ_Insert(string $BQuestion,int $YQID,int $NQID,int $RQID)//ベーシック質問追加 追加機能
     {
       
       $dbh = DAO::get_db_connect();
@@ -132,33 +154,48 @@ class BasicQDAO{
             $stmt->bindValue(':RQID',$RQID,PDO::PARAM_INT);
             $stmt->execute();
       
-      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      return $results;
-    
+      
         
     
           
     }
 
 
-    public function BasicQ_Insert_YorN(string $BQuestion,int $YCID,int $NCID)//ベーシック質問追加 追加機能 YesにつくかNoにつくか
+    public function BasicQ_Insert_Yes(string $BQuestion,int $YCID)//ベーシック質問追加 追加機能 Yesにつく
     {
       
       $dbh = DAO::get_db_connect();
-      $sql = "INSERT INTO BesicQuestion(YCID,NCID) values(:YCID,:NCID) where BQuestion=:BQuestion";
+      $sql = "update BesicQuestion set YCID=:YCID where BQuestion=:BQuestion";
 
             $stmt =$dbh->prepare($sql);
 
             $stmt->bindValue(':BQuestion',$BQuestion,PDO::PARAM_STR);
             $stmt->bindValue(':YCID',$YCID,PDO::PARAM_INT);
+            
+            
+            $stmt->execute();
+
+        
+
+    }
+    public function BasicQ_Insert_No(string $BQuestion,int $NCID)//ベーシック質問追加 追加機能 Noにつく
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql = "update BesicQuestion set NCID=:NCID where BQuestion=:BQuestion";
+
+            $stmt =$dbh->prepare($sql);
+
+            $stmt->bindValue(':BQuestion',$BQuestion,PDO::PARAM_STR);
             $stmt->bindValue(':NCID',$NCID,PDO::PARAM_INT);
             
             $stmt->execute();
 
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $results;
+        
 
     }
+
+    
 
     
 }

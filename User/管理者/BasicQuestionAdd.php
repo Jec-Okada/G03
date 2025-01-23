@@ -1,3 +1,89 @@
+<?php
+require_once './AdminDAO/BasicQDAO.php';
+$BasicAdd = new BasicQDAO();
+$errs=[];
+$BQuestion = '';
+$BeforeQuestion = '';
+$YesQuestion ='';
+$NoQuestion = '';
+$YorN = '';
+$YCID = 0;
+$NCID = 0;
+
+if($_SERVER['REQUEST_METHOD']==='POST'){
+    $BQuestion = $_POST['BasicQuestion'];
+    $BeforeQuestion = $_POST['Beforequestion_tx'];
+    $YesQuestion = $_POST['Yesquestion_tx'];
+    $NoQuestion = $_POST['Noquestion_tx'];
+    $YorN = $_POST['YorN'];
+if($BQuestion === ''){
+    $errs[]='質問内容を入力してください';
+
+  }
+if(empty($errs)){
+    
+
+    if($BeforeQuestion !== ''){
+            $BeforeQuestionID = intval($BasicAdd->BasicQ_ID_search($BeforeQuestion));
+        }
+        else{
+            $BeforeQuestionID=0;
+        }
+    if($YesQuestion !== ''){
+            $YesQuestionID = intval($BasicAdd->BasicQ_ID_search($YesQuestion));
+        }else{
+            $YesQuestionID=0;
+        }
+    if($NoQuestion !== ''){
+            $NoQuestionID = intval($BasicAdd->BasicQ_ID_search($NoQuestion));
+        }else{
+            $NoQuestionID=0;
+        }
+    
+    
+
+    $result1 = $BasicAdd->BasicQ_Insert($BQuestion,$YesQuestionID,$NoQuestionID,$BeforeQuestionID);
+    
+    if($BeforeQuestionID !== 0){
+    if($YorN ==='yes'){
+        $YCID = $BeforeQuestionID;
+        $result2 = $BasicAdd->BasicQ_Insert_Yes($BeforeQuestion,$YCID);
+
+    }else{
+        $NCID = $BeforeQuestionID;
+        $result2 = $BasicAdd->BasicQ_Insert_No($BeforeQuestion,$NCID);
+
+    }
+    }
+
+    
+     
+
+
+    if($result1 !== false && $result2 !== false){
+    echo '<script type="text/javascript">';
+    echo 'var userResponse = confirm("追加に成功しました！！！！！！");';
+    echo 'if (userResponse == true) {';
+    echo 'window.location.href = "BasicQuestionAdd.php";';
+    echo '}';
+    echo '</script>';
+   
+
+   
+
+}else{
+    $errs[] = '追加に失敗しました。';
+}
+}
+}
+    
+
+
+
+    
+    
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,14 +156,51 @@
             </div>
         </div>
     </div>
-
+    
+<form action="" method = "POST">
 <link href="css/AddQuestion.css" rel="stylesheet">
 <h1 class="title">ベーシック質問追加</h1>
 <div style="border:solid 1px; "></div>
 
 <div class="container" id="all">
 <label for="text">追加する質問を入力してください</label> 
-<input type=”text” id="text" class="AddBasicQuestion" >
+
+<input type=”text” id="text" class="AddBasicQuestion" name="BasicQuestion" value="" >
+
+
+<script>
+    function Beforequestion(obj){
+    var air="";
+    var f=obj.form;
+    var c=f.elements["Beforequestion_tx"];
+    c.value=air;
+    var v=obj.options[obj.selectedIndex].value;
+    c=f.elements["Beforequestion_tx"];
+    c.value+=v;
+    }
+
+    function Yesquestion(obj){
+    var air="";
+    var f=obj.form;
+    var c=f.elements["Yesquestion_tx"];
+    c.value=air;
+    var v=obj.options[obj.selectedIndex].value;
+    c=f.elements["Yesquestion_tx"];
+    c.value+=v;
+    }
+
+    function Noquestion(obj){
+    var air="";
+    var f=obj.form;
+    var c=f.elements["Noquestion_tx"];
+    c.value=air;
+    var v=obj.options[obj.selectedIndex].value;
+    c=f.elements["Noquestion_tx"];
+    c.value+=v;
+    }
+
+</script>
+
 
 
 <table> <div class="container"></div>
@@ -92,62 +215,94 @@
     
     </tr>
    
-                <tr>
-                    <th>前の質問</th>
-                    <th>YES時の質問</th>
-                    <th>NO時の質問</th>
-                </tr>
+                
               
                 <!-- ココカラファイン -->
                 <div> 
-                    <tr>
-                        <td> 
-                        <div class="rbtn">
-                                 <label><input type="radio" id="rbtn" name="Yes" value="yes" checked/>YES</label>
-                                <label><input type="radio" id="rbtn" name="No" value="no" />NO</label>
-                        </div>
-                    <select name="BeforeQuestion" size="10">
-                        <option>何人ですか？</option>
-                        <option>母国愛はありますか？</option>
-                        <option>アジアの気分？</option>
-                        <option>俺のこと好き？</option>
-                        <option>麺食べたいの？</option>
-                        <option>もしかしてお腹すいてない？</option>
-                        <option>もちろん濃い味が好きだよね？</option>
-                        <option>コース料理なんて言わないよね？</option>
-                      </select>
-                    </td> 
+            <tr>
+                <?php
+                    
+                
+                $results=$BasicAdd->BasicQ_select();
+                
+                echo "<td>";
+                echo "<select onchange='Beforequestion(this)' name='BeforeQuestion' size='10'>";
+                    if (count($results) > 0) {
+                        foreach ($results as $row) {
+
+                  
+                            echo "<option value=". htmlspecialchars($row['BQuestion'], ENT_QUOTES, 'UTF-8') . ">" . htmlspecialchars($row['BQuestion'], ENT_QUOTES, 'UTF-8') . "</option>\n";
+                   
+                   
+                        }
+                 } else {
+                    echo "<option>データが見つかりませんでした。</option>\n";
+                    }
+                echo " </select>";
+                
+                echo "<input type='text' name='Beforequestion_tx' value='' readonly>";
+
+                echo "
+                <div class='rbtn'>
+                <label><input type='radio' id='rbtn' name='YorN' value='yes' />YES</label>
+                <label><input type='radio' id='rbtn' name='YorN' value='no' />NO</label>
+                </div>";
+                
+                echo "</td>";
+        
+            ?> 
+                    
+        
                   </div>
 
                   <div> 
-               <td>                               
-                    <select name="YesQuestion" size="10">
-                        <option>何人ですか？</option>
-                        <option>母国愛はありますか？</option>
-                        <option>アジアの気分？</option>
-                        <option>俺のこと好き？</option>
-                        <option>麺食べたいの？</option>
-                        <option>もしかしてお腹すいてない？</option>
-                        <option>もちろん濃い味が好きだよね？</option>
-                        <option>コース料理なんて言わないよね？</option>
-                       
-                      </select>
-                    </td> 
+                   
+                  <?php
+                    
+                   
+                    $results=$BasicAdd->BasicQ_select();
+                   
+                    echo "<td>";
+                    echo "<select onchange='Yesquestion(this)' name='YesQuestion' size='10'>";
+                        if (count($results) > 0) {
+                            foreach ($results as $row) {
+                   
+                         echo "<option value=". htmlspecialchars($row['BQuestion'], ENT_QUOTES, 'UTF-8') . ">" . htmlspecialchars($row['BQuestion'], ENT_QUOTES, 'UTF-8') . "</option>\n";
+                    
+                            }
+                     } else {
+                        echo "<option>データが見つかりませんでした。</option>\n";
+                        }
+                    echo " </select>";
+                    echo "<input type='text' name='Yesquestion_tx' value='' readonly>";
+                   
+                ?> 
                   </div>
 
                 <div> 
-                <td>
-                    <select name="NoQuestion" size="10">
-                        <option>何人ですか？</option>
-                        <option>母国愛はありますか？</option>
-                        <option>アジアの気分？</option>
-                        <option>俺のこと好き？</option>
-                        <option>麺食べたいの？</option>
-                        <option>もしかしてお腹すいてない？</option>
-                        <option>もちろん濃い味が好きだよね？</option>
-                        <option>コース料理なんて言わないよね？</option>
-                      </select>
-                    </td> 
+                <?php
+                    
+                
+                $results=$BasicAdd->BasicQ_select();
+                
+                echo "<td>";
+                echo "<select onchange='Noquestion(this)' name='NoQuestion' size='10'>";
+                    if (count($results) > 0) {
+                        foreach ($results as $row) {
+               
+                            echo "<option value=". htmlspecialchars($row['BQuestion'], ENT_QUOTES, 'UTF-8') . ">" . htmlspecialchars($row['BQuestion'], ENT_QUOTES, 'UTF-8') . "</option>\n";
+                
+                        }
+                 } else {
+                    echo "<option>データが見つかりませんでした。</option>\n";
+                    }
+                echo " </select>";
+                echo "<input type='text' name='Noquestion_tx' value='' readonly>";
+
+                
+                
+        
+            ?> 
                 </tr>
             </div>
             <!-- ここまで -->
@@ -156,15 +311,17 @@
             </div>
         </div>
            </table> </table>
+           
+           <?php foreach($errs as $e) : ?>
+            <span style="color:red"><?= $e ?></span>
+            <br>
+    <?php endforeach; ?>
           
 <div class="btn">
-<button type="button" id="addbtn">追加</button>
-<button onclick="location.href='BasicQuestion.php'" type="button" id="return">戻る</button>
-</div></div>
-<script>
-    function butotnClick(){
-        alert('追加完了しました！');
-    }
-    let button = document.getElementById('addbtn');
-    button.addEventListener('click', butotnClick);
-</script>
+<!-- <button onclick="location.href='BasicQuestionAdd.php'" method="POST" class="addbtn">追加</button> -->
+<button action="BasicQuestionAdd.php" method="POST" class="addbtn">追加</button>
+
+<button onclick="location.href='BasicQuestion.php'" type="button" id="return">戻る</button></div>
+                </form>
+
+</div>

@@ -6,9 +6,12 @@ $cid = isset($_GET['cid']) ? intval($_GET['cid']) : 0;
 
 $iframeSrc = "";
 
-if ($cid > 0) {
+if (isset($_SESSION['selectedShopID'])) {
+    // セッションから選ばれた店舗IDを取得
+    $randomShopID = $_SESSION['selectedShopID'];
+
     $dao = new kekkaDAO();
-    $urls = $dao->getCoordinateShopURL($cid);
+    $urls = $dao->getCoordinateShopURL($randomShopID);
 
     if (isset($urls['error'])) {
         $iframeSrc = ""; // エラー時はデフォルトの空値
@@ -16,6 +19,22 @@ if ($cid > 0) {
     } else {
         // 1つ目のCoordinateShopを利用
         $iframeSrc = htmlspecialchars($urls[0]); // 最初のURLを選択
+    }
+} else {
+    // セッションがない場合はランダムな店舗を表示
+    $cid = isset($_GET['cid']) ? intval($_GET['cid']) : 0;
+
+    if ($cid > 0) {
+        $dao = new kekkaDAO();
+        $urls = $dao->getCoordinateShopURL($cid);
+
+        if (isset($urls['error'])) {
+            $iframeSrc = ""; // エラー時はデフォルトの空値
+            $error = htmlspecialchars($urls['error']);
+        } else {
+            // 1つ目のCoordinateShopを利用
+            $iframeSrc = htmlspecialchars($urls[0]); // 最初のURLを選択
+        }
     }
 }
 

@@ -1,3 +1,10 @@
+<?php
+require_once './AdminDAO/CategoryQDAO.php';
+
+
+
+
+?>
 <!DOCTYPE html>
 <html>
 <head>

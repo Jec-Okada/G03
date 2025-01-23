@@ -13,7 +13,7 @@ class Notice{
         {
           
           $dbh = DAO::get_db_connect();
-          $sql = "SELECT NContent,AddDate FROM Notice";
+          $sql = "SELECT top(5) NContent,AddDate FROM Notice order by AddDate desc";
           $stmt = $dbh->query($sql);
           
           $results = $stmt->fetchAll(PDO::FETCH_ASSOC);

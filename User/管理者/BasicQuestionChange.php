@@ -1,3 +1,10 @@
+<?php
+require_once './AdminDAO/BasicQDAO.php';
+
+
+
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
