@@ -102,10 +102,10 @@
     
         if (count($results) > 0) {
             foreach ($results as $row) {
-                echo "<tr>\n";
+                echo "<tr>\n"; 
+                $shopDetailUrl = 'CategoryQuestionChange.php?CQID=' . urlencode($row['CQID']);// 削除画面へ
                 echo "<td>" . (is_null($row['CQID']) ? "" : htmlspecialchars($row['CQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
-                $shopDetailUrl = 'CategoryQuestionChange.php?CQID=' . urlencode($row['CQuestion']); // 削除画面へ
-                echo "<td><a href='" . $shopDetailUrl . "'>" . htmlspecialchars($row['CQuestion'], ENT_QUOTES, 'UTF-8') . "</a></td>\n";
+                echo "<td><a href='" . $shopDetailUrl . "'target='_blank' rel='noreferrer noopener'>" . htmlspecialchars($row['CQuestion'], ENT_QUOTES, 'UTF-8') . "</a></td>\n";
                 echo "<td>" . (is_null($row['BQID']) ? "" : htmlspecialchars($row['BQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
                 echo "<td>" . (is_null($row['YesCBID']) ? "" : htmlspecialchars($row['YesCBID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
                 echo "<td>" . (is_null($row['NoCBID']) ? "" : htmlspecialchars($row['NoCBID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";

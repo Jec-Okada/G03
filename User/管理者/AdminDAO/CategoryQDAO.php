@@ -26,6 +26,23 @@ class CategoryQDAO{
         
           
     }
+    public function CategoryQ_ID_CQuestion(int $CQID)//ベーシック質問一覧 IDで質問内容を検索
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql="SELECT * FROM CategoryQuestion where CQID=:CQID";
+
+      $stmt = $dbh->prepare($sql);
+
+      $stmt->bindValue(':CQID',$CQID,PDO::PARAM_INT);
+      
+      $stmt->execute();
+
+    $data = $stmt->fetch(PDO::FETCH_ASSOC); 
+    return $data;
+        
+          
+    }
 
     public function CategoryQ_BQID()//カテゴリ質問一覧 前の質問内容
     {
@@ -254,6 +271,154 @@ class CategoryQDAO{
       
         
           
+    }
+
+    public function CategoryQ_YCID_search($YCID)//カテゴリ質問一覧 Yes時の袋名
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql="SELECT CBagName FROM  CategoryBag  where CBagID=:YCID";
+
+      $stmt =$dbh->prepare($sql);
+     
+      $stmt->bindValue(':YCID',$YCID,PDO::PARAM_INT);
+     
+      
+      $stmt->execute();
+      
+     
+      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      
+      return $results;
+    }
+    public function CategoryQ_NCID_search($NCID)//カテゴリ質問一覧 Yes時の袋名
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql="SELECT CBagName FROM  CategoryBag  where CBagID=:NCID";
+
+      $stmt =$dbh->prepare($sql);
+     
+      $stmt->bindValue(':NCID',$NCID,PDO::PARAM_INT);
+     
+      
+      $stmt->execute();
+      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      
+      return $results;
+          
+    }
+    //ここから下削除機能
+    public function BasicQ_BQuestion_search(string $CQuestion)//ベーシック質問一覧 内容で質問IDを検索
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql="SELECT BQID FROM BesicQuestion where BQuestion=:CQuestion";
+
+      $stmt = $dbh->prepare($sql);
+
+      $stmt->bindValue(':CQuestion',$CQuestion,PDO::PARAM_STR);
+      
+      $stmt->execute();
+
+    $data = $stmt->fetch(PDO::FETCH_ASSOC); 
+    return $data;
+        
+          
+    }
+    public function CategoryQ_CQuestion_search(int $CQID)//ベーシック質問一覧 質問IDで内容を検索
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql="SELECT CQuestion FROM CategoryQuestion where CQID=:CQID";
+
+      $stmt = $dbh->prepare($sql);
+
+      $stmt->bindValue(':CQID',$CQID,PDO::PARAM_INT);
+      
+      $stmt->execute();
+
+    $data = $stmt->fetch(PDO::FETCH_ASSOC); 
+    return $data;
+        
+          
+    }
+
+    public function CategoryQ_Delete_CQID(int $CQID)//ベーシック質問テーブルにある該当した質問を削除
+    {
+            
+            $dbh = DAO::get_db_connect();
+            $sql = "Delete CategoryQuestion where CQID=:CQID";
+      
+                  $stmt =$dbh->prepare($sql);
+      
+                  $stmt->bindValue(':CQID',$CQID,PDO::PARAM_INT);
+                  
+                  $stmt->execute();
+      
+              
+      
+    }
+    public function BasicQ_Delete_BQID(int $BQID)//ベーシック質問テーブルにある該当した質問を削除
+    {
+            
+            $dbh = DAO::get_db_connect();
+            $sql = "Delete BesicQuestion where BQID=:BQID";
+      
+                  $stmt =$dbh->prepare($sql);
+      
+                  $stmt->bindValue(':BQID',$BQID,PDO::PARAM_INT);
+                  
+                  $stmt->execute();
+      
+              
+      
+    }
+    public function BasicQ_Update_YQID(int $BQID)//ベーシック質問  削除した質問が入っていた質問のYQIDを初期化 & 変更機能 Yesについていた質問のYQIDを初期化
+    {
+      
+      $dbh = DAO::get_db_connect();
+      $sql = "update BesicQuestion set YQID=0 where YQID=:BQID";
+
+            $stmt =$dbh->prepare($sql);
+
+            $stmt->bindValue(':BQID',$BQID,PDO::PARAM_INT);
+            
+            $stmt->execute();
+
+        
+
+
+          }  
+    public function BasicQ_Update_NQID(int $BQID)//ベーシック質問  削除した質問が入っていた質問のNQIDを初期化 & 変更機能 Noについていた質問のNQIDを初期化
+    {
+            
+            $dbh = DAO::get_db_connect();
+            $sql = "update BesicQuestion set NQID=0 where NQID=:BQID";
+      
+                  $stmt =$dbh->prepare($sql);
+      
+                  $stmt->bindValue(':BQID',$BQID,PDO::PARAM_INT);
+                  
+                  $stmt->execute();
+      
+              
+      
+    }
+    public function BasicQ_Update_RQID(int $BQID)//ベーシック質問  削除した質問が入っていた質問のRQIDを初期化 & 前の質問についていた質問のRQIDを初期化
+    {
+            
+            $dbh = DAO::get_db_connect();
+            $sql = "update BesicQuestion set RQID=0 where RQID=:BQID";
+      
+                  $stmt =$dbh->prepare($sql);
+      
+                  $stmt->bindValue(':BQID',$BQID,PDO::PARAM_INT);
+                  
+                  $stmt->execute();
+      
+              
+      
     }
     
     
