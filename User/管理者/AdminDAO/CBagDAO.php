@@ -7,28 +7,57 @@ public int $CBagID;
 public string $CBagName;
 public int $CQID;
 public String $Shop;
+public int $ShopID;
 }
 
 class CBagDAO
 {
     public function get_CBag_detail(int $CBagID)// 袋内の店舗表示用
     {
+        // $dbh = DAO::get_db_connect();
+
+        // $sql = "SELECT * FROM CBagTable WHERE CBagID = ?";
+        // $stmt = $dbh->prepare($sql);
+
+        // $stmt->bindValue(':CBagID',$CBagID,PDO::PARAM_INT);
+
+        // $stmt->execute();
+
+        // $data = [];
+        // while($row = $stmt->fetchObject('CBag')){
+        //     $data[] = $row;
+        // }
+        // return $data;
         $dbh = DAO::get_db_connect();
-
-        $sql = "SELECT Shop FROM ShopInCB where CBagID=:CBagID";
-
+        $sql = "SELECT Shop FROM ShopInCB WHERE CBagID = :CBagID";
         $stmt = $dbh->prepare($sql);
 
         $stmt->bindValue(':CBagID',$CBagID,PDO::PARAM_INT);
-
+       
         $stmt->execute();
 
-        $data = [];
-        while($row = $stmt->fetchObject('CBag')){
-            $data[] = $row;
-        }
-        return $data;
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        
+        return $results;
     }
+     
+    public function get_Shop_name(int $ShopID){
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT ShopName FROM Shop WHERE ShopID = :ShopID";
+        $stmt = $dbh->prepare($sql);
+
+        $stmt->bindValue(':ShopID',$ShopID,PDO::PARAM_INT);
+       
+        $stmt->execute();
+
+
+        $results = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $results;
+
+    }
+
     
 
     public function get_CBag_NameId()// 一覧用

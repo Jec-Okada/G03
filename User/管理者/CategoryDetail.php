@@ -1,3 +1,37 @@
+<?php
+// require_once './AdminDAO/CBagDAO.php';
+
+// if (!isset($_GET['CBagID']) || !is_numeric($_GET['CBagID'])) {
+//     die("有効なカテゴリ袋が指定されていません。");
+// }
+
+// $CBagID = (int)$_GET['CBagID'];
+
+// // CBagDAO インスタンスの作成
+// $cbagDAO = new CBagDAO();
+// $results = $cbagDAO->get_CBag_detail($CBagID); // 店舗データを取得
+require_once './AdminDAO/CBagDAO.php';
+
+$cnt=0;
+$ShopName=[];
+
+$CBagID = (int)$_GET['CBagID'] ?? null; // GETパラメータから取得
+$CBagDAO = new CBagDAO();
+$results = $CBagDAO->get_CBag_detail($CBagID) ?? []; // 初期化
+foreach($results as $a)
+{
+    $b = (int) $a['Shop'];
+    
+    $c = $CBagDAO->get_Shop_name($b);
+    // var_dump($c);
+
+    array_push($ShopName,$c);
+  
+    
+    
+} 
+// $ShopName = $CBagDAO->get_Shop_Name($ShopID) ?? []; // 初期化
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,64 +107,32 @@
     </div>
 
     <link href="css/Cbag.css" rel="stylesheet">
-    <h1>カテゴリ袋一覧</h1> 
-    <div style="border:solid 1px; "></div>
-    <h3>カテゴリー袋名<input type="text" name="Bagname" value="ファミレス" disabled></h3>
-   
     <div class="container">
-    <div class="table-responsive text-nowrap">
+        <h1>カテゴリ袋詳細</h1>
        
+        <div style="border:solid 1px; margin-bottom: 20px;"></div>
         
-        <table>
-    <tr>
-      <td>
-        <table border ="left" class="table table-bordered">
-        <tr>
-            <th>店舗ID</th>
-            <th>店舗名</th>
-        </tr>
-        <tr>
-            <td class="">1</td>
-            <td>ガスト</td>
-        </tr>
-        <tr >
-            <td class="">2</td>
-            <td>ココス</td>  
-        </tr>
-
-        <tr>
-            <td class="">3</td>
-            <td>サイゼリア</td>
-        </tr>
+        <!-- カテゴリ袋の詳細情報 -->
+        <h3>カテゴリ袋 ID: <?php echo htmlspecialchars($CBagID, ENT_QUOTES, 'UTF-8'); ?></h3>
+        
+        <div class="table-responsive text-nowrap">
+            <table border="1" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>店舗ID</th>
+                        <th>店舗名</th>
+                    </tr>
+                  
+            <?php foreach ($results as $row):?>
+                 <tr>  
+                    <td><?= htmlspecialchars($row['Shop'] ?? 'N/A', ENT_QUOTES, 'UTF-8'); ?></td>
+                 
+                    <td><?= htmlspecialchars($ShopName[$cnt]['ShopName'] ?? 'N/A', ENT_QUOTES, 'UTF-8'); ?></td>
+                    
+                </tr>
+                <?php $cnt+=1 ?>
+            <?php endforeach; ?>
+        
     </table>
-    </td>
-    <td valign="top">
-        <table border class="table table-bordered">
-            
-        <tr>
-            <th>店舗ID</th>
-            <th>店舗名</th>
-        </tr>
-        <tr>
-            <td class="">4</td>
-            <td></td>
-        </tr>
-        <tr >
-            <td class="">5</td>
-            <td></td>  
-        </tr>
-
-        <tr>
-            <td class="">6</td>
-            <td></td>
-        </tr>
-      </table>
-  </td>
-</tr>
-</table>
-    <button onclick="location.href='Categorybag.php'" type="button">戻る</button></a>
-</div>
-</div>   
-
 </body>
 </html>
