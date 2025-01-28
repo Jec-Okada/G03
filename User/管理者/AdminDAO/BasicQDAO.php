@@ -227,11 +227,11 @@ class BasicQDAO{
     {
       
       $dbh = DAO::get_db_connect();
-      $sql = "update BesicQuestion set YQID=0 where YQID=:YQID";
+      $sql = "update BesicQuestion set YQID=0 where YQID=:BQID";
 
             $stmt =$dbh->prepare($sql);
 
-            $stmt->bindValue(':YQID',$BQID,PDO::PARAM_INT);
+            $stmt->bindValue(':BQID',$BQID,PDO::PARAM_INT);
             
             $stmt->execute();
 
@@ -243,11 +243,11 @@ class BasicQDAO{
     {
             
             $dbh = DAO::get_db_connect();
-            $sql = "update BesicQuestion set NQID=0 where YQID=:YQID";
+            $sql = "update BesicQuestion set NQID=0 where NQID=:BQID";
       
                   $stmt =$dbh->prepare($sql);
       
-                  $stmt->bindValue(':NQID',$BQID,PDO::PARAM_INT);
+                  $stmt->bindValue(':BQID',$BQID,PDO::PARAM_INT);
                   
                   $stmt->execute();
       
@@ -258,11 +258,11 @@ class BasicQDAO{
     {
             
             $dbh = DAO::get_db_connect();
-            $sql = "update BesicQuestion set RQID=0 where YQID=:YQID";
+            $sql = "update BesicQuestion set RQID=0 where RQID=:BQID";
       
                   $stmt =$dbh->prepare($sql);
       
-                  $stmt->bindValue(':RQID',$BQID,PDO::PARAM_INT);
+                  $stmt->bindValue(':BQID',$BQID,PDO::PARAM_INT);
                   
                   $stmt->execute();
       

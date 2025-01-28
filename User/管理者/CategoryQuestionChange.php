@@ -1,14 +1,99 @@
 <?php
 require_once './AdminDAO/CategoryQDAO.php';
+$errs=[];
+
+
+$CategoryDetail = new CategoryQDAO();
+if (isset($_GET['CQID']) && is_numeric($_GET['CQID'])) {
+    $CQID = (int)$_GET['CQID'];
+    
+}
+
+if($_SERVER['REQUEST_METHOD']==='POST'){
+    if (array_key_exists('check', $_POST)) {
+        $check = $_POST['check'];
+    } else {
+        $check = '';  // キーがない場合の処理
+    }
+    
+   
+    
+    
+if($check === ''){
+    $errs[]='削除確認にチェックをしてください';
+
+  }
+  if($CQID === 0){
+    $errs[]='質問IDがありませんでした';
+
+  }
+  
+
+  if(empty($errs)){
+    $CQuestion = $CategoryDetail->CategoryQ_CQuestion_search($CQID);
+    $BQID = $CategoryDetail->BasicQ_BQuestion_search($CQuestion['CQuestion']);
+
+    
+    $result1 = $CategoryDetail->BasicQ_Update_YQID($BQID);
+    $result2 = $CategoryDetail->BasicQ_Update_NQID($BQID);
+    $result3 = $CategoryDetail->BasicQ_Update_RQID($BQID);
 
 
 
+    if($result1 !== false && $result2 !== false && $result3 !== false){
+
+        $result4 = $CategoryDetail->BasicQ_Delete_BQID($BQID);
+        $result5 = $CategoryDetail->CategoryQ_Delete_CQID($CQID);
+
+    }else{
+        $errs[] = 'IDの初期化に失敗しました';
+    }
+   
+
+    
+     
+
+
+    if($result4 !== false && $result5 !== false){
+    echo '<script type="text/javascript">';
+    echo 'var userResponse = confirm("削除に成功しました！！！！！！");';
+    echo 'if (userResponse == true) {';
+    echo 'window.location.href = "CategoryQuestion.php";';
+    echo '}';
+    echo '</script>';
+   
+
+   
+
+}else{
+    $errs[] = '削除に失敗しました。';
+}
+}
+}
+
+$detail = $CategoryDetail->CategoryQ_ID_CQuestion($CQID); // 配列として取得
+
+
+if(!empty($detail['YesCBID'])){
+    $YCBagID=(int)$detail['YesCBID'];
+   $YCBagName= $CategoryDetail->CategoryQ_YCID_search($YCBagID);
+}else{
+    $YCBagName='カテゴリ袋がついていません';
+}
+if(!empty($detail['NoCBID'])){
+    $NCBagID=(int)$detail['NoCBID'];
+   $NCBagName= $CategoryDetail->CategoryQ_NCID_search($NCBagID);
+   
+}else{
+    $NCBagName='カテゴリ袋がついていません';
+}
+ 
 
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>カテゴリ直下質問変更＆削除</title>
+    <title>カテゴリ直下質問削除</title>
     <meta charset="utf-8">
 
 <link rel="stylesheet" href="bootstrap-5.0.0-dist/css/bootstrap.min.css">
@@ -77,9 +162,9 @@ require_once './AdminDAO/CategoryQDAO.php';
             </div>
         </div>
     </div>
+    <form action="" method = "POST">
 
-
-<h1 class="title">カテゴリ直下質問変更＆削除</h1>
+<h1 class="title">カテゴリ直下質問削除</h1>
 <div style="border:solid 1px; "></div>
 <div class="container">
     <div class="table-responsive text-nowrap">
@@ -95,21 +180,33 @@ require_once './AdminDAO/CategoryQDAO.php';
                             <th>YES時の袋</th>
                             <th>NO時の袋</th>
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>もちろん濃い味が好きだよね？</td>
-                            <td>10</td>
-                            <td>21</td>
-                            <td>5</td>
-                        </tr>
-                </div>
+                        <?php
+        require_once './AdminDAO/DAO.php';
+
+        
+    
+        
+                echo "<tr>\n";
+                echo "<td>" . (is_null($detail['CQID']) ? "" : htmlspecialchars($detail['CQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                echo "<td>" . (is_null($detail['CQuestion']) ? "" : htmlspecialchars($detail['CQuestion'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                $BasicChangeUrl = 'BasicQuestionChange.php?BQID=' . urlencode($detail['BQID']);
+                echo "<td><a href='" . $BasicChangeUrl . "'>" . (is_null($detail['BQID']) ? "" : htmlspecialchars($detail['BQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";
+                // $CategoryDetailUrl = 'CategoryDetail.php?CBagID=' . urlencode($detail['YesCBID']);
+                echo "<td>" . (is_null($YCBagName[0]['CBagName']) ? "" : $YCBagName[0]['CBagName']) . "</td>\n";
+                // $CategoryDetailUrl = 'CategoryDetail.php?CBagID=' . urlencode($detail['NoCBID']);
+                echo "<td>" . (is_null($NCBagName[0]['CBagName']) ? "" :$NCBagName[0]['CBagName']) . "</td>\n";
+
+                
+                echo "</tr>\n";
+            
+        ?>
             </table>
         <tr>
     </div>
 </div>
 
 </tr>
-<div class="container"> 
+<!-- <div class="container"> 
     <div class="table-responsive text-nowrap">
         <table border="1" class="table table-bordered">
             <tr class="">
@@ -117,7 +214,7 @@ require_once './AdminDAO/CategoryQDAO.php';
                     <div class="table-responsive text-nowrap">
                         <table border="1" class="table table-bordered">
                             <tr class="">
-                                <td><h2>前の質問</h2></td><!--前の質問に変える-->
+                                <td><h2>前の質問</h2></td> 前の質問に変える
                                 <td><h2>YES時の袋</h2></td>
                                 <td><h2>NO時の袋</h2></td></div>
                             </tr>
@@ -181,32 +278,23 @@ require_once './AdminDAO/CategoryQDAO.php';
                     </div>
                 </table>
             </tr>
-        </table>
+        </table> -->
         <div>
-            <input type="checkbox" id="horns" name="horns" />削除の場合は、こちらにチェックして削除ボタンをクリック
-            <button type="button"  name="delete" id="delete">削除</button>
-            <button type="button"  name="change" id="change">変更</button>
-            <button onclick="location.href='BasicQuestion.php'" type="button">戻る</button>
+        <?php foreach($errs as $e) : ?>
+            <span style="color:red"><?= $e ?></span>
+            <br>
+    <?php endforeach; ?>
+                <?php  echo " <input type='checkbox' id='check' name='check' value='ok' />削除の場合は、こちらにチェックして削除ボタンをクリック"?>
+                    <div class="btn">
+                    <button action="CategoryQuestionChange.php" method="POST" class=delbtn>削除</button>
+            
+            <!-- <button type="button"  name="change" id="change">変更</button> -->
+            <button onclick="location.href='CategoryQuestion.php'" type="button">戻る</button>
         </div>
     </div>
 </div>
 
+</form>
 
-<script>
-    function butotnClick(){
-        alert('変更完了しました！');
-    }
-    
-    let button = document.getElementById('change');
-    button.addEventListener('click', butotnClick); 
-</script>
-<script>
-    function butotnClick(){
-        alert('削除完了しました！');
-    }
-    
-     button = document.getElementById('delete');
-    button.addEventListener('click', butotnClick); 
-</script>
 </body>
 </html>

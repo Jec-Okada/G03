@@ -1,18 +1,81 @@
 <?php
 require_once './AdminDAO/BasicQDAO.php';
 $BasicDetail = new BasicQDAO();
-
-
+$check='';
+$BQID = 0;
+$errs=[];
 
 if (isset($_GET['BQID']) && is_numeric($_GET['BQID'])) {
     $BQID = (int)$_GET['BQID'];
 }
+
+if($_SERVER['REQUEST_METHOD']==='POST'){
+    if (array_key_exists('check', $_POST)) {
+        $check = $_POST['check'];
+    } else {
+        $check = '';  // キーがない場合の処理
+    }
+    
+   
+    
+    
+if($check === ''){
+    $errs[]='削除確認にチェックをしてください';
+
+  }
+  if($BQID === 0){
+    $errs[]='質問IDがありませんでした';
+
+  }
+if(empty($errs)){
+    
+
+    
+    $result1 = $BasicDetail->BasicQ_Update_YQID($BQID);
+    $result2 = $BasicDetail->BasicQ_Update_NQID($BQID);
+    $result3 = $BasicDetail->BasicQ_Update_RQID($BQID);
+
+    if($result1 !== false && $result2 !== false && $result3 !== false){
+
+        $result4 = $BasicDetail->BasicQ_Delete($BQID);
+    }else{
+        $errs[] = 'IDの初期化に失敗しました';
+    }
+   
+
+    
+     
+
+
+    if($result4 !== false){
+    echo '<script type="text/javascript">';
+    echo 'var userResponse = confirm("削除に成功しました！！！！！！");';
+    echo 'if (userResponse == true) {';
+    echo 'window.location.href = "BasicQuestion.php";';
+    echo '}';
+    echo '</script>';
+   
+
+   
+
+}else{
+    $errs[] = '削除に失敗しました。';
+}
+}
+}
+    
+
+
+
+
+
+
     
     
 $detail = $BasicDetail->BasicQ_ID_BQuestion($BQID); // 配列として取得
 
 if (!$detail) {
-    die("指定された店舗が見つかりませんでした。");
+    die("指定された質問が見つかりませんでした。");
 }
 
 
@@ -22,7 +85,7 @@ if (!$detail) {
 <html>
 <head>
     <meta charset="utf-8">
-    <title>ベーシック質問変更＆削除</title>
+    <title>ベーシック質問削除</title>
     <!--管理側の報告一覧画面のサンプルです-->
 
     <link rel="stylesheet" href="../bootstrap-5.0.0-dist/css/bootstrap.min.css">
@@ -91,7 +154,9 @@ if (!$detail) {
             </div>
         </div>
     </div>
-    <h1>ベーシック質問変更＆削除</h1>
+    <form action="" method = "POST">
+   
+    <h1>ベーシック質問削除</h1>
     <div style="border:solid 1px; "></div>
             <div class="container">
                 <div class="table-responsive text-nowrap">
@@ -111,11 +176,11 @@ if (!$detail) {
                                         <td><?php echo htmlspecialchars($detail['BQID'], ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td><?php echo htmlspecialchars($detail['BQuestion'], ENT_QUOTES, 'UTF-8'); ?></td>
                                 <?php   $BasicChangeUrl = 'BasicQuestionChange.php?BQID=' . urlencode($detail['RQID']);
-                                        echo "<td><a href='" . $BasicChangeUrl . "'>" . (is_null($detail['YQID']) ? "" : htmlspecialchars($detail['RQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";?>
+                                        echo "<td><a href='" . $BasicChangeUrl . "'>" . (is_null($detail['RQID']) ? "" : htmlspecialchars($detail['RQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";?>
                                 <?php   $BasicChangeUrl = 'BasicQuestionChange.php?BQID=' . (is_null($detail['YQID']) ? "0" :urlencode($detail['YQID']));
                                         echo "<td><a href='" . $BasicChangeUrl . "'>" . (is_null($detail['YQID']) ? "" : htmlspecialchars($detail['YQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";?>
-                                <?php   $BasicChangeUrl = 'BasicQuestionChange.php?BQID=' . (is_null($detail['YQID']) ? "0" :urlencode($detail['NQID']));
-                                        echo "<td><a href='" . $BasicChangeUrl . "'>" . (is_null($detail['YQID']) ? "" : htmlspecialchars($detail['NQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";?>
+                                <?php   $BasicChangeUrl = 'BasicQuestionChange.php?BQID=' . (is_null($detail['NQID']) ? "0" :urlencode($detail['NQID']));
+                                        echo "<td><a href='" . $BasicChangeUrl . "'>" . (is_null($detail['NQID']) ? "" : htmlspecialchars($detail['NQID'], ENT_QUOTES, 'UTF-8')) . "</td>\n";?>
                                        
                                     </tr>
                             </div>
@@ -195,31 +260,22 @@ if (!$detail) {
                     </tr>
                 </table> -->
                 <div>
-                    <input type="checkbox" id="horns" name="horns" />削除の場合は、こちらにチェックして削除ボタンをクリック
-                    <button type="button"  name="delete" id="delete">削除</button>
-                    <button type="button"  name="change" id="change">変更</button>
-                    <button onclick="location.href='BasicQuestion.php'" type="button">戻る</button>
+                <?php foreach($errs as $e) : ?>
+            <span style="color:red"><?= $e ?></span>
+            <br>
+    <?php endforeach; ?>
+                <?php  echo " <input type='checkbox' id='check' name='check' value='ok' />削除の場合は、こちらにチェックして削除ボタンをクリック"?>
+                    <div class="btn">
+                    <button action="BasicQuestionChange.php" method="POST" class=delbtn>削除</button>
+                    <!-- <button type="button"  name="change" id="change">変更</button> -->
+                    <button onclick="location.href='BasicQuestion.php'" type="button">戻る</button></div>
                 </div>
             </div>
         </div>
+</form>
         
         
     
-    <script>
-        function butotnClick(){
-            alert('削除完了しました！');
-        }
-        
-        let button = document.getElementById('delete');
-        button.addEventListener('click', butotnClick); 
-    </script>
-     <script>
-        function butotnClick(){
-            alert('変更完了しました!');
-        }
-        
-        let but = document.getElementById('change');
-        but.addEventListener('click', butotnClick);
-    </script>
+    
 </body>
 </html>

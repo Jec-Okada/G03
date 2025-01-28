@@ -56,7 +56,7 @@
  
           $stmt = $dbh->prepare($sql);
 
-          $params = array(':Rnaiyou' => $Rnaiyou, ':MemberID' => $member->MemberID , ':judge' => 'バグ') ;
+          $params = array(':Rnaiyou' => $Rnaiyou, ':MemberID' => $member['MemberID'] , ':judge' => 'バグ') ;
           
           $stmt->execute($params);
            
@@ -67,7 +67,7 @@
  
           $stmt = $dbh->prepare($sql);
  
-          $params = array(':Rnaiyou' => $Rnaiyou, ':MemberID' => $member->MemberID , ':judge' => 'リクエスト') ;
+          $params = array(':Rnaiyou' => $Rnaiyou, ':MemberID' => $member['MemberID'] , ':judge' => 'リクエスト') ;
  
           $stmt->execute($params);
             
