@@ -76,8 +76,8 @@
     <div class="container">
     <div class="table-responsive text-nowrap">
     <table border="1" class="table table-bordered">
-    <input type=”text” id="search" placeholder="検索" >
-        <button class="search" type="button">検索</button>
+    <!-- <input type=”text” id="search" placeholder="検索" >
+        <button class="search" type="button">検索</button> -->
         <?php
         require_once './AdminDAO/DAO.php';
 
