@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once './UserDAO/kekkaDAO.php';
 
 // 2択から遷移して受け取ったCID（YesCIDまたはNoCID）

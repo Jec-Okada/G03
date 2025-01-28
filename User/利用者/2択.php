@@ -51,7 +51,7 @@ if ($next_category_id) {
     $_SESSION['yes_cid'] = $next_category_id;
     $isCategoryQuestion = true;
     $next_question_text = DAO2::getCategoryQuestionById($next_category_id);
-    sleep(1);
+    sleep(3);
     // リダイレクト処理を追加
     header("Location: kekka.php?cid=$next_category_id");
     exit();

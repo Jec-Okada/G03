@@ -16,22 +16,22 @@ class kekkaDAO {
         return self::$dbh;
     }
 
-    // 営業中かどうかをチェックするメソッド
-    private static function isShopOpen($startTime1, $closeTime1, $startTime2, $closeTime2) {
-        $currentTime = date('H:i'); // 現在の時刻を 'HH:MM' 形式で取得
+    // // 営業中かどうかをチェックするメソッド
+    // private static function isShopOpen($startTime1, $closeTime1, $startTime2, $closeTime2) {
+    //     $currentTime = date('H:i'); // 現在の時刻を 'HH:MM' 形式で取得
 
-        // 営業時間1
-        if ($startTime1 <= $currentTime && $currentTime <= $closeTime1) {
-            return true;
-        }
+    //     // 営業時間1
+    //     if ($startTime1 <= $currentTime && $currentTime <= $closeTime1) {
+    //         return true;
+    //     }
 
-        // 営業時間2（もしあれば）
-        if ($startTime2 && $closeTime2 && $startTime2 <= $currentTime && $currentTime <= $closeTime2) {
-            return true;
-        }
+    //     // 営業時間2（もしあれば）
+    //     if ($startTime2 && $closeTime2 && $startTime2 <= $currentTime && $currentTime <= $closeTime2) {
+    //         return true;
+    //     }
 
-        return false; // 営業中でなければ false
-    }
+    //     return false; // 営業中でなければ false
+    // }
 
     function getCoordinateShopURL($cid) {
         $pdo = self::get_db_connect();
@@ -61,34 +61,34 @@ class kekkaDAO {
         $shopIDs = array_column($shopInCB, 'Shop');
     
         // 営業時間を判定
-        $currentTime = date('H:i'); // 現在の時刻（HH:MM形式）
+        // $currentTime = date('H:i'); // 現在の時刻（HH:MM形式）
     
-        $openShops = [];
-        foreach ($shopIDs as $shopID) {
-            $stmt3 = $pdo->prepare("SELECT StartTime1, CloseTime1, StartTime2, CloseTime2 FROM Shop WHERE ShopID = :shopID");
-            $stmt3->bindParam(':shopID', $shopID, PDO::PARAM_INT);
-            $stmt3->execute();
-            $shop = $stmt3->fetch(PDO::FETCH_ASSOC);
+         //s$openShops = [];
+        // foreach ($shopIDs as $shopID) {
+        //     $stmt3 = $pdo->prepare("SELECT StartTime1, CloseTime1, StartTime2, CloseTime2 FROM Shop WHERE ShopID = :shopID");
+        //     $stmt3->bindParam(':shopID', $shopID, PDO::PARAM_INT);
+        //     $stmt3->execute();
+        //     $shop = $stmt3->fetch(PDO::FETCH_ASSOC);
     
-            if (!$shop) {
-                continue;
-            }
+        //     if (!$shop) {
+        //         continue;
+        //     }
     
-            // 営業時間チェック（StartTime1 <= 現在の時刻 <= CloseTime1 または StartTime2 <= 現在の時刻 <= CloseTime2）
-            if (($shop['StartTime1'] <= $currentTime && $shop['CloseTime1'] >= $currentTime) ||
-                ($shop['StartTime2'] <= $currentTime && $shop['CloseTime2'] >= $currentTime)) {
-                // 営業している店舗の場合
-                $openShops[] = $shopID;
-            }
-        }
+            // // 営業時間チェック（StartTime1 <= 現在の時刻 <= CloseTime1 または StartTime2 <= 現在の時刻 <= CloseTime2）
+            // if (($shop['StartTime1'] <= $currentTime && $shop['CloseTime1'] >= $currentTime) ||
+            //     ($shop['StartTime2'] <= $currentTime && $shop['CloseTime2'] >= $currentTime)) {
+            //     // 営業している店舗の場合
+            //     $openShops[] = $shopID;
+            // }
+        
     
-        if (empty($openShops)) {
-            return ["error" => "営業中の店舗が見つかりません。"];
-        }
+        // if (empty($openShops)) {
+        //     return ["error" => "営業中の店舗が見つかりません。"];
+        // }
     
         // 営業中の店舗からランダムで選択
-        $randomShopID = $openShops[array_rand($openShops)];
-    
+        //$randomShopID = $openShops[array_rand($openShops)];
+        $randomShopID = $shopIDs[array_rand($shopIDs)];
         // 店舗からCoordinateShop（URL）を取得
         $stmt4 = $pdo->prepare("SELECT CoordinateShop FROM Shop WHERE ShopID = :shopID");
         $stmt4->bindParam(':shopID', $randomShopID, PDO::PARAM_INT);
