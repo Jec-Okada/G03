@@ -31,9 +31,10 @@ if($check === ''){
 
   if(empty($errs)){
     $CQuestion = $CategoryDetail->CategoryQ_CQuestion_search($CQID);
-    $BQID = $CategoryDetail->BasicQ_BQuestion_search($CQuestion['CQuestion']);
-
-    
+    $BQID1 = $CategoryDetail->BasicQ_BQuestion_search($CQuestion['CQuestion']);
+ 
+    $BQID=(int)$BQID1;
+    //    var_dump($BQID);
     $result1 = $CategoryDetail->BasicQ_Update_YQID($BQID);
     $result2 = $CategoryDetail->BasicQ_Update_NQID($BQID);
     $result3 = $CategoryDetail->BasicQ_Update_RQID($BQID);
